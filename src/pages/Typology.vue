@@ -68,7 +68,6 @@ export default {
       </div>
     </div>
 </div>
-<button @click="showRestaurant()">oooooooo</button>
 <div class="container">
     <div class="row">
         
