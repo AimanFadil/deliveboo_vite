@@ -1,6 +1,5 @@
 <script>
 import { store } from './store.js';
-import axios from 'axios';
 
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
@@ -16,29 +15,17 @@ export default {
   data() {
     return {
       store,
-      typologies: [],
     }
   },
-  created(){
-    this.getTypology()
-  },
-  methods: {
-    getTypology(){
-      axios.get(`${this.store.Url}/typology`).then((response) => {
-        this.typologies = response.data.results;
-        console.log(this.typologies);
-      })
-    }
-  }
 }
 </script>
 
 <template lang="">
 <div>
 
-    <Header/>
+    <Header />
     <router-view></router-view>
-    <Footer/>
+    <Footer />
 
   
   <!-- <div class="container-fluid">
@@ -51,7 +38,7 @@ export default {
       </div>
     </div>
   </div> -->
-
+</div>
 </template>
 
 <style lang="scss">

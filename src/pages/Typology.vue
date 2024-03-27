@@ -1,50 +1,68 @@
 <script>
-import {store} from '../store.js';
-import axios from 'axios';
-
-export default {
-    
-}
-</script>
-<template lang="">
-    <div>
-        
-    </div>
-</template>
-<style lang="">
-    
-</style>
-<script>
-import {store} from '../store.js';
+import { store } from '../store.js';
 import axios from 'axios';
 export default {
     name: 'Restaurant',
-  data(){
-        return{
+    data() {
+        return {
             store,
-            restaurants : [],
-            SelectedRestaurants: []
+            restaurants: [],
+            SelectedRestaurants: [],
+            typologies: [],
+            SelectedTypologies: []
         }
     },
     created() {
-        this.getRestaurant()
+        this.getRestaurant(),
+            this.getTypology()
 
     },
     methods: {
         getRestaurant() {
-            axios.get(`${this.store.Url}api/restaurant`).then((response) => {
+            axios.get(`${this.store.Url}/restaurant`).then((response) => {
                 console.log(response.data.results)
                 this.restaurants = response.data.results;
-                
+
             })
+        },
+        getTypology() {
+            axios.get(`${this.store.Url}/typology`).then((response) => {
+                this.typologies = response.data.results;
+                console.log(this.typologies);
+            })
+        },
+        showRestaurant() {
+            let select = document.querySelectorAll('input:checked')
+            this.SelectedTypologies = select
+            for (let i = 0; i < this.restaurants.length; i++) {
+                let tipologie = this.restaurants[i].typologies
+                tipologie.forEach((tipo) => {
+                    console.log(select.value)
+                    // if (this.SelectedTypologies.includes(tipo.id)) {
+                    // }
+
+                })
+
+            }
         }
-        
+
 
     },
 
 }
 </script>
 <template lang="">
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="typology" v-for="typology in typologies" :key="index">
+          <input type="checkbox" name="typology" id="typology" :value="typology.id">
+          <label for="typology">{{typology.name}}</label>
+        </div>
+      </div>
+    </div>
+</div>
+<button @click="showRestaurant()">oooooooo</button>
 <div class="container">
     <div class="row">
         
@@ -61,7 +79,4 @@ export default {
 
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
-
-
-    
 </style>
