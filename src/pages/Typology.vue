@@ -32,18 +32,24 @@ export default {
             })
         },
         showRestaurant() {
-            let select = document.querySelectorAll('input:checked')
-            this.SelectedTypologies = select
+            this.SelectedRestaurants = []
+            // let select = document.querySelectorAll('input:checked')
+            // this.SelectedTypologies = [...select]
+
             for (let i = 0; i < this.restaurants.length; i++) {
                 let tipologie = this.restaurants[i].typologies
                 tipologie.forEach((tipo) => {
-                    console.log(select.value)
-                    // if (this.SelectedTypologies.includes(tipo.id)) {
-                    // }
+                    if (this.SelectedTypologies.includes(tipo.id)) {
+                        if (!this.SelectedRestaurants.includes(this.restaurants[i])) {
+
+                            this.SelectedRestaurants.push(this.restaurants[i])
+                        }
+                    }
 
                 })
 
             }
+
         }
 
 
@@ -56,7 +62,7 @@ export default {
     <div class="row">
       <div class="col-12">
         <div class="typology" v-for="typology in typologies" :key="index">
-          <input type="checkbox" name="typology" id="typology" :value="typology.id">
+          <input type="checkbox" name="typology" id="typology" :value="typology.id" v-model="SelectedTypologies" v-on:change="showRestaurant()">
           <label for="typology">{{typology.name}}</label>
         </div>
       </div>
@@ -66,7 +72,7 @@ export default {
 <div class="container">
     <div class="row">
         
-        <div class="col-12" v-for="(restaurant, index) in restaurants">
+        <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants">
             NOME ATTIVITA':{{ restaurant.business_name }} <br>
             INDIRIZZO :{{ restaurant.address }} <br>
             P.IVA :{{ restaurant.vat_number }} <br>
