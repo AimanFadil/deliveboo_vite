@@ -73,6 +73,7 @@ export default {
         
         <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants">
             NOME ATTIVITA':{{ restaurant.business_name }} <br>
+            <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
             INDIRIZZO :{{ restaurant.address }} <br>
             P.IVA :{{ restaurant.vat_number }} <br>
             SLUG:{{ restaurant.slug }} <br>
