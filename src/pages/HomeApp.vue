@@ -9,7 +9,9 @@ export default {
             restaurants: [],
             SelectedRestaurants: [],
             typologies: [],
-            SelectedTypologies: []
+            SelectedTypologies: [],
+            message_error: '',
+            loader: false
         }
     },
     created() {
@@ -20,20 +22,36 @@ export default {
     methods: {
         getRestaurant() {
             axios.get(`${this.store.Url}/restaurant`).then((response) => {
-                
-                this.restaurants = response.data.results;
+                if (response.data.success) {
+                    this.restaurants = response.data.results;
+
+                } else {
+                    this.message_error = "Ops... Si è verificato un problema, prova più tardi."
+                }
 
             })
         },
         getTypology() {
-            axios.get(`${this.store.Url}/typology`).then((response) => {
-                this.typologies = response.data.results;
-                
-            })
+            if (axios.get(`${this.store.Url}/typology`).state == 'fullfilled') {
+
+                axios.get(`${this.store.Url}/typology`).then((response) => {
+
+                    if (response.status === 200) {
+                        this.typologies = response.data.results;
+                        this.loader = true
+                    } else {
+                        this.message_error = "Ops... Si è verificato un problema, prova più tardi."
+                    }
+
+                })
+            }
+            else {
+                this.message_error = "Ops... Si è verificato un problema, prova più tardi."
+            }
         },
         showRestaurant() {
             this.SelectedRestaurants = []
-            
+
 
             for (let i = 0; i < this.restaurants.length; i++) {
                 let tipologie = this.restaurants[i].typologies
@@ -57,32 +75,37 @@ export default {
 }
 </script>
 <template lang="">
-<div class="container ">
-    <div class="row d-flex justify-content-center">
-        <div class="col-12 text-center my-3"><h3 >Cerca i ristoranti per tipologie</h3></div>
-        <div class="col-12 d-flex gap-3">
-          <div class="typology  " v-for="(typology , index) in typologies" :key="index">
-          <input type="checkbox" :name="typology.id" :id="typology.id" :value="typology.id" v-model="SelectedTypologies" v-on:change="showRestaurant()">
-          <label :for="typology.id">{{typology.name}}</label>
+    <div v-if="loader">
+        <div class="container ">
+            <div class="row d-flex justify-content-center">
+                <div class="col-12 text-center my-3"><h3 >Cerca i ristoranti per tipologie</h3></div>
+                <div class="col-12 d-flex gap-3">
+                  <div class="typology  " v-for="(typology , index) in typologies" :key="index">
+                  <input type="checkbox" :name="typology.id" :id="typology.id" :value="typology.id" v-model="SelectedTypologies" v-on:change="showRestaurant()">
+                  <label :for="typology.id">{{typology.name}}</label>
+                </div>
+              </div>
+            </div>
         </div>
-      </div>
-    </div>
-</div>
-<div class="container text-white">
-    <div class="row">
-        <div class="col-12 text-center  my-3"><h3 >Ristoranti:</h3></div>
-        <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants">
-            NOME ATTIVITA':{{ restaurant.business_name }} <br>
-            <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
-            INDIRIZZO :{{ restaurant.address }} <br>
-            
-            <hr>
+        <div class="container text-white">
+            <div class="row">
+                <div class="col-12 text-center  my-3"><h3 >Ristoranti:</h3></div>
+                <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants">
+                    NOME ATTIVITA':{{ restaurant.business_name }} <br>
+                    <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
+                    INDIRIZZO :{{ restaurant.address }} <br>
+                    
+                    <hr>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    <div v-else class="text-white text-center">
+        ciao
+        {{message_error}}
+    </div>
 </template>
 
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
-
 </style>
