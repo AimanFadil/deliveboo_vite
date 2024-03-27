@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Typology from './pages/Typology.vue';
+import HomeApp from './pages/HomeApp.vue';
 
 
 const router = createRouter({
@@ -8,7 +8,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: Typology,
+            component: HomeApp,
         },
 
 
