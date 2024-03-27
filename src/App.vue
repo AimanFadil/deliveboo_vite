@@ -1,9 +1,13 @@
 <script>
 import { store } from './store.js';
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
+
 
 export default {
   components: {
-    
+    Header,
+    Footer
 
   },
   data() {
@@ -16,7 +20,9 @@ export default {
 
 <template lang="">
 <div>
-  <router-view></router-view>
+    <Header/>
+    <router-view></router-view>
+    <Footer/>
 </div>
 </template>
 
