@@ -20,7 +20,7 @@ export default {
     methods: {
         getRestaurant() {
             axios.get(`${this.store.Url}/restaurant`).then((response) => {
-                
+
                 this.restaurants = response.data.results;
 
             })
@@ -28,12 +28,12 @@ export default {
         getTypology() {
             axios.get(`${this.store.Url}/typology`).then((response) => {
                 this.typologies = response.data.results;
-                
+
             })
         },
         showRestaurant() {
             this.SelectedRestaurants = []
-            
+
 
             for (let i = 0; i < this.restaurants.length; i++) {
                 let tipologie = this.restaurants[i].typologies
@@ -72,7 +72,8 @@ export default {
     <div class="row">
         <div class="col-12 text-center  my-3"><h3 >Ristoranti:</h3></div>
         <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants">
-            NOME ATTIVITA':{{ restaurant.business_name }} <br>
+            <router-link :to="{ name: 'single-restaurant', params: {id: restaurant.id} }" class="text-danger">
+            NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
             <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
             INDIRIZZO :{{ restaurant.address }} <br>
             
@@ -80,9 +81,9 @@ export default {
         </div>
     </div>
 </div>
+
 </template>
 
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
-
 </style>
