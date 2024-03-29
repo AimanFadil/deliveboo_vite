@@ -16,7 +16,7 @@ export default {
     },
     methods: {
         handleScroll() {
-            if (window.pageYOffset > 200) {
+            if (window.pageYOffset > 50) {
                 if (this.view.topOfPage) this.view.topOfPage = false
             } else {
                 if (!this.view.topOfPage) this.view.topOfPage = true
@@ -72,6 +72,7 @@ nav {
 
         .color_text_header{
             color: $red-light;
+        
           }
     }
 
