@@ -9,31 +9,35 @@ export default {
             restaurants: [],
             SelectedRestaurants: [],
             typologies: [],
-            SelectedTypologies: []
+            SelectedTypologies: [],
+            randomRestaurant: [],
+            /* restaurant: [], */
         }
     },
     created() {
-        this.getRestaurant(),
-            this.getTypology()
+        this.getRestaurant();
+        this.getTypology();
+        this.GetRandomRes();
 
     },
     methods: {
         getRestaurant() {
             axios.get(`${this.store.Url}/restaurant`).then((response) => {
-                
-                this.restaurants = response.data.results;
 
+                this.restaurants = response.data.results;
+                this.GetRandomRes();
+                this.showRestaurant();
             })
         },
         getTypology() {
             axios.get(`${this.store.Url}/typology`).then((response) => {
                 this.typologies = response.data.results;
-                
+
             })
         },
         showRestaurant() {
             this.SelectedRestaurants = []
-            
+
 
             for (let i = 0; i < this.restaurants.length; i++) {
                 let tipologie = this.restaurants[i].typologies
@@ -49,7 +53,40 @@ export default {
 
             }
 
+        },
+        /* showRestaurant() {
+               this.SelectedRestaurants = this.restaurants.filter((restaurant) => {
+                   return restaurant.typologies.some((tipo) => this.SelectedTypologies.includes(tipo.id));
+               });
+        }, */
+        /* GetResData() {
+            axios.get(`${this.store.Url}/restaurant/${this.$route.params.id}`).then((response) => {
+                this.restaurant = response.data.results;
+
+            })
+        }, */
+        GetMenuData() {
+            axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
+                this.store.Menu = response.data.results;
+
+            })
+        },
+
+        GetRandomRes() {
+            if (this.SelectedRestaurants.length === 0) {
+
+                if (this.restaurants.length > 0) {
+                    const allRestaurants = [...this.restaurants]; // Create a copy 
+                    for (let i = 0; i < 5; i++) {
+                        const randomI = Math.floor(Math.random() * allRestaurants.length);
+                        const random = allRestaurants.splice(randomI, 1)[0];
+                        this.randomRestaurant.push(random);
+                    }
+                }
+            }
+
         }
+
 
 
     },
@@ -72,7 +109,19 @@ export default {
     <div class="row">
         <div class="col-12 text-center  my-3"><h3 >Ristoranti:</h3></div>
         <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants">
-            NOME ATTIVITA':{{ restaurant.business_name }} <br>
+            <router-link :to="{ name: 'single-restaurant', params: {id: restaurant.id} }" class="text-danger">
+            NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
+            <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
+            INDIRIZZO :{{ restaurant.address }} <br>
+            
+            <hr>
+        </div>
+    </div>
+    <div class="row" v-show="SelectedRestaurants.length === 0">
+        
+        <div class="col-12" v-for="(restaurant, index) in  randomRestaurant">
+            <router-link :to="{ name: 'single-restaurant', params: {id: restaurant.id} }" class="text-danger">
+            NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
             <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
             INDIRIZZO :{{ restaurant.address }} <br>
             
@@ -80,9 +129,9 @@ export default {
         </div>
     </div>
 </div>
+
 </template>
 
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
-
 </style>
