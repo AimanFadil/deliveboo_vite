@@ -6,7 +6,7 @@ export default {
     data() {
         return {
             store,
-            my_Chart: useLocalStorage(this.Chart, 'Chart'),
+            my_Chart: useLocalStorage(store.Chart, 'Chart'),
         }
     },
     methods: {

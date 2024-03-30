@@ -11,7 +11,7 @@ export default {
             typologies: [],
             SelectedTypologies: [],
             randomRestaurant: [],
-            /*    restaurant: [],  */
+
         }
     },
     created() {
@@ -33,28 +33,17 @@ export default {
 
             })
         },
+
         showRestaurant() {
-            this.SelectedRestaurants = []
 
-
-            for (let i = 0; i < this.restaurants.length; i++) {
-                let tipologie = this.restaurants[i].typologies
-                tipologie.forEach((tipo) => {
-                    if (this.SelectedTypologies.includes(tipo.id)) {
-                        if (!this.SelectedRestaurants.includes(this.restaurants[i])) {
-                            this.SelectedRestaurants.push(this.restaurants[i])
-                        }
-                    }
-                })
-            }
-
-
+            this.SelectedRestaurants = this.restaurants.filter((restaurant) => {
+                return this.SelectedTypologies.every((typologyId) =>
+                    restaurant.typologies.some((tipo) => tipo.id === typologyId)
+                );
+            });
         },
-        /* showRestaurant() {
-               this.SelectedRestaurants = this.restaurants.filter((restaurant) => {
-                   return restaurant.typologies.some((tipo) => this.SelectedTypologies.includes(tipo.id));
-               });
-        }, */
+
+
 
         GetRandomRes() {
             if (this.SelectedRestaurants.length === 0) {
@@ -123,7 +112,10 @@ export default {
                         <hr>
                     </div>
                 </div>
-                 <div class="row" v-if="SelectedRestaurants == 0">
+
+                <div class="row" v-show="SelectedRestaurants.length == 0 && SelectedTypologies.length == 0">
+        
+
                     <div class="col-12" v-for="(restaurant, index) in  randomRestaurant">
 
                    
