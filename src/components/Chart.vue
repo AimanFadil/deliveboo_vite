@@ -55,7 +55,6 @@ export default {
                 <strong>{{item.name}}</strong>
                 <div>quantità: {{item.quantity}}</div> 
                 prezzo: €{{item.price*item.quantity}}
-                {{console.log(my_Chart)}}
                 <button class="delete" @click="remove_article(item, index)">-</button>
                 <button @click="add_article(item)">+</button>
             </li>

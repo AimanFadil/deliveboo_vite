@@ -35,7 +35,6 @@ export default {
         GetResData() {
             axios.get(`${this.store.Url}/restaurant/${this.$route.params.id}`).then((response) => {
                 this.restaurant = response.data.results;
-                console.log(this.restaurant);
 
             })
         },
@@ -70,7 +69,6 @@ export default {
                 }
                 store.Chart.push(item);
             };
-            console.log(store.Chart)
             this.NumberofPieces = 0;
 
 
