@@ -1,16 +1,16 @@
 <script>
 import { store } from '../store.js';
-import Cart from '../components/Cart.vue';
+import Chart from '../components/Chart.vue';
 export default {
-    name: 'Checkout',
-    components: {
-        Cart,
-    },
-    data() {
-        return {
-            store,
-        }
+  name: 'Checkout',
+  components: {
+    Chart,
+  },
+  data() {
+    return {
+      store,
     }
+  }
 }
 </script>
 <template lang="">
@@ -96,7 +96,7 @@ export default {
             <!-- carrello -->
             <div class="col-4 mt-5">
                 <div class="bg-white p-4 rounded">
-                    <Cart/>
+                    <Chart/>
                 </div>
             </div>
         </div>
@@ -105,7 +105,7 @@ export default {
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
 
-.bg-white{
-    background-color: white;
+.bg-white {
+  background-color: white;
 }
 </style>

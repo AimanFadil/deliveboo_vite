@@ -1,16 +1,16 @@
 <script>
-import {store} from '../store.js';
-import Cart from './Cart.vue';
+import { store } from '../store.js';
+import Chart from './Chart.vue';
 export default {
     name: 'Header',
     el: '#navbar',
     components: {
-        Cart,
+        Chart,
     },
     data() {
         return {
             view: {
-                topOfPage: true,    
+                topOfPage: true,
             },
             store,
         }
@@ -26,7 +26,7 @@ export default {
                 if (!this.view.topOfPage) this.view.topOfPage = true
             }
         }
-    },  
+    },
 }
 </script>
 <template lang="">
@@ -53,7 +53,7 @@ export default {
                                   <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body color_text_header">
-                                  <Cart/>
+                                  <Chart/>
                                   <button @click="navigateTCheckout">Vai al checkout</button>
                                 </div>
                               </div>
@@ -66,38 +66,37 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-
 @use '../styles/generals.scss' as*;
 @use '../styles/partials/variables.scss' as*;
 
 nav {
-        position: fixed;
-        width: 100%;
-        height: 70px;
-        background-color: transparent;
-        display: flex;
-        align-items: center;
-        transition: all .2s ease-in-out;
-        
+    position: fixed;
+    width: 100%;
+    height: 70px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    transition: all .2s ease-in-out;
 
-        &.onScroll {
-            box-shadow: 5px 5px 5px rgb(45, 74, 66);
-            background-color: #fff;
-            border-bottom: 2px solid rgba(189, 189, 189, 0.63);
-        }
-        .size_{
-            width: 150px;
-          }
 
-        .color_text_header{
-            color: $red-light;
-            text-decoration: none;
-        
-          }
-
-        .bg_color_header{
-            background-color: $red-light;
-        }
+    &.onScroll {
+        box-shadow: 5px 5px 5px rgb(45, 74, 66);
+        background-color: #fff;
+        border-bottom: 2px solid rgba(189, 189, 189, 0.63);
     }
 
+    .size_ {
+        width: 150px;
+    }
+
+    .color_text_header {
+        color: $red-light;
+        text-decoration: none;
+
+    }
+
+    .bg_color_header {
+        background-color: $red-light;
+    }
+}
 </style>
