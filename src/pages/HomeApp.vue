@@ -81,6 +81,7 @@ export default {
                         const random = allRestaurants.splice(randomI, 1)[0];
                         this.randomRestaurant.push(random);
                     }
+                    console.log(this.randomRestaurant)
                 }
             }
 
@@ -130,10 +131,10 @@ export default {
                 <div class="row" v-show="SelectedRestaurants.length === 0">
         
                     <div class="col-12" v-for="(restaurant, index) in  randomRestaurant">
-                        <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
+                        <!-- <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
                         NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
                         <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
-                        INDIRIZZO :{{ restaurant.address }} <br>
+                        INDIRIZZO :{{ restaurant.address }} <br> -->
                         
                         <hr>
                     </div>
