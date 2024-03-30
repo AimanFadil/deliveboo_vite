@@ -11,14 +11,12 @@ export default {
             typologies: [],
             SelectedTypologies: [],
             randomRestaurant: [],
-            /* restaurant: [], */
+            /*    restaurant: [],  */
         }
     },
     created() {
         this.getRestaurant();
         this.getTypology();
-        this.GetRandomRes();
-
     },
     methods: {
         getRestaurant() {
@@ -44,7 +42,6 @@ export default {
                 tipologie.forEach((tipo) => {
                     if (this.SelectedTypologies.includes(tipo.id)) {
                         if (!this.SelectedRestaurants.includes(this.restaurants[i])) {
-
                             this.SelectedRestaurants.push(this.restaurants[i])
                         }
                     }
@@ -58,33 +55,32 @@ export default {
                    return restaurant.typologies.some((tipo) => this.SelectedTypologies.includes(tipo.id));
                });
         }, */
-        /* GetResData() {
-            axios.get(`${this.store.Url}/restaurant/${this.$route.params.id}`).then((response) => {
-                this.restaurant = response.data.results;
-
-            })
-        }, */
-        /* GetMenuData() {
-            axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
-                this.store.Menu = response.data.results;
-
-            })
-        }, */
 
         GetRandomRes() {
             if (this.SelectedRestaurants.length === 0) {
 
                 if (this.restaurants.length > 0) {
                     const allRestaurants = [...this.restaurants]; // Create a copy 
-                    for (let i = 0; i < 5; i++) {
-                        const randomI = Math.floor(Math.random() * allRestaurants.length);
-                        const random = allRestaurants.splice(randomI, 1)[0];
-                        this.randomRestaurant.push(random);
+                    if (this.restaurants.length < 5) {
+                        for (let i = 0; i < this.restaurants.length; i++) {
+                            const randomI = Math.floor(Math.random() * allRestaurants.length);
+                            const random = allRestaurants.splice(randomI, 1)[0];
+                            this.randomRestaurant.push(random);
+                        }
                     }
-                    console.log(this.randomRestaurant)
+
+                    else {
+                        for (let i = 0; i < 5; i++) {
+                            const randomI = Math.floor(Math.random() * allRestaurants.length);
+                            const random = allRestaurants.splice(randomI, 1)[0];
+                            this.randomRestaurant.push(random);
+                        }
+                    }
+
+
+
                 }
             }
-
         }
 
 
@@ -124,21 +120,21 @@ export default {
                             NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
                         <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
                         INDIRIZZO :{{ restaurant.address }} <br>
-                        
                         <hr>
                     </div>
                 </div>
-                <div class="row" v-show="SelectedRestaurants.length === 0">
-        
+                 <div class="row" v-if="SelectedRestaurants == 0">
                     <div class="col-12" v-for="(restaurant, index) in  randomRestaurant">
-                        <!-- <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
+
+                   
+                      <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
                         NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
                         <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
-                        INDIRIZZO :{{ restaurant.address }} <br> -->
-                        
-                        <hr>
+                        INDIRIZZO :{{ restaurant.address }} <br>
+                        <hr> 
+
                     </div>
-                </div>
+                </div> 
             </div>
     </main>
 
