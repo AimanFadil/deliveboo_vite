@@ -1,51 +1,55 @@
 <script>
 import { store } from '../store.js';
+import useLocalStorage from '../js/useLocalStorage';
 export default {
     name: 'RestaurantMenuApp',
     data() {
         return {
             store,
-            NumberofPieces:0,
+            NumberofPieces: 0,
             showModal: false,
-            ChosenDish:[],
+            ChosenDish: [],
+
         }
-      
-    }, 
-     methods: {
-        addpieces(){
-            this.NumberofPieces= this.NumberofPieces+1
+
+    },
+    methods: {
+        addpieces() {
+            this.NumberofPieces = this.NumberofPieces + 1
         },
-        removepieces(){
-            if(this.NumberofPieces>0){
-                this.NumberofPieces= this.NumberofPieces-1
+        removepieces() {
+            if (this.NumberofPieces > 0) {
+                this.NumberofPieces = this.NumberofPieces - 1
             }
         },
-        addDish(dish){
-            this.ChosenDish=[];
-            this.ChosenDish=dish;
+        addDish(dish) {
+            this.ChosenDish = [];
+            this.ChosenDish = dish;
         },
-        addtoChart(ChosenDish){
-            let flag= false;
-                this.store.Chart.forEach((elem)=> {
-                    if(elem.id==ChosenDish.id){
-                        flag=true;
-                       elem.quantity= elem.quantity+this.NumberofPieces
-                        }         
-                    });
-                    if(!flag){
-                        let item={
-                        quantity: this.NumberofPieces,
-                        id: ChosenDish.id,
-                        name: ChosenDish.name,
-                        prezzo: ChosenDish.price,
-                        id_ristorante: ChosenDish.restaurant_id,  
-                
-                        }
-                        this.store.Chart.push(item); 
-                    };
-               this.NumberofPieces=0;
+        addtoChart(ChosenDish) {
+            let flag = false;
+            store.Chart.forEach((elem) => {
+                if (elem.id == ChosenDish.id) {
+                    flag = true;
+                    elem.quantity = elem.quantity + this.NumberofPieces
+                }
+            });
+            if (!flag) {
+                let item = {
+                    quantity: this.NumberofPieces,
+                    id: ChosenDish.id,
+                    name: ChosenDish.name,
+                    price: ChosenDish.price,
+                    id_restaurant: ChosenDish.id_restaurant,
+
+                }
+                store.Chart.push(item);
+            };
+            console.log(store.Chart)
+            this.NumberofPieces = 0;
+
         }
-    }        
+    }
 }
 </script>
 <template lang="">
@@ -89,42 +93,64 @@ export default {
     </div>
     <!-- modale -->
     <div class="modal" tabindex="-1" id="modal-pieces">
-        <div class="modal-dialog modal-lg ">
-            <div class="modal-content bg_color_">
-            <div class="modal-header">
-                <h5 class="modal-title">Seleziona i pezzi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div v-if="store.Chart.length == 0 || store.Chart[0].id_restaurant == ChosenDish.id_restaurant">
+        
+            <div class="modal-dialog modal-lg ">
+                <div class="modal-content bg_color_">
+                <div class="modal-header">
+                    <h5 class="modal-title">Seleziona i pezzi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                      <img :src="ChosenDish.image" alt="">
+                    <div>{{ChosenDish.name}}</div>
+                    <div>{{ChosenDish.description}}</div>
+                    <div>{{ChosenDish.ingredients}}</div>
+                    <div>{{ChosenDish.price}}</div>
+                </div>
+                <div class="modal-footer">
+                    <span>
+                        <button type="button" class="btn btn-warning" :class="(NumberofPieces ==0 ) ?  'disabled bg-secondary': ''" @click="removepieces()" id="minusbtn"><i class="fa-solid fa-minus"></i></button>
+                    </span>
+                    <span>
+                        <button type="button" class="btn btn-warning">{{NumberofPieces}}</button>
+                    </span>
+                    <span>
+                        <button type="button" class="btn btn-warning" @click="addpieces()"><i class="fa-solid fa-plus"></i></button>
+                    </span>
+                    
+                    <button type="button" id="empty_modal" class="btn btn-success" @click="addtoChart(ChosenDish)" data-bs-dismiss="modal">Aggiugi al carrello</button>
+                </div>
+                </div>
             </div>
-            <div class="modal-body">
-                  <img :src="ChosenDish.image" alt="">
-                <div>{{ChosenDish.name}}</div>
-                <div>{{ChosenDish.description}}</div>
-                <div>{{ChosenDish.ingredients}}</div>
-                <div>{{ChosenDish.price}}</div>
-            </div>
-            <div class="modal-footer">
-                <span>
-                    <button type="button" class="btn btn-warning" :class="(NumberofPieces ==0 ) ?  'disabled bg-secondary': ''" @click="removepieces()" id="minusbtn"><i class="fa-solid fa-minus"></i></button>
-                </span>
-                <span>
-                    <button type="button" class="btn btn-warning">{{NumberofPieces}}</button>
-                </span>
-                <span>
-                    <button type="button" class="btn btn-warning" @click="addpieces()"><i class="fa-solid fa-plus"></i></button>
-                </span>
-                
-                <button type="button" class="btn btn-success" @click="addtoChart(ChosenDish)" data-bs-dismiss="modal">Aggiugi al carrello</button>
-            </div>
+        </div>
+        <div v-else>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Attenzione</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Nel carrello è già presente uno o più prodotti di un altro ristorante, per poter procedere svuotare prima il carrello</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-</template>s
+    
+
+</template>
 
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
 @use '../styles/partials/variables.scss' as*;
-.bg_color_{
- background-color:white;
+
+.bg_color_ {
+    background-color: white;
 }
 </style>

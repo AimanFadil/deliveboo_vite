@@ -1,16 +1,14 @@
 import { reactive } from 'vue';
-
+import useLocalStorage from './js/useLocalStorage';
 
 export const store = reactive({
 
     Url: 'http://127.0.0.1:8000/api',
 
-
-
     Menu: [
         {
             id: 1,
-            restaurant_id: 1,
+            id_restaurant: 1,
             name: "pizza margherita",
             ingredients: "mozzarela,pomodoro, olio, origano",
             description: "lievitata 24 ore",
@@ -21,7 +19,7 @@ export const store = reactive({
         },
         {
             id: 2,
-            restaurant_id: 1,
+            id_restaurant: 1,
             name: "Arancino",
             ingredients: "mozzarela, pomodoro, ragu, panatura, riso",
             description: "Arancini siciliani",
@@ -32,7 +30,7 @@ export const store = reactive({
         },
         {
             id: 3,
-            restaurant_id: 1,
+            id_restaurant: 1,
             name: "Pizza 4 stagioni",
             ingredients: "mozzarela, olio, origano, pomodoro, carciofi, olive, prosciutto, funghi",
             description: "lievitata 24 ore",
@@ -43,7 +41,7 @@ export const store = reactive({
         },
         {
             id: 4,
-            restaurant_id: 1,
+            id_restaurant: 2,
             name: "Diavola",
             ingredients: "mozzarela,pomodoro, olio, origano, salame piccante, nduja",
             description: "lievitata 24 ore",
@@ -54,7 +52,7 @@ export const store = reactive({
         },
         {
             id: 5,
-            restaurant_id: 1,
+            id_restaurant: 1,
             name: "Patatine Fritte",
             ingredients: "patete",
             description: "porzione da 50g",

@@ -3,12 +3,12 @@ import { store } from './store.js';
 
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
-import Cart from './components/Cart.vue';
+import Chart from './components/Chart.vue';
 
 
 export default {
   components: {
-    Cart,
+    Chart,
     Header,
     Footer
 
@@ -28,6 +28,7 @@ export default {
 
   <Header/>
   <router-view></router-view>
+  <Chart />
   <Footer/>
 
 </div>

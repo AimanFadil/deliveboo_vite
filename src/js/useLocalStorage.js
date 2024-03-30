@@ -8,7 +8,6 @@ export default function (initVal, key) {
         val.value = JSON.parse(my_storage)
     }
 
-
     watch(val, val => {
         // console.log(item)
         window.localStorage.setItem(key, JSON.stringify(val))

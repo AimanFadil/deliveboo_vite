@@ -6,17 +6,26 @@ export default {
     data() {
         return {
             store,
-            my_Chart: useLocalStorage(store.Chart, 'items')
+            my_Chart: useLocalStorage(this.Chart, 'Chart'),
         }
     },
     methods: {
         delete_storage() {
-            localStorage.removeItem("items")
+            localStorage.removeItem("Chart")
+            store.Chart = []
+            this.my_Chart = useLocalStorage(store.Chart, 'Chart')
         },
-        remove_article(index) {
+        remove_article(item, index) {
+            if (item.quantity == 1) {
+                this.my_Chart.splice(index, 1)
+            }
+            else {
+                item.quantity -= 1
+            }
 
-            this.my_Chart.splice(index, 1)
-
+        },
+        add_article(item) {
+            item.quantity += 1
         },
         numberItems() {
             let totalItem = 0
@@ -42,13 +51,13 @@ export default {
 
     <div class="p-5">
         <ul class="list-unstyled">
-            <li v-for="(item, index) in my_Chart" :key='index' class="d-flex justify-content-around">
+            <li v-for="(item, index) in this.my_Chart" :key='index' class="d-flex justify-content-around">
                 <strong>{{item.name}}</strong>
                 <div>quantità: {{item.quantity}}</div> 
                 prezzo: €{{item.price*item.quantity}}
-
-                <button class="delete" @click="remove_article(index)">-</button>
-                <button>+</button>
+                {{console.log(my_Chart)}}
+                <button class="delete" @click="remove_article(item, index)">-</button>
+                <button @click="add_article(item)">+</button>
             </li>
             <li>costi di consegna: €1,20</li>
             <li>ordine minimo: €20,00</li>
