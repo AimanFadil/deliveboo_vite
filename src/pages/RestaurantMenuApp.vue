@@ -1,29 +1,58 @@
 <script>
 import { store } from '../store.js';
+import Chart from "../components/Chart.vue";
+import axios from 'axios';
 export default {
     name: 'RestaurantMenuApp',
+    components:{
+        Chart
+    },
     data() {
         return {
             store,
             NumberofPieces:0,
             showModal: false,
             ChosenDish:[],
+            restaurant:[],
         }
       
     }, 
+    created() {
+        this.GetMenuData();
+        this.GetResData();
+    },
      methods: {
-        addpieces(){
-            this.NumberofPieces= this.NumberofPieces+1
+
+        /* metodo che genera il menu del ristorante scelto in home */
+        GetMenuData() {
+            axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
+                this.store.Menu = response.data.results;
+            })
         },
+        GetResData() {
+            axios.get(`${this.store.Url}/restaurant/${this.$route.params.id}`).then((response) => {
+                this.restaurant = response.data.results;
+                console.log(this.restaurant);
+
+            })
+        },
+        /* metodo aggiunta pezzi */
+        addpieces(){
+            this.NumberofPieces= this.NumberofPieces+1;
+
+        },
+        /* metodo rimozione pezzi */
         removepieces(){
             if(this.NumberofPieces>0){
                 this.NumberofPieces= this.NumberofPieces-1
             }
         },
+        /* funzione bottone aggiunta all ordine */
         addDish(dish){
             this.ChosenDish=[];
             this.ChosenDish=dish;
         },
+        /* funzione bottone aggiunta all carrello */
         addtoChart(ChosenDish){
             let flag= false;
                 this.store.Chart.forEach((elem)=> {
@@ -37,7 +66,7 @@ export default {
                         quantity: this.NumberofPieces,
                         id: ChosenDish.id,
                         name: ChosenDish.name,
-                        prezzo: ChosenDish.price,
+                        price: ChosenDish.price,
                         id_ristorante: ChosenDish.restaurant_id,  
                 
                         }
@@ -53,7 +82,17 @@ export default {
          <main>
             <div class="container ">
                 <div class="row ">
+                <!-- visulizzazione ristorante scelto -->
+                    <div class="col-12 margin_top">
+                        <img :src="restaurant.logo == null ? 'https://www.google.com/url?sa=i&url=https%3A%2F%2Faprireunbar.com%2F2022%2F04%2F22%2Fidee-originali-per-menu-di-bar-e-locali%2F&psig=AOvVaw2v7Bi49MwcL_jb99Edq4O0&ust=1711878721894000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCOjX1anbm4UDFQAAAAAdAAAAABAE':`${restaurant.photoUrl}/storage/${restaurant.logo}`" style="width:200px">
+                            <div>{{restaurant.business_name}}</div>
+                            <div>{{restaurant.address}}</div>
+                            <div></div>
+                            <div></div>
+
+                        </div>
                     <div class="col-12 margin_top" >
+
                         <!-- visulizzazione del menu -->
                         <div class="col-8 mt-5">
                             <div  v-for="dish, index in store.Menu" :key="index">
@@ -62,7 +101,7 @@ export default {
                                     <!-- controllo che il piatto non sia eliminato -->
                                     <div v-if="(dish.is_delete==false)" class="col-12 d-flex">
                                         <div class="col-4">
-                                            <img :src="dish.image" alt="" style="width:200px">
+                                            <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" style="width:200px">
                                         </div>
                                         <div class="col-6">
                                             <div>{{dish.name}}</div>
@@ -78,10 +117,11 @@ export default {
                                     </div>
                                 </div>
                             </div>
-                    <!-- visualizzazzione del carrello -->
-                            <div class="col-4">
-                            </div>
                         </div>
+                    </div>
+                     <!-- visualizzazzione del carrello -->
+                    <div class="col-4">
+                        <Chart/>
                     </div>
                 </div>
             </div>
@@ -96,7 +136,7 @@ export default {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                  <img :src="ChosenDish.image" alt="">
+                <img :src="ChosenDish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${ChosenDish.image}`" style="width:200px">
                 <div>{{ChosenDish.name}}</div>
                 <div>{{ChosenDish.description}}</div>
                 <div>{{ChosenDish.ingredients}}</div>

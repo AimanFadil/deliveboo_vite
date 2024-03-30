@@ -3,15 +3,11 @@ import { store } from './store.js';
 
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
-import Cart from './components/Cart.vue';
-
 
 export default {
   components: {
-    Cart,
     Header,
     Footer
-
 
   },
 

@@ -36,7 +36,8 @@ export default {
                           </div>
                           <div class="w-auto d-flex align-items-center">
                               <div class="fw-bold color_text_header">
-                                  Home
+                                <router-link :to="{ name: 'home' }" class="color_text_header">
+                                    Home</router-link>
                               </div>
                           </div>  
                       </div>
@@ -72,6 +73,7 @@ nav {
 
         .color_text_header{
             color: $red-light;
+            text-decoration: none;
         
           }
     }
