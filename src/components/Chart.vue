@@ -1,19 +1,22 @@
 <script>
 import { store } from '../store.js';
-import useLocalStorage from '../js/useLocalStorage';
 export default {
     name: 'Chart',
+    props: {
+        carrello: Array
+    },
+
     data() {
         return {
             store,
-            my_Chart: useLocalStorage(store.Chart, 'Chart'),
         }
     },
     methods: {
         delete_storage() {
-            localStorage.removeItem("Chart")
+            localStorage.clear()
             store.Chart = []
-            this.my_Chart = useLocalStorage(store.Chart, 'Chart')
+            this.carrello = useLocalStorage(store.Chart, 'Chart')
+
         },
         remove_article(item, index) {
             if (item.quantity == 1) {
@@ -29,14 +32,14 @@ export default {
         },
         numberItems() {
             let totalItem = 0
-            this.my_Chart.forEach((item) => {
+            this.carrello.forEach((item) => {
                 totalItem += item.quantity
             })
             return totalItem
         },
         totalPrice() {
             let totalPrice = 0
-            this.my_Chart.forEach((item) => {
+            this.carrello.forEach((item) => {
                 totalPrice += item.price * item.quantity
             })
             return totalPrice
@@ -47,11 +50,11 @@ export default {
 }
 </script>
 <template lang="">
-<div v-if="this.my_Chart.length > 0">
 
+<div v-if="carrello.length > 0">
     <div class="p-5">
         <ul class="list-unstyled">
-            <li v-for="(item, index) in this.my_Chart" :key='index' class="d-flex justify-content-around">
+            <li v-for="(item, index) in carrello" :key='index' class="d-flex justify-content-around">
                 <strong>{{item.name}}</strong>
                 <div>quantità: {{item.quantity}}</div> 
                 prezzo: €{{item.price*item.quantity}}

@@ -1,7 +1,8 @@
-import { watch } from "vue";
+import { ref, watch } from "vue";
 
 export default function (initVal, key) {
-    const val = initVal
+    const val = ref(initVal)
+
     const my_storage = window.localStorage.getItem(key)
 
     if (my_storage) {
