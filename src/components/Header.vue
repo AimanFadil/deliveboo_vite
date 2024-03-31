@@ -54,7 +54,7 @@ export default {
                                 </div>
                                 <div class="offcanvas-body color_text_header">
                                   <Chart/>
-                                  <button @click="navigateTCheckout">Vai al checkout</button>
+                                  <router-link :to="{ name: 'checkout' }" class="btn bg_color_header text-white">Vai al checkout</router-link>
                                 </div>
                               </div>
                           </div>  

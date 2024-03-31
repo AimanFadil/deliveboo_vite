@@ -1,6 +1,7 @@
 <script>
 import { store } from './store.js';
 
+
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 
@@ -22,7 +23,7 @@ export default {
 </script>
 
 <template lang="">
-<div>
+<div calss="d-flex flex-column ">
 
   <Header/>
   <router-view></router-view>
