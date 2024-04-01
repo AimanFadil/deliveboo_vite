@@ -12,12 +12,7 @@ export default {
         }
     },
     methods: {
-        delete_storage() {
-            localStorage.clear()
-            store.Chart = []
-            this.carrello = useLocalStorage(store.Chart, 'Chart')
 
-        },
         remove_article(item, index) {
             if (item.quantity == 1) {
                 this.my_Chart.splice(index, 1)
@@ -64,7 +59,6 @@ export default {
             <li>costi di consegna: €1,20</li>
             <li>ordine minimo: €20,00</li>
             <li>
-                <button @click="delete_storage()">svuota carrello</button>
                 <button>Ordinane {{numberItems()}} a €{{totalPrice()}}</button>
             </li>
         </ul>

@@ -58,6 +58,12 @@ export default {
         set_carrello() {
             this.carrello = JSON.parse(localStorage.getItem('Chart'))
         },
+        delete_storage() {
+            localStorage.clear()
+            this.carrello = []
+
+
+        },
         addtoChart(ChosenDish) {
             let flag = false;
             this.carrello.forEach((elem) => {
@@ -135,6 +141,7 @@ export default {
                     </div>
                 </div>
             </div>
+            <button @click="delete_storage()">svuota carrello</button>
         </main>   
     </div>
     <!-- modale -->
