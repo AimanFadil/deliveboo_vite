@@ -47,7 +47,7 @@ export default {
                                 <i class="fa-regular fa-cart-shopping fw-bold"></i>
                               </button>
 
-                              <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExample">
+                              <!-- <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExample">
                                 <div class="offcanvas-header bg_color_header text-white">
                                   <h3 class="offcanvas-title fw-bold" id="offcanvasExample">Carrello</h3>
                                   <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -56,7 +56,7 @@ export default {
                                   <Chart/>
                                   <button @click="navigateTCheckout">Vai al checkout</button>
                                 </div>
-                              </div>
+                              </div> -->
                           </div>  
                       </div>
                 </div>

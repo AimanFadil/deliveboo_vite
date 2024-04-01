@@ -2,6 +2,7 @@ import { ref, watch } from "vue";
 
 export default function (initVal, key) {
     const val = ref(initVal)
+
     const my_storage = window.localStorage.getItem(key)
 
     if (my_storage) {
@@ -9,7 +10,6 @@ export default function (initVal, key) {
     }
 
     watch(val, val => {
-        // console.log(item)
         window.localStorage.setItem(key, JSON.stringify(val))
     }, { deep: true })
 

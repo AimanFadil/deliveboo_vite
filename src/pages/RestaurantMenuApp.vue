@@ -2,6 +2,7 @@
 import { store } from '../store.js';
 import Chart from "../components/Chart.vue";
 import axios from 'axios';
+import useLocalStorage from '../js/useLocalStorage';
 
 export default {
     name: 'RestaurantMenuApp',
@@ -13,7 +14,7 @@ export default {
             store,
             NumberofPieces: 0,
             showModal: false,
-
+            carrello: useLocalStorage(store.Chart, 'Chart'),
             ChosenDish: [],
             restaurant: []
 
@@ -23,6 +24,10 @@ export default {
     created() {
         this.GetMenuData();
         this.GetResData();
+
+    },
+    mounted() {
+        useLocalStorage(store.Chart, 'Chart')
     },
     methods: {
 
@@ -35,7 +40,6 @@ export default {
         GetResData() {
             axios.get(`${this.store.Url}/restaurant/${this.$route.params.id}`).then((response) => {
                 this.restaurant = response.data.results;
-                console.log(this.restaurant);
 
             })
         },
@@ -48,15 +52,19 @@ export default {
             }
         },
         addDish(dish) {
-            this.ChosenDish = [];
+            // this.ChosenDish = [];
             this.ChosenDish = dish;
+        },
+        set_carrello() {
+            this.carrello = JSON.parse(localStorage.getItem('Chart'))
         },
         addtoChart(ChosenDish) {
             let flag = false;
-            store.Chart.forEach((elem) => {
+            this.carrello.forEach((elem) => {
                 if (elem.id == ChosenDish.id) {
                     flag = true;
                     elem.quantity = elem.quantity + this.NumberofPieces
+
                 }
             });
             if (!flag) {
@@ -65,16 +73,17 @@ export default {
                     id: ChosenDish.id,
                     name: ChosenDish.name,
                     price: ChosenDish.price,
-                    id_restaurant: ChosenDish.id_restaurant,
+                    restaurant_id: ChosenDish.restaurant_id,
 
                 }
-                store.Chart.push(item);
+                this.carrello.push(item);
+
             };
-            console.log(store.Chart)
+
             this.NumberofPieces = 0;
 
 
-        }
+        },
     }
 }
 </script>
@@ -122,7 +131,7 @@ export default {
                     </div>
                      <!-- visualizzazzione del carrello -->
                     <div class="col-4">
-                        <Chart/>
+                        <Chart :carrello='this.carrello'/>
                     </div>
                 </div>
             </div>
@@ -131,8 +140,7 @@ export default {
     <!-- modale -->
     <div class="modal" tabindex="-1" id="modal-pieces">
 
-        <div v-if="store.Chart.length == 0 || store.Chart[0].id_restaurant == ChosenDish.id_restaurant">
-        
+        <div v-if="store.Chart.length == 0 || store.Chart[0].restaurant_id == ChosenDish.restaurant_id">
             <div class="modal-dialog modal-lg ">
                 <div class="modal-content bg_color_">
                 <div class="modal-header">
