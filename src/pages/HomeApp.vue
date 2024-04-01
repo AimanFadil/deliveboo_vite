@@ -101,33 +101,38 @@ export default {
             </div>
             </div>
         </div>
-            <div class="container text-white">
-                <div class="row">
-                    <div class="col-12 text-center  my-3"><h3 >Ristoranti:</h3></div>
-                    <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants">
-                        <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
-                            NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
-                        <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
-                        INDIRIZZO :{{ restaurant.address }} <br>
-                        <hr>
-                    </div>
+        <div class="container text-white">
+            <div class="row">
+              <div class="col-12 text-center my-3"><h3>Ristoranti:</h3></div>
+          
+              <div class="col-12" v-if="SelectedRestaurants.length != 0 && SelectedTypologies.length != 0">
+                <div v-for="(restaurant, index) in SelectedRestaurants">
+                  <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
+                    NOME ATTIVITA':{{ restaurant.business_name }}
+                  </router-link> <br>
+                  <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
+                  INDIRIZZO :{{ restaurant.address }} <br>
+                  <hr>
                 </div>
-
-                <div class="row" v-show="SelectedRestaurants.length == 0 && SelectedTypologies.length == 0">
-        
-
-                    <div class="col-12" v-for="(restaurant, index) in  randomRestaurant">
-
-                   
-                      <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
-                        NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
-                        <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
-                        INDIRIZZO :{{ restaurant.address }} <br>
-                        <hr> 
-
-                    </div>
-                </div> 
-            </div>
+              </div>
+          
+              <div class="col-12 text-center text-danger" v-else-if="SelectedRestaurants.length == 0 && SelectedTypologies.length != 0">
+                <h1>Nessun ristorante trovato con le tue preferenze.</h1>
+              </div>
+          
+              <div class="col-12" v-else>
+                <div v-for="(restaurant, index) in randomRestaurant">
+                  <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
+                    NOME ATTIVITA':{{ restaurant.business_name }}
+                  </router-link> <br>
+                  <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
+                  INDIRIZZO :{{ restaurant.address }} <br>
+                  <hr>
+                </div>
+              </div>
+          
+            </div> 
+        </div>
     </main>
 
 
