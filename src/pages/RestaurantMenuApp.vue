@@ -147,7 +147,7 @@ export default {
     <!-- modale -->
     <div class="modal" tabindex="-1" id="modal-pieces">
 
-        <div v-if="store.Chart.length == 0 || store.Chart[0].restaurant_id == ChosenDish.restaurant_id">
+        <div v-if=" this.carrello.length == 0 ||  this.carrello[0].restaurant_id == ChosenDish.restaurant_id">
             <div class="modal-dialog modal-lg ">
                 <div class="modal-content bg_color_">
                 <div class="modal-header">
