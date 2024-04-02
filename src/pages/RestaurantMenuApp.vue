@@ -30,7 +30,12 @@ export default {
         useLocalStorage(store.Chart, 'Chart')
     },
     methods: {
-
+        tornaAlRistoranteDelPrimoPiatto() {
+            const primoPiattoRestaurantId = this.carrello[0].restaurant_id;
+            /* this.$router.push(`/restaurants/${primoPiattoRestaurantId}`);
+            this.delete_storage(); */
+            return this.primoPiattoRestaurantId
+        },
         /* metodo che genera il menu del ristorante scelto in home */
         GetMenuData() {
             axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
@@ -191,7 +196,12 @@ export default {
                         <p>Nel carrello è già presente uno o più prodotti di un altro ristorante, per poter procedere svuotare prima il carrello</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <!-- <router-link :to="{ name: 'menu-restaurant', params: {id: tornaAlRistoranteDelPrimoPiatto()} }" class="text-danger">
+                            <button type="button" class="btn btn-success" >Torna al ristorante</button>
+                        </router-link> -->
+                        <a v-bind:href="`/restaurants/${primoPiattoRestaurantId}`">Torna al ristorante</a>
+                            
+                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal" @click="delete_storage()">svuota carrello</button>                
                     </div>
                 </div>
             </div>
