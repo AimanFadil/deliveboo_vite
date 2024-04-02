@@ -39,7 +39,11 @@ export default {
             this.my_Chart.forEach((item) => {
                 totalPrice += item.price * item.quantity
             })
-            return totalPrice
+            return totalPrice.toFixed()
+        },
+        calc_price(item) {
+            let price = item.price * item.quantity
+            return price.toFixed()
         }
 
 
@@ -54,7 +58,7 @@ export default {
             <li v-for="(item, index) in this.my_Chart" :key='index' class="d-flex justify-content-around">
                 <strong>{{item.name}}</strong>
                 <div>quantità: {{item.quantity}}</div> 
-                prezzo: €{{item.price*item.quantity}}
+                prezzo: €{{calc_price(item)}}
                 {{console.log(my_Chart)}}
                 <button class="delete" @click="remove_article(item, index)">-</button>
                 <button @click="add_article(item)">+</button>
@@ -70,7 +74,7 @@ export default {
 </div>
 <div v-else>
     <h4>non ci sono ancora piatti nel carrello</h4>
-    <div>SBRIGATI A ORDINARE ALTRIMENTI CHIUDE E MUORI DI FAME, SAI QUANTO COSTANO I FUNERALI DI QUESTI TEMPI?</div>
+    <!-- <div>SBRIGATI A ORDINARE ALTRIMENTI CHIUDE E MUORI DI FAME, SAI QUANTO COSTANO I FUNERALI DI QUESTI TEMPI?</div> -->
 </div>
             
 </template>
