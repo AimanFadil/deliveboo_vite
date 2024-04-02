@@ -12,7 +12,7 @@ export default {
     data() {
         return {
             store,
-            NumberofPieces: 0,
+            NumberofPieces: 1,
             showModal: false,
             carrello: useLocalStorage(store.Chart, 'Chart'),
             ChosenDish: [],
@@ -47,7 +47,7 @@ export default {
             this.NumberofPieces = this.NumberofPieces + 1
         },
         removepieces() {
-            if (this.NumberofPieces > 0) {
+            if (this.NumberofPieces > 1) {
                 this.NumberofPieces = this.NumberofPieces - 1
             }
         },
@@ -86,7 +86,7 @@ export default {
 
             };
 
-            this.NumberofPieces = 0;
+            this.NumberofPieces = 1;
 
 
         },
@@ -137,11 +137,13 @@ export default {
                     </div>
                      <!-- visualizzazzione del carrello -->
                     <div class="col-4">
+                        <h3>Carrello</h3>
                         <Chart :carrello='this.carrello'/>
+                        <button @click="delete_storage()">svuota carrello</button>
                     </div>
                 </div>
             </div>
-            <button @click="delete_storage()">svuota carrello</button>
+            
         </main>   
     </div>
     <!-- modale -->
@@ -163,7 +165,7 @@ export default {
                 </div>
                 <div class="modal-footer">
                     <span>
-                        <button type="button" class="btn btn-warning" :class="(NumberofPieces ==0 ) ?  'disabled bg-secondary': ''" @click="removepieces()" id="minusbtn"><i class="fa-solid fa-minus"></i></button>
+                        <button type="button" class="btn btn-warning" :class="(NumberofPieces == 1 ) ?  'disabled bg-secondary': ''" @click="removepieces()" id="minusbtn"><i class="fa-solid fa-minus"></i></button>
                     </span>
                     <span>
                         <button type="button" class="btn btn-warning">{{NumberofPieces}}</button>

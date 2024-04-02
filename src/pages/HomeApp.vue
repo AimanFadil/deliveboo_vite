@@ -110,31 +110,39 @@ export default {
                 </ul>
             </div>
         </div>
+
         <div class="container text-black">
             <div class="row">
                 <div class="col-12 text-center  my-3"><h3 >Locali che soddisfano la tua richiesta:</h3></div>
-                <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants">
-                    <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
-                         NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
-                    <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
-                    INDIRIZZO :{{ restaurant.address }} <br>
-                    <hr>
+                <div class="col-12" v-if="SelectedRestaurants.length != 0 && SelectedTypologies.length != 0">
+
+                    <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants" >
+                        <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
+                             NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
+                        <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
+                        INDIRIZZO :{{ restaurant.address }} <br>
+                        <hr>
+                    </div>
                 </div>
+                <div class="col-12 text-center text-danger" v-else-if="SelectedRestaurants.length == 0 && SelectedTypologies.length != 0">
+                    <h1>Nessun ristorante trovato con le tue preferenze.</h1>
+                </div>
+                <div class="row" v-else>
+                    <div class="col-12" v-for="(restaurant, index) in  randomRestaurant">
+                        <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
+                            NOME ATTIVITA':{{ restaurant.business_name }}
+                        </router-link>
+                         <br>
+                        <div>
+                            <span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> 
+                        </div>
+                        INDIRIZZO :{{ restaurant.address }} <br>
+                        <hr> 
+                    </div>
+    
+                </div> 
             </div>
 
-            <div class="row" v-show="SelectedRestaurants.length == 0 && SelectedTypologies.length == 0">
-                <div class="col-12" v-for="(restaurant, index) in  randomRestaurant">
-                    <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
-                        NOME ATTIVITA':{{ restaurant.business_name }}
-                    </router-link>
-                     <br>
-                    <div>
-                        <span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> 
-                    </div>
-                    INDIRIZZO :{{ restaurant.address }} <br>
-                    <hr> 
-                </div>
-            </div> 
         </div>
     </main>
 </template>
@@ -154,100 +162,105 @@ export default {
         padding: 5px;
     }
 }
+
 /* slogan style */
 .slogan_color {
-    color: #f5f5f5; 
+    color: #f5f5f5;
     text-transform: uppercase;
     /* font-family: verdana; */
     font-size: 40px;
     font-weight: 700;
     text-shadow: 1px 1px 1px #919191,
-        2px 2px 1px  #919191,
-        2px 3px 1px  #919191,
-        2px 4px 1px  #919191,
-        2px 5px 1px  #919191,
-        2px 5px 1px  #919191,
-        2px 5px 1px  #919191,
-        2px 5px 1px  #919191,
-        2px 5px 1px  #919191,
-        2px 5px 1px  #919191,
+        2px 2px 1px #919191,
+        2px 3px 1px #919191,
+        2px 4px 1px #919191,
+        2px 5px 1px #919191,
+        2px 5px 1px #919191,
+        2px 5px 1px #919191,
+        2px 5px 1px #919191,
+        2px 5px 1px #919191,
+        2px 5px 1px #919191,
         7px 7px 6px rgba(40, 40, 40, 0.4),
-        7px 7px 6px  rgba(40, 40, 40, 0.4),
-        7px 7px 6px  rgba(40, 40, 40, 0.4),
-        7px 7px 6px  rgba(40, 40, 40, 0.4);
-    }
-    .tipology_img{
-      width: 30px;
-      height: 30px;
-      object-fit: cover;
-    }
+        7px 7px 6px rgba(40, 40, 40, 0.4),
+        7px 7px 6px rgba(40, 40, 40, 0.4),
+        7px 7px 6px rgba(40, 40, 40, 0.4);
+}
 
-    /* stile per quanto riguarda le checkbox */
-    ul.ks-cboxtags {
+.tipology_img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+/* stile per quanto riguarda le checkbox */
+ul.ks-cboxtags {
     list-style: none;
     padding: 20px;
-    }
-    ul.ks-cboxtags li{
+}
+
+ul.ks-cboxtags li {
     display: inline;
-    }
-    ul.ks-cboxtags li label{
-        display: inline-block;
-        background-color: rgba(255, 255, 255, .9);
-        border: 2px solid rgba(139, 139, 139, .3);
-        color: #adadad;
-        border-radius: 25px;
-        white-space: nowrap;
-        margin: 3px 0px;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        transition: all .2s;
-    }
+}
 
-    ul.ks-cboxtags li label {
-        padding: 8px 12px;
-        cursor: pointer;
-    }
+ul.ks-cboxtags li label {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .9);
+    border: 2px solid rgba(139, 139, 139, .3);
+    color: #adadad;
+    border-radius: 25px;
+    white-space: nowrap;
+    margin: 3px 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+}
 
-    ul.ks-cboxtags li label::before {
-        display: inline-block;
-        font-style: normal;
-        font-variant: normal;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-        font-family: "Font Awesome 5 Free";
-        font-weight: 900;
-        font-size: 12px;
-        padding: 2px 6px 2px 2px;
-        content: "\f067";
-        transition: transform .3s ease-in-out;
-    }
+ul.ks-cboxtags li label {
+    padding: 8px 12px;
+    cursor: pointer;
+}
 
-    ul.ks-cboxtags li input[type="checkbox"]:checked + label::before {
-        content: "\f00c";
-        transform: rotate(-360deg);
-        transition: transform .3s ease-in-out;
-    }
+ul.ks-cboxtags li label::before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 6px 2px 2px;
+    content: "\f067";
+    transition: transform .3s ease-in-out;
+}
 
-    ul.ks-cboxtags li input[type="checkbox"]:checked + label {
-        border: 2px solid rgb(255, 57, 57);
-        background-color: rgb(254, 107, 107);
-        color: #fff;
-        transition: all .2s;
-    }
+ul.ks-cboxtags li input[type="checkbox"]:checked+label::before {
+    content: "\f00c";
+    transform: rotate(-360deg);
+    transition: transform .3s ease-in-out;
+}
 
-    ul.ks-cboxtags li input[type="checkbox"] {
+ul.ks-cboxtags li input[type="checkbox"]:checked+label {
+    border: 2px solid rgb(255, 57, 57);
+    background-color: rgb(254, 107, 107);
+    color: #fff;
+    transition: all .2s;
+}
+
+ul.ks-cboxtags li input[type="checkbox"] {
     display: absolute;
-    }
-    ul.ks-cboxtags li input[type="checkbox"] {
+}
+
+ul.ks-cboxtags li input[type="checkbox"] {
     position: absolute;
     opacity: 0;
-    }
-    ul.ks-cboxtags li input[type="checkbox"]:focus + label {
-    border: 2px solid #e9a1ff;
-    }
+}
 
+ul.ks-cboxtags li input[type="checkbox"]:focus+label {
+    border: 2px solid #e9a1ff;
+}
 </style>

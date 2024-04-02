@@ -60,8 +60,8 @@ export default {
                 prezzo: €{{calc_price(item)}}
                 {{console.log(my_Chart)}}
 
-                <button class="delete" @click="remove_article(item, index)">-</button>
-                <button @click="add_article(item)">+</button>
+                <button class="m-3 px-2" @click="remove_article(item, index)">Rimuovi</button>
+                <button class="m-3 px-2" @click="add_article(item)">Aggiungi</button>
             </li>
             <li>costi di consegna: €1,20</li>
             <li>ordine minimo: €20,00</li>
