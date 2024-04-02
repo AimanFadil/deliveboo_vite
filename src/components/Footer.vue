@@ -14,7 +14,7 @@ export default {
   <footer>
         <div class="content background-green-footer">
             <svg viewBox="0 0 500 100">
-                <path d="M 0 70 C 150 100 280 0 500 70 L 500 0 L 0 0" fill="rgb(252, 109, 109)"></path>
+                <path d="M 0 70 C 150 100 280 0 500 70 L 500 0 L 0 0" fill="rgb(255, 255, 255)"></path>
             </svg>
             <div class="row d-flex flex-wrap">
                 <div class="col-12">
