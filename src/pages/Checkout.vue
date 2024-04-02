@@ -57,6 +57,7 @@ export default {
 }
 </script>
 <template lang="">
+  <main>
     <div class="container-fluid bg-white">
         <div class="row">
             <!-- lista metodi di pagamento -->
@@ -137,6 +138,7 @@ export default {
 
                 </div>
             </div>
+
             <!-- carrello -->
             <div class="col-4 margin-top ">
                 <div class="bg-white p-4 rounded border border-dark">
@@ -145,6 +147,7 @@ export default {
             </div>
         </div>
     </div>
+  </main>
 </template>
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
