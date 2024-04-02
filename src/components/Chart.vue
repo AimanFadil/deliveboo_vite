@@ -37,7 +37,11 @@ export default {
             this.carrello.forEach((item) => {
                 totalPrice += item.price * item.quantity
             })
-            return totalPrice
+            return totalPrice.toFixed()
+        },
+        calc_price(item) {
+            let price = item.price * item.quantity
+            return price.toFixed()
         }
 
 
@@ -52,21 +56,25 @@ export default {
             <li v-for="(item, index) in carrello" :key='index' class="d-flex justify-content-around">
                 <strong>{{item.name}}</strong>
                 <div>quantità: {{item.quantity}}</div> 
-                prezzo: €{{item.price*item.quantity}}
+
+                prezzo: €{{calc_price(item)}}
+                {{console.log(my_Chart)}}
+
                 <button class="delete" @click="remove_article(item, index)">-</button>
                 <button @click="add_article(item)">+</button>
             </li>
             <li>costi di consegna: €1,20</li>
             <li>ordine minimo: €20,00</li>
             <li>
-                <button>Ordinane {{numberItems()}} a €{{totalPrice()}}</button>
+                
+                <button><router-link :to="{ name: 'checkout' }" class="btn bg_color_header ">Ordinane {{numberItems()}} a €{{totalPrice()}}</router-link></button>
             </li>
         </ul>
     </div> 
 </div>
 <div v-else>
     <h4>non ci sono ancora piatti nel carrello</h4>
-    <div>SBRIGATI A ORDINARE ALTRIMENTI CHIUDE E MUORI DI FAME, SAI QUANTO COSTANO I FUNERALI DI QUESTI TEMPI?</div>
+    <!-- <div>SBRIGATI A ORDINARE ALTRIMENTI CHIUDE E MUORI DI FAME, SAI QUANTO COSTANO I FUNERALI DI QUESTI TEMPI?</div> -->
 </div>
             
 </template>
