@@ -1,6 +1,7 @@
 <script>
 import { store } from '../store.js';
 import Chart from '../components/Chart.vue';
+import { router } from '../router.js'
 import dropin from 'braintree-web-drop-in';
 import useLocalStorage from '../js/useLocalStorage';
 // import checkout from '../checkout';
@@ -12,11 +13,19 @@ export default {
   },
   data() {
     return {
+      valid: false,
+      correctForm: false,
       store,
       TokenApi: '',
       formChart: {
         token: '',
         products: useLocalStorage(store.Chart, 'Chart').value
+      },
+      formOrder: {
+        name: '',
+        mail: '',
+        address: '',
+        phone: ''
       }
     }
   },
@@ -33,28 +42,48 @@ export default {
     },
     makeDropin(token) {
       let button = document.querySelector('#submit-button');
-
       braintree.dropin.create({
         authorization: token,
         selector: '#dropin-container'
       }, function (err, instance) {
         button.addEventListener('click', function () {
           instance.requestPaymentMethod(function (err, payload) {
+
+
             if (err) {
               console.error(err);
               return;
             }
-
+            this.valid = true
             // This is where you would submit payload.nonce to your server
-            alert('Submit your nonce to your server here!' + payload.nonce);
+            console.log('ciao')
+
+
+
           });
+
         })
       });
     },
     buy() {
+      this.formCustomer()
       this.formChart.token = "fake-valid-nonce"
       console.log(this.formChart)
       axios.post(`${this.store.Url}/orders/makePayment`, { ...this.formChart })
+      store.OrderCustomer = this.formOrder
+      store.OrderProducts = this.formChart.products
+      localStorage.clear()
+      router.push({ path: '/ThanksYou' })
+    },
+    formCustomer() {
+      console.log(this.formOrder)
+      if (this.formOrder.name != '' && this.formOrder.mail != '' && this.formOrder.address != '') {
+        this.correctForm = true
+      }
+      else {
+        return false
+      }
+      // axios.post(`${this.store.Url}/orders/customer`, { ...this.formOrder })
     }
 
   }
@@ -70,27 +99,24 @@ export default {
             <div class="col-8 margin-top">
                 <div class="bg-white p-4 rounded border border-dark">
 
-                    <form action="./HomeApp.vue" class="p-3 bg_color_header rounded w-50" method="post">
-
-                      
                         <h5 class="fw-bold my-4">Dati di spedizione:</h5>
                       
                         <div class="my-4">
                           <label for="nome">Nome e Cognome</label>
-                          <input type="text" class="form-control" name="nome" id="nome" required>
+                          <input type="text" class="form-control" name="nome" id="nome" required v-model='formOrder.name'>
                         </div>
                       
                         <div class="my-4">
                           <label for="mail">Mail</label>
-                          <input type="mail" class="form-control" name="mail" id="mail">
+                          <input type="mail" class="form-control" name="mail" id="mail" required v-model='formOrder.mail'>
                         </div>
                       
                         <div class="my-4">
-                          <label for="indirizzo">Indirizzo</label>
-                          <input type="text" class="form-control" name="indirizzo" id="indirizzo" required>
+                          <label for="address">Indirizzo</label>
+                          <input type="text" class="form-control" name="address" id="address" required v-model='formOrder.address'>
                         </div>
                       
-                        <div class="my-4">
+                        <!-- <div class="my-4">
                           <label for="cap">CAP</label>
                           <input type="text" class="form-control" name="cap" id="cap" required>
                         </div>
@@ -98,23 +124,19 @@ export default {
                         <div class="my-4">
                           <label for="citta">Città</label>
                           <input type="text" class="form-control" name="citta" id="citta" required>
-                        </div>
+                        </div> -->
 
                         <div class="my-4">
-                          <label for="telefono">Telefono</label>
-                          <input type="text" class="form-control" name="telefono" id="telefono" required>
+                          <label for="phone">Telefono</label>
+                          <input type="text" class="form-control" name="phone" id="phone" v-model='formOrder.phone'>
                         </div>
 
-                        <h5 class="fw-bold">Metodi di pagamento:</h5>
+                        <h5 class="fw-bold">Prosegui con il pagamento:</h5>
+                        <div id="dropin-container"></div>
+                        <button id="submit-button" class="button button--small button--green" @click="buy()">Purchase</button>
                       
-                        
-                      </form>
-                      <form action="#" method="post">
 
-                      </form>
-                      <div id="dropin-container"></div>
-                      <button id="submit-button" class="button button--small button--green" @click="buy()">Purchase</button>
-
+      
                       
                 </div>  
             </div>
