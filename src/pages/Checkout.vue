@@ -1,6 +1,11 @@
 <script>
 import { store } from '../store.js';
 import Chart from '../components/Chart.vue';
+import { router } from '../router.js'
+import dropin from 'braintree-web-drop-in';
+import useLocalStorage from '../js/useLocalStorage';
+// import checkout from '../checkout';
+import axios from 'axios';
 export default {
   name: 'Checkout',
   components: {
@@ -8,55 +13,88 @@ export default {
   },
   data() {
     return {
+      valid: false,
+      correctForm: false,
       store,
+      TokenApi: '',
+      formChart: {
+        token: '',
+        products: useLocalStorage(store.Chart, 'Chart').value
+      },
+      formOrder: {
+        name: '',
+        mail: '',
+        address: '',
+        phone: '',
+        // products: useLocalStorage(store.Chart, 'Chart').value
+        price: 5
+      }
     }
   },
+  mounted() {
+    this.TakeToken()
+  },
   methods: {
-
-    mounted() {
-      var button = document.querySelector('#submit-button');
-
+    TakeToken() {
+      axios.get(`${this.store.Url}/orders/generate`).then((response) => {
+        let token = response.data.token;
+        this.TokenApi = token
+        this.makeDropin(token)
+      })
+    },
+    makeDropin(token) {
+      let button = document.querySelector('#submit-button');
       braintree.dropin.create({
-        // Insert your tokenization key here
-        authorization: '<use_your_tokenization_key>',
-        container: '#dropin-container'
-      }, function (createErr, instance) {
+        authorization: token,
+        selector: '#dropin-container'
+      }, function (err, instance) {
         button.addEventListener('click', function () {
-          instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-            // When the user clicks on the 'Submit payment' button this code will send the
-            // encrypted payment information in a variable called a payment method nonce
-            $.ajax({
-              type: 'POST',
-              url: '/checkout',
-              data: { 'paymentMethodNonce': payload.nonce }
-            }).done(function (result) {
-              // Tear down the Drop-in UI
-              instance.teardown(function (teardownErr) {
-                if (teardownErr) {
-                  console.error('Could not tear down Drop-in UI!');
-                } else {
-                  console.info('Drop-in UI has been torn down!');
-                  // Remove the 'Submit payment' button
-                  $('#submit-button').remove();
-                }
-              });
+          instance.requestPaymentMethod(function (err, payload) {
 
-              if (result.success) {
-                $('#checkout-message').html('<h1>Success</h1><p>Your Drop-in UI is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
-              } else {
-                console.log(result);
-                $('#checkout-message').html('<h1>Error</h1><p>Check your console.</p>');
-              }
-            });
+
+            if (err) {
+              console.error(err);
+              return;
+            }
+            this.valid = true
+            // This is where you would submit payload.nonce to your server
+            console.log('ciao')
+
+
+
           });
-        });
+
+        })
       });
     },
+    buy() {
+      this.formCustomer()
+      this.formChart.token = "fake-valid-nonce"
+      console.log(this.formChart)
+      axios.post(`${this.store.Url}/orders/makePayment`, { ...this.formChart })
+      store.OrderCustomer = this.formOrder
+      store.OrderProducts = this.formChart.products
+      axios.post(`${this.store.Url}/orders/customer`, { ... this.formOrder })
+      localStorage.clear()
+      router.push({ path: '/ThanksYou' })
+    },
+    formCustomer() {
+      console.log(this.formOrder)
+      if (this.formOrder.name != '' && this.formOrder.mail != '' && this.formOrder.address != '') {
+        this.correctForm = true
+      }
+      else {
+        return false
+      }
+      // axios.post(`${this.store.Url}/orders/customer`, { ...this.formOrder })
+    }
+
   }
 
 }
 </script>
 <template lang="">
+
   <main>
     <div class="container-fluid bg-white">
         <div class="row">
@@ -64,27 +102,24 @@ export default {
             <div class="col-8 margin-top">
                 <div class="bg-white p-4 rounded border border-dark">
 
-                    <form action="" class="p-3 bg_color_header rounded w-50" method="post">
-
-                      
                         <h5 class="fw-bold my-4">Dati di spedizione:</h5>
                       
                         <div class="my-4">
                           <label for="nome">Nome e Cognome</label>
-                          <input type="text" class="form-control" name="nome" id="nome" required>
+                          <input type="text" class="form-control" name="nome" id="nome" required v-model='formOrder.name'>
                         </div>
                       
                         <div class="my-4">
-                          <label for="citofono">Citofono (se presente)</label>
-                          <input type="text" class="form-control" name="citofono" id="citofono">
+                          <label for="mail">Mail</label>
+                          <input type="mail" class="form-control" name="mail" id="mail" required v-model='formOrder.mail'>
                         </div>
                       
                         <div class="my-4">
-                          <label for="indirizzo">Indirizzo</label>
-                          <input type="text" class="form-control" name="indirizzo" id="indirizzo" required>
+                          <label for="address">Indirizzo</label>
+                          <input type="text" class="form-control" name="address" id="address" required v-model='formOrder.address'>
                         </div>
                       
-                        <div class="my-4">
+                        <!-- <div class="my-4">
                           <label for="cap">CAP</label>
                           <input type="text" class="form-control" name="cap" id="cap" required>
                         </div>
@@ -92,51 +127,21 @@ export default {
                         <div class="my-4">
                           <label for="citta">Città</label>
                           <input type="text" class="form-control" name="citta" id="citta" required>
-                        </div>
-                      
+                        </div> -->
+
                         <div class="my-4">
-                          <label for="provincia">Provincia</label>
-                          <select name="provincia" id="provincia" class="form-select" required>
-                            <option value="">Seleziona...</option>
-                            <option value="AG">Agrigento</option>
-                            <option value="AL">Alessandria</option>
-                            </select>
+                          <label for="phone">Telefono</label>
+                          <input type="text" class="form-control" name="phone" id="phone" v-model='formOrder.phone'>
                         </div>
 
-                        <h5 class="fw-bold">Metodi di pagamento:</h5>
+                        <h5 class="fw-bold">Prosegui con il pagamento:</h5>
+                        <div id="dropin-container"></div>
+                        <button id="submit-button" class="button button--small button--green" @click="buy()">Purchase</button>
                       
-                        <div class="d-flex text-center my-4 justify-content-between align-items-center">
-                          <input type="radio" name="pagamento" id="carta_credito" value="carta_credito" checked>
-                          <label for="carta_credito" class="ms-2">Carta di credito</label>
-                      
-                          <i class="fa-brands fa-cc-visa me-3 fs-1"></i>
-                          <i class="fa-brands fa-cc-mastercard me-3 fs-1"></i>
-                        </div>
 
-                        <div class="d-flex text-center my-3 justify-content-between align-items-center">
-                            <span>
-                                <input type="radio" name="pagamento" id="paypal" value="paypal">
-                                <label for="paypal" class="ms-2">Paypal</label>
-                            </span>
-
-                            <span>
-                                <i class="fa-brands fa-cc-paypal me-3 fs-1"></i>
-                            </span>
-                        </div>
+      
                       
-                        <div class="d-flex text-center my-4 align-items-center">
-                          <input type="radio" name="pagamento" id="contanti" value="contanti">
-                          <label for="contanti" class="ms-2">Contanti</label>
-                        </div>
-                      
-                        <div id="dropin-wrapper">
-                            <div id="checkout-message"></div>
-                            <div id="dropin-container"></div>
-                            <button id="submit-button" class="btn btn-success">Submit payment</button>
-                          </div>
-                      </form>
-
-                </div>
+                </div>  
             </div>
 
             <!-- carrello -->
