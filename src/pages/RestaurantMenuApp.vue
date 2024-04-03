@@ -1,5 +1,6 @@
 <script>
 import { store } from '../store.js';
+import { router } from '../router.js';
 import Chart from "../components/Chart.vue";
 import axios from 'axios';
 import useLocalStorage from '../js/useLocalStorage';
@@ -27,9 +28,25 @@ export default {
 
     },
     mounted() {
-        useLocalStorage(store.Chart, 'Chart')
+        useLocalStorage(store.Chart, 'Chart');
+
     },
     methods: {
+
+        tornaAlRistoranteDelPrimoPiatto() {
+            let primoPiattoRestaurantId = this.carrello[0].restaurant_id;
+
+            router.push({ path: `/restaurants/${primoPiattoRestaurantId}` })
+
+
+            if (this.$route.fullPath != (`/restaurants/${primoPiattoRestaurantId}`)) {
+                window.location.replace(`/restaurants/${primoPiattoRestaurantId}`)
+
+
+            }
+
+
+        },
 
         /* metodo che genera il menu del ristorante scelto in home */
         GetMenuData() {
@@ -90,7 +107,9 @@ export default {
 
 
         },
-    }
+    },
+
+
 }
 </script>
 <template lang="">
@@ -135,6 +154,7 @@ export default {
                                             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
                                                 Aggiungi all ordine
                                             </button>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -196,10 +216,16 @@ export default {
                     <div class="modal-body">
                         <p>Nel carrello è già presente uno o più prodotti di un altro ristorante, per poter procedere svuotare prima il carrello</p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="tornaAlRistoranteDelPrimoPiatto()">Torna al ristorante</button>
+                            
+                            
+                           
+
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="delete_storage()">svuota carrello</button>                
+                        </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
