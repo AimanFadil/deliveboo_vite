@@ -15,7 +15,7 @@ export default {
 
         remove_article(item, index) {
             if (item.quantity == 1) {
-                this.my_Chart.splice(index, 1)
+                carrello.splice(index, 1)
             }
             else {
                 item.quantity -= 1

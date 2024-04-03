@@ -25,7 +25,9 @@ export default {
         name: '',
         mail: '',
         address: '',
-        phone: ''
+        phone: '',
+        // products: useLocalStorage(store.Chart, 'Chart').value
+        price: 5
       }
     }
   },
@@ -72,6 +74,7 @@ export default {
       axios.post(`${this.store.Url}/orders/makePayment`, { ...this.formChart })
       store.OrderCustomer = this.formOrder
       store.OrderProducts = this.formChart.products
+      axios.post(`${this.store.Url}/orders/customer`, { ... this.formOrder })
       localStorage.clear()
       router.push({ path: '/ThanksYou' })
     },
