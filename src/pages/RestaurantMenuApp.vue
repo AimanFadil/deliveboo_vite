@@ -98,19 +98,25 @@ export default {
          <main>
             <div class="container ">
                 <div class="row ">
-                <!-- visulizzazione ristorante scelto -->
-                    <div class="col-12 margin_top">
-                        <img :src="restaurant.logo == null ? 'https://www.google.com/url?sa=i&url=https%3A%2F%2Faprireunbar.com%2F2022%2F04%2F22%2Fidee-originali-per-menu-di-bar-e-locali%2F&psig=AOvVaw2v7Bi49MwcL_jb99Edq4O0&ust=1711878721894000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCOjX1anbm4UDFQAAAAAdAAAAABAE':`${restaurant.photoUrl}/storage/${restaurant.logo}`" style="width:200px">
-                            <div>{{restaurant.business_name}}</div>
-                            <div>{{restaurant.address}}</div>
-                            <div></div>
-                            <div></div>
 
+                <!-- visulizzazione ristorante scelto -->
+                    <div class="col-12 margin_top d-flex justify-content-center ">
+                        <div class="rounded-circle restaurant_image" >
+                            <img :src="restaurant.logo == null ? 'https://www.creativefabrica.com/wp-content/uploads/2020/03/09/Simple-Fork-Plate-Icon-Restaurant-Logo-Graphics-3446203-1-1-580x348.jpg':`${restaurant.photoUrl}/storage/${restaurant.logo}`" class="image_cover">
                         </div>
-                    <div class="col-12 margin_top" >
+                        
+                        <div class="align-self-center mx-2">
+                            <div class=" fw-semibold fs-5">
+                                {{ restaurant.business_name }}
+                            </div>
+                            <p class="card-text">{{ restaurant.address }}</p>
+                        </div>  
+                    </div>
+
+                    <div class="col-12 margin_top d-flex" >
 
                         <!-- visulizzazione del menu -->
-                        <div class="col-8 mt-5">
+                        <div class="col-7 mt-5">
                             <div  v-for="dish, index in store.Menu" :key="index">
                                 <!-- controllo che il piatto sia visibile -->
                                 <div v-if="(dish.visible==true)">
@@ -134,12 +140,12 @@ export default {
                                 </div>
                             </div>
                         </div>
-                    </div>
                      <!-- visualizzazzione del carrello -->
-                    <div class="col-4">
-                        <h3>Carrello</h3>
-                        <Chart :carrello='this.carrello'/>
-                        <button @click="delete_storage()">svuota carrello</button>
+                        <div class="col-4">
+                            <h3>Carrello</h3>
+                            <Chart :carrello='this.carrello'/>
+                            <button @click="delete_storage()">svuota carrello</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -208,5 +214,14 @@ export default {
 
 .bg_color_ {
     background-color: white;
+}
+.restaurant_image{
+    width: 200px;
+    height: 200px;
+}
+.image_cover{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 </style>

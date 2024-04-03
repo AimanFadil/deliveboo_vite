@@ -87,6 +87,7 @@ nav {
     display: flex;
     align-items: center;
     transition: all .2s ease-in-out;
+    z-index: 1;
 
 
     &.onScroll {
