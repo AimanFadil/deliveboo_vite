@@ -41,11 +41,11 @@ export default {
             this.carrello.forEach((item) => {
                 totalPrice += item.price * item.quantity
             })
-            return totalPrice.toFixed()
+            return totalPrice.toFixed(2)
         },
         calc_price(item) {
             let price = item.price * item.quantity
-            return price.toFixed()
+            return price.toFixed(2)
         }
 
 
