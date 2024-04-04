@@ -131,7 +131,7 @@ export default {
                                                 <div class="my-2">{{dish.description}}</div>
                                             </div>
                                             <div class="align-self-end my-1">
-                                                <div class="fw-bold ">€{{dish.price}}</div> 
+                                                <div class="fw-bold me-5">€{{dish.price}}</div> 
                                             </div>
                                             
                                         </div>
