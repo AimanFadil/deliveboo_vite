@@ -1,6 +1,7 @@
 <script>
 import { store } from '../store.js';
 import Loader from '../components/Loader.vue';
+import axios from 'axios';
 
 export default {
     data() {
@@ -32,10 +33,10 @@ export default {
                     </div>
                     <div>
                     <ul class="list-unstyled border-start  border-danger p-3 mt-3">
-                            <li>Nome e Cognome: {{store.OrderCustomer.name}}</li>
-                            <li>Indirizzo: {{store.OrderCustomer.address}}</li>
-                            <li>E-mail: {{store.OrderCustomer.mail}}</li>
-                            <li v-if="store.OrderCustomer.phone !=''">Telefono: {{store.OrderCustomer.phone}}</li>
+                            <li><strong>Cliente:</strong> {{store.OrderCustomer.name}}</li>
+                            <li><strong>Indirizzo:</strong> {{store.OrderCustomer.address}}</li>
+                            <li><strong>Email:</strong> {{store.OrderCustomer.mail}}</li>
+                            <li v-if="store.OrderCustomer.phone !=''"><strong>Telefono:</strong> {{store.OrderCustomer.phone}}</li>
                     </ul>
                         <h5>Ordine</h5>
                         <ul class="list-unstyled border-start  border-danger p-3 mt-3">
