@@ -12,7 +12,10 @@ export default {
         }
     },
     methods: {
-
+        delete_local() {
+            this.carrello = []
+            localStorage.clear()
+        },
         remove_article(item, index) {
             if (item.quantity == 1) {
 
@@ -78,13 +81,14 @@ export default {
             </li>
         </ul>
         <ul class="list-unstyled text-center">
-            <li>costi di consegna: €1,20</li>
-            <li>ordine minimo: €20,00</li>
+            <li>costi di consegna: €1.20</li>
+            <li>ordine minimo: €20.00</li>
         </ul>
         <div class="col-12 d-flex justify-content-center">
             <button  class="btn btn_add_two w-auto px-3">
                 <router-link :to="{ name: 'checkout' }" class="text_dec_none text-white">Ordina | €{{totalPrice()}}</router-link>
             </button>
+            <button @click="delete_local()" class="btn_add_two btn-sm p-1">Svuota carrello</button>
         </div>    
     </div>
     <div v-else class="text-center">

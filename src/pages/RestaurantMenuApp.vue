@@ -4,11 +4,13 @@ import { router } from '../router.js';
 import Chart from "../components/Chart.vue";
 import axios from 'axios';
 import useLocalStorage from '../js/useLocalStorage';
+import Loader from '../components/Loader.vue';
 
 export default {
     name: 'RestaurantMenuApp',
     components: {
-        Chart
+        Chart,
+        Loader
     },
     data() {
         return {
@@ -17,7 +19,8 @@ export default {
             showModal: false,
             carrello: useLocalStorage(store.Chart, 'Chart'),
             ChosenDish: [],
-            restaurant: []
+            restaurant: [],
+            isLoading: true
 
         }
 
@@ -29,7 +32,9 @@ export default {
     },
     mounted() {
 
+
         useLocalStorage(store.Chart, 'Chart');
+
 
     },
     methods: {
@@ -51,12 +56,12 @@ export default {
         GetMenuData() {
             axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
                 this.store.Menu = response.data.results;
+                this.isLoading = false
             })
         },
         GetResData() {
             axios.get(`${this.store.Url}/restaurant/${this.$route.params.id}`).then((response) => {
                 this.restaurant = response.data.results;
-
             })
         },
         addpieces() {
@@ -110,82 +115,85 @@ export default {
 }
 </script>
 <template lang="">
+
     <div>
-         <main>
-            <div class="container ">
-                <div class="row ">
+        <Loader v-if="isLoading"/>
+        <div v-else>
+            <main>
+                <div class="container ">
+                    <div class="row ">
 
-                <!-- visulizzazione ristorante scelto -->
-                    <div class="col-12 margin_top d-flex justify-content-center ">
-                        
-                        <img :src="restaurant.logo == null ? 'https://www.creativefabrica.com/wp-content/uploads/2020/03/09/Simple-Fork-Plate-Icon-Restaurant-Logo-Graphics-3446203-1-1-580x348.jpg':`${store.photoUrl}/storage/${restaurant.logo}`" class="image_cover ">
-                        
-                        <div class="align-self-center mx-2">
-                            <div class=" fw-semibold fs-2">
-                                {{ restaurant.business_name }}
-                            </div>
-                            <p class="card-text">{{ restaurant.address }}</p>
-                        </div>  
-                    </div>
-
-                    <div class="col-12  d-flex" >
-
-                        <!-- visulizzazione del menu -->
-                        <div class="col-7 mt-5">
-                            <div  v-for="dish, index in store.Menu" :key="index" >
-                            <hr class="line">
-                                <!-- controllo che il piatto sia visibile -->
-                                <div v-if="(dish.visible==true)">
-                                    <!-- controllo che il piatto non sia eliminato -->
-                                    <div v-if="(dish.is_delete==false)" class="col-12 d-flex align-items-center mb-3">
-                
-                                        <div class="col-4">
-                                            <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" class="size_dishimage">
-                                        </div>
-                                        <div class="col-6 d-flex flex-column ">
-                                            <div>
-                                                <div class="fw-semibold text-capitalize fs-3">{{dish.name}}</div>
-                                                <div class="fs-6">{{dish.ingredients}}</div>
-                                                <div class="my-2">{{dish.description}}</div>
-                                            </div>
-                                            <div class="align-self-end my-1">
-                                                <div class="fw-bold me-5">€{{dish.price}}</div> 
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="col-2 ">
-                                            <button type="button" class="btn btn-sm btn_add_ " data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
-                                                <div class="fw-semibold">Aggiungi all ordine</div>
-                                            </button>
-                                            
-                                        </div>
-                                        <div class="col-12">
-                                            
-                                        </div>
-                                       
-                                    </div>
+                    <!-- visulizzazione ristorante scelto -->
+                        <div class="col-12 margin_top d-flex justify-content-center ">
+                            
+                            <img :src="restaurant.logo == null ? 'https://www.creativefabrica.com/wp-content/uploads/2020/03/09/Simple-Fork-Plate-Icon-Restaurant-Logo-Graphics-3446203-1-1-580x348.jpg':`${store.photoUrl}/storage/${restaurant.logo}`" class="image_cover ">
+                            
+                            <div class="align-self-center mx-2">
+                                <div class=" fw-semibold fs-2">
+                                    {{ restaurant.business_name }}
                                 </div>
-                                
-                            </div>
-                            <hr class="line">
+                                <p class="card-text">{{ restaurant.address }}</p>
+                            </div>  
                         </div>
-                     <!-- visualizzazzione del carrello -->
-                        <div class="col-5 ">
-                            <div class="d-flex justify-content-end ">
-                                
-                                <div class="card p-3 border_carrello" style="width:80%;">
-                                  <!--   <button @click="delete_storage()" class="btn_add_two btn-sm p-1">Svuota carrello</button> -->
-                                    <h3 class="fs-4 text-center green_color fw-semibold my-2">Carrello</h3>
-                                
-                                    <Chart :carrello='this.carrello'/> 
+
+                        <div class="col-12  d-flex" >
+
+                            <!-- visulizzazione del menu -->
+                            <div class="col-7 mt-5">
+                                <div  v-for="dish, index in store.Menu" :key="index" >
+                                <hr class="line">
+                                    <!-- controllo che il piatto sia visibile -->
+                                    <div v-if="(dish.visible==true)">
+                                        <!-- controllo che il piatto non sia eliminato -->
+                                        <div v-if="(dish.is_delete==false)" class="col-12 d-flex align-items-center mb-3">
+                    
+                                            <div class="col-4">
+                                                <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" class="size_dishimage">
+                                            </div>
+                                            <div class="col-6 d-flex flex-column ">
+                                                <div>
+                                                    <div class="fw-semibold text-capitalize fs-3">{{dish.name}}</div>
+                                                    <div class="fs-6">{{dish.ingredients}}</div>
+                                                    <div class="my-2">{{dish.description}}</div>
+                                                </div>
+                                                <div class="align-self-end my-1">
+                                                    <div class="fw-bold me-5">€{{dish.price}}</div> 
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-2 ">
+                                                <button type="button" class="btn btn-sm btn_add_ " data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
+                                                    <div class="fw-semibold">Aggiungi all ordine</div>
+                                                </button>
+                                                
+                                            </div>
+                                            <div class="col-12">
+                                                
+                                            </div>
+                                        
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <hr class="line">
+                            </div>
+                        <!-- visualizzazzione del carrello -->
+                            <div class="col-5 ">
+                                <div class="d-flex justify-content-end ">
+                                    
+                                    <div class="card p-3 border_carrello" style="width:80%;">
+                                    <!--   <button @click="delete_storage()" class="btn_add_two btn-sm p-1">Svuota carrello</button> -->
+                                        <h3 class="fs-4 text-center green_color fw-semibold my-2">Carrello</h3>
+                                    
+                                        <Chart :carrello='this.carrello'/> 
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-        </main>   
+            </main>   
+        </div> 
     </div>
     <!-- modale -->
     <div class="modal" tabindex="-1" id="modal-pieces">

@@ -2,7 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeApp from './pages/HomeApp.vue';
 import Checkout from './pages/Checkout.vue';
 import RestaurantMenuApp from './pages/RestaurantMenuApp.vue';
+
 import ThanksYou from './pages/ThanksYou.vue';
+
+import NotFound from './pages/NotFound.vue';
+
 
 
 
@@ -30,6 +34,11 @@ const router = createRouter({
             name: 'checkout',
             component: Checkout
         },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: NotFound
+        }
 
     ]
 });
