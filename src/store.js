@@ -8,5 +8,5 @@ export const store = reactive({
     photoUrl: 'http://127.0.0.1:8000',
     Menu: [],
     Chart: [],
-
+    loading: true,
 });

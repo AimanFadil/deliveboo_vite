@@ -7,7 +7,7 @@ export default {
     <div class="container">
         <div class="row">
             <div class="col-12 p-5 rounded mt-100 p-4">
-        <h1 class="text-center p-5"> 404-NOT FOUND :( </h1>
+        <h1 class="text-center p-5 "> 404-NOT FOUND :( </h1>
             </div>
         </div>
     </div>

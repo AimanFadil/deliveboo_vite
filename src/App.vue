@@ -1,7 +1,6 @@
 <script>
 import { store } from './store.js';
-
-
+import Loader from './components/Loader.vue';
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 
@@ -10,15 +9,22 @@ export default {
   components: {
 
     Header,
-    Footer
+    Footer,
+    Loader
 
   },
 
   data() {
     return {
       store,
+      isLoading: true
     }
   },
+  mounted () {
+    setTimeout(() => {
+      this.isLoading = false
+    }, 2000)
+  }
 }
 </script>
 
@@ -26,6 +32,7 @@ export default {
 <div calss="d-flex flex-column ">
 
   <Header/>
+  <Loader v-if="isLoading"/>
   <router-view></router-view>
   
   <Footer/>

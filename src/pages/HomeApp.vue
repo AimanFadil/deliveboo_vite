@@ -1,9 +1,13 @@
 <script>
 import { store } from '../store.js';
+import Loader from '../components/Loader.vue';
 
 import axios from 'axios';
 export default {
     name: 'HomeApp',
+    components: {
+        Loader
+    },
     data() {
         return {
             store,
@@ -12,6 +16,7 @@ export default {
             typologies: [],
             SelectedTypologies: [],
             randomRestaurant: [],
+            isLoading: true
 
         }
     },
@@ -24,6 +29,7 @@ export default {
             axios.get(`${this.store.Url}/restaurant`).then((response) => {
 
                 this.restaurants = response.data.results;
+                this.isLoading = false;
                 this.GetRandomRes();
                 this.showRestaurant();
             })
@@ -82,69 +88,74 @@ export default {
 }
 </script>
 <template lang="">
-    <div class="pt-5 jumbotron_ p-0 ">
-    </div>
-    <main>
-        <div class="container ">
-            <div class="row d-flex justify-content-center">
-                <div class="col-12">
-                    <div>
-                        <div class="slogan_color text-center" >
-                            Deliveboo porta il tuo cibo preferito direttamente a casa tua.
-                        </div>
-                    </div>    s
-                </div>
-                <div class="col-12 text-center my-3 fw-bold">
-                    <h3> Seleziona la tipologia in base a cosa vuoi mangiare e scegli il locale dal quale vuoi ordinare</h3>
-                </div>
-                <ul class="ks-cboxtags d-flex gap-3 flex-wrap justify-content-center">
-                    <div class="typology  " v-for="(typology , index) in typologies" :key="index">
-                        <li>
-                            <input type="checkbox" :name="typology.id" :id="typology.id" :value="typology.id" v-model="SelectedTypologies" v-on:change="showRestaurant()">
-                            <label :for="typology.id">
-                                <img :src="typology.type_image" alt="" class="tipology_img" >
-                                {{typology.name}}
-                            </label>
-                        </li>
-                    </div>
-                </ul>
-            </div>
+
+    <Loader v-if="isLoading"/>
+    <div v-else>
+
+        <div class="pt-5 jumbotron_ p-0 ">
         </div>
-
-        <div class="container text-black">
-            <div class="row">
-                <div class="col-12 text-center  my-3"><h3 >Locali che soddisfano la tua richiesta:</h3></div>
-                <div class="col-12" v-if="SelectedRestaurants.length != 0 && SelectedTypologies.length != 0">
-
-                    <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants" >
-                        <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
-                             NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
-                        <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
-                        INDIRIZZO :{{ restaurant.address }} <br>
-                        <hr>
-                    </div>
-                </div>
-                <div class="col-12 text-center text-danger" v-else-if="SelectedRestaurants.length == 0 && SelectedTypologies.length != 0">
-                    <h1>Nessun ristorante trovato con le tue preferenze.</h1>
-                </div>
-                <div class="row" v-else>
-                    <div class="col-12" v-for="(restaurant, index) in  randomRestaurant">
-                        <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
-                            NOME ATTIVITA':{{ restaurant.business_name }}
-                        </router-link>
-                         <br>
+        <main>
+            <div class="container ">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12">
                         <div>
-                            <span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> 
-                        </div>
-                        INDIRIZZO :{{ restaurant.address }} <br>
-                        <hr> 
+                            <div class="slogan_color text-center" >
+                                Deliveboo porta il tuo cibo preferito direttamente a casa tua.
+                            </div>
+                        </div>    s
                     </div>
-    
-                </div> 
+                    <div class="col-12 text-center my-3 fw-bold">
+                        <h3> Seleziona la tipologia in base a cosa vuoi mangiare e scegli il locale dal quale vuoi ordinare</h3>
+                    </div>
+                    <ul class="ks-cboxtags d-flex gap-3 flex-wrap justify-content-center">
+                        <div class="typology  " v-for="(typology , index) in typologies" :key="index">
+                            <li>
+                                <input type="checkbox" :name="typology.id" :id="typology.id" :value="typology.id" v-model="SelectedTypologies" v-on:change="showRestaurant()">
+                                <label :for="typology.id">
+                                    <img :src="typology.type_image" alt="" class="tipology_img" >
+                                    {{typology.name}}
+                                </label>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
             </div>
-
-        </div>
-    </main>
+    
+            <div class="container text-black">
+                <div class="row">
+                    <div class="col-12 text-center  my-3"><h3 >Locali che soddisfano la tua richiesta:</h3></div>
+                    <div class="col-12" v-if="SelectedRestaurants.length != 0 && SelectedTypologies.length != 0">
+    
+                        <div class="col-12" v-for="(restaurant, index) in SelectedRestaurants" >
+                            <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
+                                 NOME ATTIVITA':{{ restaurant.business_name }}</router-link> <br>
+                            <div><span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> </div>
+                            INDIRIZZO :{{ restaurant.address }} <br>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center text-danger" v-else-if="SelectedRestaurants.length == 0 && SelectedTypologies.length != 0">
+                        <h1>Nessun ristorante trovato con le tue preferenze.</h1>
+                    </div>
+                    <div class="row" v-else>
+                        <div class="col-12" v-for="(restaurant, index) in  randomRestaurant">
+                            <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-danger">
+                                NOME ATTIVITA':{{ restaurant.business_name }}
+                            </router-link>
+                             <br>
+                            <div>
+                                <span v-for="(type, index) in restaurant.typologies"> {{type.name+' '}} </span> 
+                            </div>
+                            INDIRIZZO :{{ restaurant.address }} <br>
+                            <hr> 
+                        </div>
+        
+                    </div> 
+                </div>
+    
+            </div>
+        </main>
+    </div>
 </template>
 
 <style lang="scss" scoped>

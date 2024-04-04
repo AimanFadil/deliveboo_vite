@@ -3,11 +3,13 @@ import { store } from '../store.js';
 import Chart from "../components/Chart.vue";
 import axios from 'axios';
 import useLocalStorage from '../js/useLocalStorage';
+import Loader from '../components/Loader.vue';
 
 export default {
     name: 'RestaurantMenuApp',
     components: {
-        Chart
+        Chart,
+        Loader
     },
     data() {
         return {
@@ -16,7 +18,8 @@ export default {
             showModal: false,
             carrello: useLocalStorage(store.Chart, 'Chart'),
             ChosenDish: [],
-            restaurant: []
+            restaurant: [],
+            isLoading: true
 
         }
 
@@ -27,7 +30,7 @@ export default {
 
     },
     mounted() {
-        useLocalStorage(store.Chart, 'Chart')
+        useLocalStorage(store.Chart, 'Chart');
     },
     methods: {
 
@@ -35,12 +38,12 @@ export default {
         GetMenuData() {
             axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
                 this.store.Menu = response.data.results;
+                this.isLoading = false
             })
         },
         GetResData() {
             axios.get(`${this.store.Url}/restaurant/${this.$route.params.id}`).then((response) => {
                 this.restaurant = response.data.results;
-
             })
         },
         addpieces() {
@@ -94,57 +97,57 @@ export default {
 }
 </script>
 <template lang="">
-    <div>
-         <main>
-            <div class="container ">
-                <div class="row ">
-                <!-- visulizzazione ristorante scelto -->
-                    <div class="col-12 margin_top">
-                        <img :src="restaurant.logo == null ? 'https://www.google.com/url?sa=i&url=https%3A%2F%2Faprireunbar.com%2F2022%2F04%2F22%2Fidee-originali-per-menu-di-bar-e-locali%2F&psig=AOvVaw2v7Bi49MwcL_jb99Edq4O0&ust=1711878721894000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCOjX1anbm4UDFQAAAAAdAAAAABAE':`${restaurant.photoUrl}/storage/${restaurant.logo}`" style="width:200px">
-                            <div>{{restaurant.business_name}}</div>
-                            <div>{{restaurant.address}}</div>
-                            <div></div>
-                            <div></div>
+    <Loader v-if="isLoading"/>
+    <div v-else>
+        <main>
+           <div class="container ">
+               <div class="row ">
+               <!-- visulizzazione ristorante scelto -->
+                   <div class="col-12 margin_top">
+                       <img :src="restaurant.logo == null ? 'https://www.google.com/url?sa=i&url=https%3A%2F%2Faprireunbar.com%2F2022%2F04%2F22%2Fidee-originali-per-menu-di-bar-e-locali%2F&psig=AOvVaw2v7Bi49MwcL_jb99Edq4O0&ust=1711878721894000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCOjX1anbm4UDFQAAAAAdAAAAABAE':`${restaurant.photoUrl}/storage/${restaurant.logo}`" style="width:200px">
+                           <div>{{restaurant.business_name}}</div>
+                           <div>{{restaurant.address}}</div>
+                           <div></div>
+                           <div></div>
 
-                        </div>
-                    <div class="col-12 margin_top" >
+                       </div>
+                   <div class="col-12 margin_top" >
 
-                        <!-- visulizzazione del menu -->
-                        <div class="col-8 mt-5">
-                            <div  v-for="dish, index in store.Menu" :key="index">
-                                <!-- controllo che il piatto sia visibile -->
-                                <div v-if="(dish.visible==true)">
-                                    <!-- controllo che il piatto non sia eliminato -->
-                                    <div v-if="(dish.is_delete==false)" class="col-12 d-flex">
-                                        <div class="col-4">
-                                            <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" style="width:200px">
-                                        </div>
-                                        <div class="col-6">
-                                            <div>{{dish.name}}</div>
-                                            <div>{{dish.ingredients}}</div>
-                                            <div>{{dish.description}}</div>
-                                            <div>{{dish.price}}</div> 
-                                        </div>
-                                        <div class="col-2">
-                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
-                                                Aggiungi all ordine
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     <!-- visualizzazzione del carrello -->
-                    <div class="col-4">
-                        <h3>Carrello</h3>
-                        <Chart :carrello='this.carrello'/>
-                        <button @click="delete_storage()">svuota carrello</button>
-                    </div>
-                </div>
-            </div>
-            
-        </main>   
+                       <!-- visulizzazione del menu -->
+                       <div class="col-8 mt-5">
+                           <div  v-for="dish, index in store.Menu" :key="index">
+                               <!-- controllo che il piatto sia visibile -->
+                               <div v-if="(dish.visible==true)">
+                                   <!-- controllo che il piatto non sia eliminato -->
+                                   <div v-if="(dish.is_delete==false)" class="col-12 d-flex">
+                                       <div class="col-4">
+                                           <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" style="width:200px">
+                                       </div>
+                                       <div class="col-6">
+                                           <div>{{dish.name}}</div>
+                                           <div>{{dish.ingredients}}</div>
+                                           <div>{{dish.description}}</div>
+                                           <div>{{dish.price}}</div> 
+                                       </div>
+                                       <div class="col-2">
+                                           <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
+                                               Aggiungi all ordine
+                                           </button>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                    <!-- visualizzazzione del carrello -->
+                   <div class="col-4">
+                       <h3>Carrello</h3>
+                       <Chart :carrello='this.carrello'/>
+                       <button @click="delete_storage()">svuota carrello</button>
+                   </div>
+               </div>
+           </div>
+       </main>   
     </div>
     <!-- modale -->
     <div class="modal" tabindex="-1" id="modal-pieces">
