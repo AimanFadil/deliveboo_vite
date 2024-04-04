@@ -25,7 +25,7 @@ export default {
 
                 <div class="row d-flex justify-content-between px-5">
                    <!--  {{-- contacts  --}} -->
-                    <div class="col-4 p-4 text-white ">
+                    <div class="col-md-4 col-sm-12 p-4 text-white ">
                         <h5 class=" fw-bold">Contatti:</h5>
 
                         <div class="my-4 red-hover">
@@ -56,7 +56,7 @@ export default {
                     </div>
 
                     <!-- {{-- partner section --}} -->
-                    <div class="col-3 p-4 d-flex flex-wrap text-white">
+                    <div class="col-md-3 col-sm-12 p-4 d-flex flex-wrap text-white">
                         <div class="col-12">
                             <h5 class=" fw-bold">Alcuni dei nostri partner:</h5>
                         </div>

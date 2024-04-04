@@ -46,15 +46,15 @@ export default {
                                     <i class="fa-solid fa-house"></i> Home</router-link>
                             </div>
 
-                            <button class="btn ps-3 fw-bold " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                            <!-- <button class="btn ps-3 fw-bold d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
                                 <div class="hover-navitem">
                                     <span class="me-1" ><i class="fa-regular fa-cart-shopping fw-bold"></i></span>Carrello 
                                 </div>
-                            </button>
+                            </button> -->
                         </div>
 
 
-                        <!-- <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExample">
+<!--                           <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExample">
                             <div class="offcanvas-header bg_color_header text-white">
                                   <h3 class="offcanvas-title fw-bold" id="offcanvasExample">Carrello</h3>
                                   <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -67,7 +67,7 @@ export default {
                                    <button data-bs-dismiss="offcanvas">Vai al checkout</button></router-link>
 
                             </div>
-                        </div> --> 
+                        </div>   -->
                     </div>
                 </div>
             </nav>

@@ -25,6 +25,8 @@ main {
     margin-top: 100px;
 }
 
+
+
 .z_index {
     z-index: 0;
 }
@@ -69,4 +71,11 @@ main {
 
 .color_red {
     color: rgb(254, 107, 107);
+}
+
+@media screen and (max-width: 576px) {
+    .margin_top {
+        margin-top: 50px;
+    }
+
 }

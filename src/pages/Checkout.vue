@@ -34,6 +34,7 @@ export default {
   },
   mounted() {
     this.TakeToken()
+    
   },
   methods: {
     validateCampi() {
@@ -120,10 +121,10 @@ export default {
 <template lang="">
 
   <main>
-    <div class="container-fluid bg-white">
+    <div class="container-fluid bg-white z_index">
         <div class="row">
             <!-- lista metodi di pagamento -->
-            <div class="col-8 margin-top">
+            <div class="col-12 col-lg-8 margin-top">
                 <div class="bg-white p-4 rounded border border-dark">
                   <div v-show="!isPaymentVisible">
 
@@ -164,21 +165,17 @@ export default {
                   </div>
                         
 
-                        <div v-show="isPaymentVisible">
+                        <div v-show="isPaymentVisible" >
 
                           <h5 class="fw-bold" >Prosegui con il pagamento:</h5>
-                          <div id="dropin-container" ></div>
+                          <div id="dropin-container " ></div>
                           <button id="submit-button" class="button button--small button--green" @click="buy()" >Purchase</button>
-                        </div>
-                      
-
-      
-                      
+                        </div>     
                 </div>  
             </div>
 
             <!-- carrello -->
-            <div class="col-4 margin-top ">
+            <div class="col-12 col-lg-4 margin-top ">
                 <div class="bg-white p-4 rounded border border-dark">
                     <!-- <Chart/> -->
                     <div class="row">

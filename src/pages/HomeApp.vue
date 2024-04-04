@@ -120,17 +120,17 @@ export default {
 
             </div>
 
-            <div class="container text-black">
-                <div class="row">
+            <div class="container text-black ">
+                <div class="row d-flex flex-wrap justify-content-center">
                     <div class="col-12 text-center  my-3">
                         <h3  v-if="SelectedTypologies.length != 0" class="fw-semibold">Locali che soddisfano la tua richiesta:</h3>
                         <h3  v-if="SelectedTypologies.length == 0" class="fw-semibold ">I nostri locali consigliati:</h3>
                     </div>
-                    <div class="col-12 d-flex justify-content-center  " v-if="SelectedRestaurants.length != 0 && SelectedTypologies.length != 0">
+                    <div class="col-12 d-flex justify-content-center flex-wrap  " v-if="SelectedRestaurants.length != 0 && SelectedTypologies.length != 0">
 
                         <!-- card dei ristoranti selezionati -->
                         
-                        <div class="card col-3 m-2 restaurant_card_hover" v-for="(restaurant, index) in SelectedRestaurants" >
+                        <div class="card  col-sm-12 col-md-5 col-lg-3 m-2 restaurant_card_hover" v-for="(restaurant, index) in SelectedRestaurants" >
                         
                                 <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-black text_dec_none">
                                     <img :src="restaurant.logo == null ? 'https://www.creativefabrica.com/wp-content/uploads/2020/03/09/Simple-Fork-Plate-Icon-Restaurant-Logo-Graphics-3446203-1-1-580x348.jpg':`${store.photoUrl}/storage/${restaurant.logo}`" class="card-img-top" alt="...">
@@ -149,10 +149,10 @@ export default {
                     <div class="col-12 text-center text-danger" v-else-if="SelectedRestaurants.length == 0 && SelectedTypologies.length != 0">
                         <h1> Ci dispiace :( ma non è stato trovato nessun ristorante con le preferenze da te scelte.</h1>
                     </div>
-                    <div class="row d-flex justify-content-center z_index pb-5  mb-5" v-else>
+                    <div class="row d-flex justify-content-center z_index " v-else>
 
                     <!-- card dei ristoranti consigliati -->
-                        <div class="card col-3 m-2 restaurant_card_hover" v-for="(restaurant, index) in  randomRestaurant">
+                        <div class="card col-sm-12 col-md-5 col-lg-3 m-2 restaurant_card_hover" v-for="(restaurant, index) in  randomRestaurant">
 
                                     <router-link :to="{ name: 'menu-restaurant', params: {id: restaurant.id} }" class="text-black  text_dec_none">
                                         <img :src="restaurant.logo == null ? 'https://www.creativefabrica.com/wp-content/uploads/2020/03/09/Simple-Fork-Plate-Icon-Restaurant-Logo-Graphics-3446203-1-1-580x348.jpg':`${store.photoUrl}/storage/${restaurant.logo}`" class="card-img-top" alt="...">
@@ -323,4 +323,15 @@ ul.ks-cboxtags li input[type="checkbox"]:focus+label {
 
 
 }
+
+@media screen and (max-width: 576px){
+    ul.ks-cboxtags li label {
+    padding: 2px 6px;
+}
+
+ul.ks-cboxtags li label::before {
+   
+    font-weight: 700;
+    font-size: 9px;
+}}
 </style>
