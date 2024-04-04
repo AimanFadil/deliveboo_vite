@@ -79,15 +79,15 @@ export default {
 
             </li>
         </ul>
-        <ul class="list-unstyled text-center">
+        <!-- <ul class="list-unstyled text-center">
             <li>costi di consegna: €1.20</li>
             <li>ordine minimo: €20.00</li>
-        </ul>
+        </ul> -->
         <div class="col-12 d-flex justify-content-center">
             <button  class="btn btn_add_two w-auto px-3">
                 <router-link :to="{ name: 'checkout' }" class="text_dec_none text-white">Ordina | €{{totalPrice()}}</router-link>
             </button>
-            <button @click="delete_local()" class="btn_add_two btn-sm p-1">Svuota carrello</button>
+            <button @click="delete_local()" class="btn btn_add_ ms-3">Svuota carrello</button>
         </div>    
     </div>
     <div v-else class="text-center">

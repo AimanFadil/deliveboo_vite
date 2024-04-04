@@ -140,10 +140,10 @@ export default {
 
                             <!-- visulizzazione del menu -->
                             <div class="col-7 mt-5">
-                                <div  v-for="dish, index in store.Menu" :key="index" class="bg-dish my-4 p-3 ">
+                                <div  v-for="dish, index in store.Menu" :key="index" >
                                
                                     <!-- controllo che il piatto sia visibile -->
-                                    <div v-if="(dish.visible==true)">
+                                    <div class="bg-dish my-4 p-3 " v-if="(dish.visible==true)" >
                                         <!-- controllo che il piatto non sia eliminato -->
                                         <div v-if="(dish.is_delete==false)" class="col-12 d-flex align-items-center mb-3 ">
                     
@@ -287,17 +287,18 @@ export default {
     border: 2px solid rgb(48, 110, 92);
 }
  */
-.bg-dish{
-background-color: rgb(255, 255, 255);
-border: 1px solid rgb(194, 193, 193);
-border-radius: 10px;
+.bg-dish {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(194, 193, 193);
+    border-radius: 10px;
 
-&:hover{
-    transform: scale(1.1);
+    &:hover {
+        transform: scale(1.1);
+    }
+
 }
 
-}
-.box_shadow{
- box-shadow: 10px 10px 5px rgb(45, 74, 66);   
+.box_shadow {
+    box-shadow: 10px 10px 5px rgb(45, 74, 66);
 }
 </style>

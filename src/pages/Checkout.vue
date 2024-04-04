@@ -64,9 +64,7 @@ export default {
               console.error(err);
               return;
             }
-            this.valid = true
-            // This is where you would submit payload.nonce to your server
-            console.log('ciao')
+
 
 
 
@@ -76,7 +74,7 @@ export default {
       });
     },
     buy() {
-      if (this.validateCampi()) {
+      /* if (this.validateCampi()) {
         this.isPaymentVisible = true;
 
         this.formChart.token = "fake-valid-nonce"
@@ -87,7 +85,15 @@ export default {
         axios.post(`${this.store.Url}/orders/customer`, { ... this.formOrder })
         localStorage.clear()
         router.push({ path: '/ThanksYou' })
-      }
+      } */
+      this.formChart.token = "fake-valid-nonce"
+      console.log(this.formChart)
+      axios.post(`${this.store.Url}/orders/makePayment`, { ...this.formChart })
+      store.OrderCustomer = this.formOrder
+      store.OrderProducts = this.formChart.products
+      axios.post(`${this.store.Url}/orders/customer`, { ... this.formOrder })
+      localStorage.clear()
+      router.push({ path: '/ThanksYou' })
     },
 
     TotalPrice() {

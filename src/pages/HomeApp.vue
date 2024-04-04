@@ -117,7 +117,7 @@ export default {
                         <h3  v-if="SelectedTypologies.length != 0" class="fw-semibold">Locali che soddisfano la tua richiesta:</h3>
                         <h3  v-if="SelectedTypologies.length == 0" class="fw-semibold ">I nostri locali consigliati:</h3>
                     </div>
-                    <div class="col-12 d-flex justify-content-center pb-5 mb-5 " v-if="SelectedRestaurants.length != 0 && SelectedTypologies.length != 0">
+                    <div class="col-12 d-flex justify-content-center  " v-if="SelectedRestaurants.length != 0 && SelectedTypologies.length != 0">
 
                         <!-- card dei ristoranti selezionati -->
                         
