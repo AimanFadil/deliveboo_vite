@@ -54,14 +54,14 @@ export default {
                                                 <tr>
                                                     <th scope="col">Prodotto</th>
                                                     <th scope="col">Quantità</th>
-                                                    <th scope="col">Prezzo</th>
+                                                    <th scope="col">Totale</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="product, index in store.OrderProducts" :key="index">
                                                     <td>{{product.name}}</td>
-                                                    <td>{{product.quantity}}</td>
-                                                    <td>{{product.price}}</td>
+                                                    <td>{{product.quantity}} pz</td>
+                                                    <td>{{product.price * product.quantity}}€</td>
                                                 </tr>
                                             </tbody>
                                         </table>
