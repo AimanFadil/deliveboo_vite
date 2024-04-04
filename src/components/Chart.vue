@@ -13,8 +13,7 @@ export default {
     },
     methods: {
         delete_local() {
-            this.carrello = []
-            localStorage.clear()
+            this.carrello.length = 0
         },
         remove_article(item, index) {
             if (item.quantity == 1) {
