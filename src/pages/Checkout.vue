@@ -13,6 +13,7 @@ export default {
   },
   data() {
     return {
+      isPaymentVisible: false,
       valid: false,
       correctForm: false,
       store,
@@ -35,6 +36,13 @@ export default {
     this.TakeToken()
   },
   methods: {
+    validateCampi() {
+      if (this.formOrder.name && this.formOrder.mail && this.formOrder.address != '') {
+
+        this.isPaymentVisible = true;
+
+      }
+    },
     TakeToken() {
       axios.get(`${this.store.Url}/orders/generate`).then((response) => {
         let token = response.data.token;
@@ -68,26 +76,20 @@ export default {
       });
     },
     buy() {
-      this.formCustomer()
-      this.formChart.token = "fake-valid-nonce"
-      console.log(this.formChart)
-      axios.post(`${this.store.Url}/orders/makePayment`, { ...this.formChart })
-      store.OrderCustomer = this.formOrder
-      store.OrderProducts = this.formChart.products
-      axios.post(`${this.store.Url}/orders/customer`, { ... this.formOrder })
-      localStorage.clear()
-      router.push({ path: '/ThanksYou' })
-    },
-    formCustomer() {
-      console.log(this.formOrder)
-      if (this.formOrder.name != '' && this.formOrder.mail != '' && this.formOrder.address != '') {
-        this.correctForm = true
+      if (this.validateCampi()) {
+        this.isPaymentVisible = true;
+
+        this.formChart.token = "fake-valid-nonce"
+        console.log(this.formChart)
+        axios.post(`${this.store.Url}/orders/makePayment`, { ...this.formChart })
+        store.OrderCustomer = this.formOrder
+        store.OrderProducts = this.formChart.products
+        axios.post(`${this.store.Url}/orders/customer`, { ... this.formOrder })
+        localStorage.clear()
+        router.push({ path: '/ThanksYou' })
       }
-      else {
-        return false
-      }
-      // axios.post(`${this.store.Url}/orders/customer`, { ...this.formOrder })
     },
+
     TotalPrice() {
       let price = 0;
       this.checkoutProducts.forEach(element => {
@@ -96,6 +98,9 @@ export default {
       });
       return price.toFixed(2)
     }
+
+
+
 
   },
   computed: {
@@ -114,42 +119,51 @@ export default {
             <!-- lista metodi di pagamento -->
             <div class="col-8 margin-top">
                 <div class="bg-white p-4 rounded border border-dark">
+                  <div v-show="!isPaymentVisible">
 
-                        <h5 class="fw-bold my-4">Dati di spedizione:</h5>
-                      
-                        <div class="my-4">
-                          <label for="nome">Nome e Cognome</label>
-                          <input type="text" class="form-control" name="nome" id="nome" required v-model='formOrder.name'>
-                        </div>
-                      
-                        <div class="my-4">
-                          <label for="mail">Mail</label>
-                          <input type="mail" class="form-control" name="mail" id="mail" required v-model='formOrder.mail'>
-                        </div>
-                      
-                        <div class="my-4">
-                          <label for="address">Indirizzo</label>
-                          <input type="text" class="form-control" name="address" id="address" required v-model='formOrder.address'>
-                        </div>
-                      
-                        <!-- <div class="my-4">
-                          <label for="cap">CAP</label>
-                          <input type="text" class="form-control" name="cap" id="cap" required>
-                        </div>
-                      
-                        <div class="my-4">
-                          <label for="citta">Città</label>
-                          <input type="text" class="form-control" name="citta" id="citta" required>
-                        </div> -->
+                    <h5 class="fw-bold my-4">Dati di spedizione:</h5>
+                  
+                    <div class="my-4">
+                      <label for="nome">Nome e Cognome</label>
+                      <input type="text" class="form-control" name="nome" id="nome" required v-model='formOrder.name'>
+                    </div>
+                  
+                    <div class="my-4">
+                      <label for="mail">Mail</label>
+                      <input type="mail" class="form-control" name="mail" id="mail" required v-model='formOrder.mail'>
+                    </div>
+                  
+                    <div class="my-4">
+                      <label for="address">Indirizzo</label>
+                      <input type="text" class="form-control" name="address" id="address" required v-model='formOrder.address'>
+                    </div>
+                  
+                    <!-- <div class="my-4">
+                      <label for="cap">CAP</label>
+                      <input type="text" class="form-control" name="cap" id="cap" required>
+                    </div>
+                  
+                    <div class="my-4">
+                      <label for="citta">Città</label>
+                      <input type="text" class="form-control" name="citta" id="citta" required>
+                    </div> -->
 
-                        <div class="my-4">
-                          <label for="phone">Telefono</label>
-                          <input type="text" class="form-control" name="phone" id="phone" v-model='formOrder.phone'>
-                        </div>
+                    <div class="my-4">
+                      <label for="phone">Telefono</label>
+                      <input type="text" class="form-control" name="phone" id="phone" v-model='formOrder.phone'>
+                    </div>
+                    
 
-                        <h5 class="fw-bold">Prosegui con il pagamento:</h5>
-                        <div id="dropin-container"></div>
-                        <button id="submit-button" class="button button--small button--green" @click="buy()">Purchase</button>
+                      <button  class="button button--small button--green" @click="validateCampi()" >Mannala</button>
+                  </div>
+                        
+
+                        <div v-show="isPaymentVisible">
+
+                          <h5 class="fw-bold" >Prosegui con il pagamento:</h5>
+                          <div id="dropin-container" ></div>
+                          <button id="submit-button" class="button button--small button--green" @click="buy()" >Purchase</button>
+                        </div>
                       
 
       
