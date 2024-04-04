@@ -89,6 +89,11 @@ export default {
       // axios.post(`${this.store.Url}/orders/customer`, { ...this.formOrder })
     }
 
+  },
+  computed: {
+    checkoutProducts() {
+      return useLocalStorage(store.Chart, 'Chart').value;
+    }
   }
 
 }
@@ -148,6 +153,27 @@ export default {
             <div class="col-4 margin-top ">
                 <div class="bg-white p-4 rounded border border-dark">
                     <!-- <Chart/> -->
+                    <div class="row">
+                      <div class="col-12">
+                        <h5 class="fw-bold my-4">Riepilogo ordine:</h5>
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th>Nome</th>
+                              <th>Quantità</th>
+                              <th>Prezzo</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="(product, index) in checkoutProducts" :key="index">
+                              <td>{{ product.name }}</td>
+                              <td>{{ product.quantity }}pz</td>
+                              <td>{{ product.price }}€</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>

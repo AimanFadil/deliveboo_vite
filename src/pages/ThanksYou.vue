@@ -23,14 +23,14 @@ export default {
                         <li>e-mail: {{store.OrderCustomer.mail}}</li>
                         <li v-if="store.OrderCustomer.phone !=''">telefono: {{store.OrderCustomer.phone}}</li>
                    </ul>
-                    <h5>Ornine</h5>
+                    <h5>Ordine</h5>
                     <ul>
                         <li v-for="product, index in store.OrderProducts" :key="index">
                             {{product.name}}
                             {{product.quantity}}
                             {{product.price}}
                         </li>
-                        <li></li>
+                        
                     </ul>
                 </div>
             </div>
