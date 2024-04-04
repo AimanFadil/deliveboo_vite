@@ -26,7 +26,7 @@ export default {
         mail: '',
         address: '',
         phone: '',
-        // products: useLocalStorage(store.Chart, 'Chart').value
+        products: useLocalStorage(store.Chart, 'Chart').value,
         price: 5
       }
     }

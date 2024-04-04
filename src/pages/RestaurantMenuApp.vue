@@ -25,14 +25,14 @@ export default {
     created() {
         this.GetMenuData();
         this.GetResData();
-
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     mounted() {
+
         useLocalStorage(store.Chart, 'Chart');
 
     },
     methods: {
-
         tornaAlRistoranteDelPrimoPiatto() {
             let primoPiattoRestaurantId = this.carrello[0].restaurant_id;
 
@@ -47,7 +47,6 @@ export default {
 
 
         },
-
         /* metodo che genera il menu del ristorante scelto in home */
         GetMenuData() {
             axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
@@ -78,8 +77,6 @@ export default {
         delete_storage() {
             localStorage.clear()
             this.carrello = []
-
-
         },
         addtoChart(ChosenDish) {
             let flag = false;
@@ -120,51 +117,69 @@ export default {
 
                 <!-- visulizzazione ristorante scelto -->
                     <div class="col-12 margin_top d-flex justify-content-center ">
-                        <div class="rounded-circle restaurant_image" >
-                            <img :src="restaurant.logo == null ? 'https://www.creativefabrica.com/wp-content/uploads/2020/03/09/Simple-Fork-Plate-Icon-Restaurant-Logo-Graphics-3446203-1-1-580x348.jpg':`${restaurant.photoUrl}/storage/${restaurant.logo}`" class="image_cover">
-                        </div>
+                        
+                        <img :src="restaurant.logo == null ? 'https://www.creativefabrica.com/wp-content/uploads/2020/03/09/Simple-Fork-Plate-Icon-Restaurant-Logo-Graphics-3446203-1-1-580x348.jpg':`${store.photoUrl}/storage/${restaurant.logo}`" class="image_cover ">
                         
                         <div class="align-self-center mx-2">
-                            <div class=" fw-semibold fs-5">
+                            <div class=" fw-semibold fs-2">
                                 {{ restaurant.business_name }}
                             </div>
                             <p class="card-text">{{ restaurant.address }}</p>
                         </div>  
                     </div>
 
-                    <div class="col-12 margin_top d-flex" >
+                    <div class="col-12  d-flex" >
 
                         <!-- visulizzazione del menu -->
                         <div class="col-7 mt-5">
-                            <div  v-for="dish, index in store.Menu" :key="index">
+                            <div  v-for="dish, index in store.Menu" :key="index" >
+                            <hr class="line">
                                 <!-- controllo che il piatto sia visibile -->
                                 <div v-if="(dish.visible==true)">
                                     <!-- controllo che il piatto non sia eliminato -->
-                                    <div v-if="(dish.is_delete==false)" class="col-12 d-flex">
+                                    <div v-if="(dish.is_delete==false)" class="col-12 d-flex align-items-center mb-3">
+                
                                         <div class="col-4">
-                                            <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" style="width:200px">
+                                            <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" class="size_dishimage">
                                         </div>
-                                        <div class="col-6">
-                                            <div>{{dish.name}}</div>
-                                            <div>{{dish.ingredients}}</div>
-                                            <div>{{dish.description}}</div>
-                                            <div>{{dish.price}}</div> 
+                                        <div class="col-6 d-flex flex-column ">
+                                            <div>
+                                                <div class="fw-semibold text-capitalize fs-3">{{dish.name}}</div>
+                                                <div class="fs-6">{{dish.ingredients}}</div>
+                                                <div class="my-2">{{dish.description}}</div>
+                                            </div>
+                                            <div class="align-self-end my-1">
+                                                <div class="fw-bold me-5">€{{dish.price}}</div> 
+                                            </div>
+                                            
                                         </div>
-                                        <div class="col-2">
-                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
-                                                Aggiungi all ordine
+                                        <div class="col-2 ">
+                                            <button type="button" class="btn btn-sm btn_add_ " data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
+                                                <div class="fw-semibold">Aggiungi all ordine</div>
                                             </button>
                                             
                                         </div>
+                                        <div class="col-12">
+                                            
+                                        </div>
+                                       
                                     </div>
                                 </div>
+                                
                             </div>
+                            <hr class="line">
                         </div>
                      <!-- visualizzazzione del carrello -->
-                        <div class="col-4">
-                            <h3>Carrello</h3>
-                            <Chart :carrello='this.carrello'/>
-                            <button @click="delete_storage()">svuota carrello</button>
+                        <div class="col-5 ">
+                            <div class="d-flex justify-content-end ">
+                                
+                                <div class="card p-3 border_carrello" style="width:80%;">
+                                  <!--   <button @click="delete_storage()" class="btn_add_two btn-sm p-1">Svuota carrello</button> -->
+                                    <h3 class="fs-4 text-center green_color fw-semibold my-2">Carrello</h3>
+                                
+                                    <Chart :carrello='this.carrello'/> 
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,31 +191,37 @@ export default {
     <div class="modal" tabindex="-1" id="modal-pieces">
 
         <div v-if=" this.carrello.length == 0 ||  this.carrello[0].restaurant_id == ChosenDish.restaurant_id">
-            <div class="modal-dialog modal-lg ">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg_color_">
                 <div class="modal-header">
-                    <h5 class="modal-title">Seleziona i pezzi</h5>
+                    <h5 class="modal-title  fw-semibold">Seleziona i pezzi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                      <img :src="ChosenDish.image" alt="">
-                    <div>{{ChosenDish.name}}</div>
-                    <div>{{ChosenDish.description}}</div>
-                    <div>{{ChosenDish.ingredients}}</div>
-                    <div>{{ChosenDish.price}}</div>
+                <div class="modal-body d-flex justify-content-between">
+                    <div>
+                        <div class="fw-semibold text-capitalize fs-3">{{ChosenDish.name}}</div>
+                        <div class="fs-6">{{ChosenDish.ingredients}}</div>
+                        <div class="fs-5">{{ChosenDish.description}}</div>     
+                    </div>
+                    <div>
+                        <img :src="ChosenDish.image== null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${ChosenDish.image}`" alt="" class="size_dishimage">
+                    </div>  
+                </div>
+                <div class="d-flex justify-content-end px-2">
+                    <div class="fs-5 fw-bold">€{{ChosenDish.price}}</div>
                 </div>
                 <div class="modal-footer">
                     <span>
-                        <button type="button" class="btn btn-warning" :class="(NumberofPieces == 1 ) ?  'disabled bg-secondary': ''" @click="removepieces()" id="minusbtn"><i class="fa-solid fa-minus"></i></button>
+                        <button type="button" class="btn btn_add_two" :class="(NumberofPieces == 1 ) ?  'disabled bg-white border-secondary': ''" @click="removepieces()" id="minusbtn"><i class="fa-solid fa-minus"></i></button>
                     </span>
                     <span>
-                        <button type="button" class="btn btn-warning">{{NumberofPieces}}</button>
+                        <div class="mx-2">{{NumberofPieces}}</div>
                     </span>
                     <span>
-                        <button type="button" class="btn btn-warning" @click="addpieces()"><i class="fa-solid fa-plus"></i></button>
+                        <button type="button" class="btn btn_add_two" @click="addpieces()"><i class="fa-solid fa-plus"></i></button>
                     </span>
                     
-                    <button type="button" id="empty_modal" class="btn btn-success" @click="addtoChart(ChosenDish)" data-bs-dismiss="modal">Aggiugi al carrello</button>
+                    <button type="button" id="empty_modal" class="btn btn_add_ ms-3" @click="addtoChart(ChosenDish)" data-bs-dismiss="modal">Aggiugi al carrello</button>
                 </div>
                 </div>
 
@@ -216,16 +237,11 @@ export default {
                     <div class="modal-body">
                         <p>Nel carrello è già presente uno o più prodotti di un altro ristorante, per poter procedere svuotare prima il carrello</p>
                     </div>
-                    
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="tornaAlRistoranteDelPrimoPiatto()">Torna al ristorante</button>
-                            
-                            
-                           
-
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="delete_storage()">svuota carrello</button>                
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="tornaAlRistoranteDelPrimoPiatto()">Torna al ristorante</button>
+                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="delete_storage()">svuota carrello</button>                
                     </div>
+                </div>
             </div>
         </div>
     </div>
@@ -241,13 +257,25 @@ export default {
 .bg_color_ {
     background-color: white;
 }
-.restaurant_image{
+
+.image_cover {
+    object-fit: cover;
     width: 200px;
     height: 200px;
+    border-radius: 50%;
 }
-.image_cover{
+
+.border_carrello {
+    border-radius: 35px;
+}
+
+.size_dishimage {
+    width: 200px;
+    height: 150px;
     object-fit: cover;
-    width: 100%;
-    height: 100%;
+}
+
+.line {
+    border: 2px solid rgb(48, 110, 92);
 }
 </style>

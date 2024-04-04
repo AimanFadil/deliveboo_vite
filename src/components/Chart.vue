@@ -15,7 +15,9 @@ export default {
 
         remove_article(item, index) {
             if (item.quantity == 1) {
-                carrello.splice(index, 1)
+
+                this.carrello.splice(index, 1)
+
             }
             else {
                 item.quantity -= 1
@@ -49,33 +51,52 @@ export default {
 }
 </script>
 <template lang="">
-
-<div v-if="carrello.length > 0">
-    <div class="p-5">
+<div class="col-12">
+    <div v-if="carrello.length > 0">
         <ul class="list-unstyled">
-            <li v-for="(item, index) in carrello" :key='index' class="d-flex justify-content-around">
-                <strong>{{item.name}}</strong>
-                <div>quantità: {{item.quantity}}</div> 
 
-                prezzo: €{{calc_price(item)}}
-                <!-- {{console.log(my_Chart)}} -->
+            <li v-for="(item, index) in carrello" :key='index' >
+                <div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold text-capitalize">
+                                x{{item.quantity}} {{item.name}}
+                            </div>
+                            <div>
+                                prezzo: €{{calc_price(item)}}
+                            </div>   
+                        </div>
+                        <div class="d-flex">
+                            <div> <button class=" btn btn-sm btn btn_add_two" @click="remove_article(item, index)"><i class="fa-solid fa-minus fa-xs"></i></button></div>
+                            <div class="mx-2 align-self-center"><strong>{{item.quantity}}</strong></div>
+                            <div><button class="btn btn-sm btn btn_add_two" @click="add_article(item)"><i class="fa-solid fa-plus fa-xs"></i></button></div>  
+                        </div>
+                    </div>
+                    <hr>
+                </div>   
 
-                <button class="m-3 px-2" @click="remove_article(item, index)">Rimuovi</button>
-                <button class="m-3 px-2" @click="add_article(item)">Aggiungi</button>
-            </li>
-            <li>costi di consegna: €1,20</li>
-            <li>ordine minimo: €20,00</li>
-            <li>
-                
-                <button><router-link :to="{ name: 'checkout' }" class="btn bg_color_header ">Ordinane {{numberItems()}} a €{{totalPrice()}}</router-link></button>
             </li>
         </ul>
-    </div> 
-</div>
-<div v-else>
-    <h4>non ci sono ancora piatti nel carrello</h4>
-    <!-- <div>SBRIGATI A ORDINARE ALTRIMENTI CHIUDE E MUORI DI FAME, SAI QUANTO COSTANO I FUNERALI DI QUESTI TEMPI?</div> -->
-</div>
+        <ul class="list-unstyled text-center">
+            <li>costi di consegna: €1,20</li>
+            <li>ordine minimo: €20,00</li>
+        </ul>
+        <div class="col-12 d-flex justify-content-center">
+            <button  class="btn btn_add_two w-auto px-3">
+                <router-link :to="{ name: 'checkout' }" class="text_dec_none text-white">Ordina | €{{totalPrice()}}</router-link>
+            </button>
+        </div>    
+    </div>
+    <div v-else class="text-center">
+        <hr>
+        <h4>Non ci sono ancora piatti nel carrello</h4>
+        
+        <div class="green_color my-3"><i class="fa-regular fa-cart-shopping fw-bold fa-xl"></i></div>
+    </div>
+</div>    
             
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use '../styles/generals.scss' as*;
+@use '../styles/partials/variables.scss' as*;
+</style>

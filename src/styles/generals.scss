@@ -36,3 +36,35 @@ main {
 .background-green {
     background-color: rgb(69, 169, 140);
 }
+
+/* buttons */
+.btn_add_ {
+    background-color: rgb(254, 107, 107);
+    color: white;
+    border-radius: 20px;
+
+    &:hover {
+        background-color: rgb(255, 61, 61);
+        color: white;
+    }
+}
+
+.btn_add_two {
+    background-color: rgb(69, 169, 140);
+    color: white;
+    font-size: bold;
+    border-radius: 20px;
+
+    &:hover {
+        background-color: rgb(21, 131, 100);
+        color: white;
+    }
+}
+
+.green_color {
+    color: rgb(69, 169, 140);
+}
+
+.color_red {
+    color: rgb(254, 107, 107);
+}
