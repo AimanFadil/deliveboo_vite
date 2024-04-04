@@ -56,7 +56,7 @@ export default {
                     </div>
 
                     <!-- {{-- partner section --}} -->
-                    <div class="col-4 p-4 d-flex flex-wrap text-white">
+                    <div class="col-3 p-4 d-flex flex-wrap text-white">
                         <div class="col-12">
                             <h5 class=" fw-bold">Alcuni dei nostri partner:</h5>
                         </div>

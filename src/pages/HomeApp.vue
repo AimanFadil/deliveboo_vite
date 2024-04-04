@@ -89,7 +89,7 @@ export default {
                 <div class="row d-flex justify-content-center">
                     <div class="col-12">
                         <div>
-                            <div class="slogan_color text-center" >
+                            <div class="slogan_color text-center " >
                                 Deliveboo porta il tuo cibo preferito direttamente a casa tua.
                             </div>
                         </div>    

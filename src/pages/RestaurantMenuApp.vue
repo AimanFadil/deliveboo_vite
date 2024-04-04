@@ -136,21 +136,21 @@ export default {
                             </div>  
                         </div>
 
-                        <div class="col-12  d-flex" >
+                        <div class="col-12  d-flex " >
 
                             <!-- visulizzazione del menu -->
                             <div class="col-7 mt-5">
-                                <div  v-for="dish, index in store.Menu" :key="index" >
-                                <hr class="line">
+                                <div  v-for="dish, index in store.Menu" :key="index" class="bg-dish my-4 p-3 ">
+                               
                                     <!-- controllo che il piatto sia visibile -->
                                     <div v-if="(dish.visible==true)">
                                         <!-- controllo che il piatto non sia eliminato -->
-                                        <div v-if="(dish.is_delete==false)" class="col-12 d-flex align-items-center mb-3">
+                                        <div v-if="(dish.is_delete==false)" class="col-12 d-flex align-items-center mb-3 ">
                     
                                             <div class="col-4">
-                                                <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" class="size_dishimage">
+                                                <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" class="size_dishimage box_shadow rounded">
                                             </div>
-                                            <div class="col-6 d-flex flex-column ">
+                                            <div class="col-6 d-flex flex-column ms-2">
                                                 <div>
                                                     <div class="fw-semibold text-capitalize fs-3">{{dish.name}}</div>
                                                     <div class="fs-6">{{dish.ingredients}}</div>
@@ -162,7 +162,7 @@ export default {
                                                 
                                             </div>
                                             <div class="col-2 ">
-                                                <button type="button" class="btn btn-sm btn_add_ " data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
+                                                <button type="button" class="btn btn-sm btn_add_   me-1" data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
                                                     <div class="fw-semibold">Aggiungi all ordine</div>
                                                 </button>
                                                 
@@ -175,7 +175,7 @@ export default {
                                     </div>
                                     
                                 </div>
-                                <hr class="line">
+                                
                             </div>
                         <!-- visualizzazzione del carrello -->
                             <div class="col-5 ">
@@ -246,7 +246,7 @@ export default {
                         <p>Nel carrello è già presente uno o più prodotti di un altro ristorante, per poter procedere svuotare prima il carrello</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="tornaAlRistoranteDelPrimoPiatto()">Torna al ristorante</button>
+                        <button type="button" class="btn btn-success border" data-bs-dismiss="modal" @click="tornaAlRistoranteDelPrimoPiatto()">Torna al ristorante</button>
                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="delete_storage()">svuota carrello</button>                
                     </div>
                 </div>
@@ -283,7 +283,21 @@ export default {
     object-fit: cover;
 }
 
-.line {
+/* .line {
     border: 2px solid rgb(48, 110, 92);
+}
+ */
+.bg-dish{
+background-color: rgb(255, 255, 255);
+border: 1px solid rgb(194, 193, 193);
+border-radius: 10px;
+
+&:hover{
+    transform: scale(1.1);
+}
+
+}
+.box_shadow{
+ box-shadow: 10px 10px 5px rgb(45, 74, 66);   
 }
 </style>
