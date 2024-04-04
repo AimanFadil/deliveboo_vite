@@ -1,6 +1,7 @@
 <script>
 import { store } from '../store.js';
 import Loader from '../components/Loader.vue';
+
 export default {
 
     components: {
@@ -8,13 +9,25 @@ export default {
     },
     data() {
         return {
-            store
+            store,
+            loader: true,
+
         }
-    }
+    },
+    components: {
+        Loader,
+    },
+    mounted() {
+        setTimeout(() => {
+            this.loader = false;
+        }, 2000);
+    },
 }
 </script>
 <template lang="">
-    <Loader v-if="isLoading"/>
+
+    <Loader v-if="loader" />
+
     <div v-else>
         <div class="container">
             <div class="row">
@@ -25,10 +38,12 @@ export default {
                     </div>
                     <div>
                     <ul>
+
                         <li>nome e cognome: {{store.OrderCustomer.name}}</li>
                         <li>indirizzo: {{store.OrderCustomer.address}}</li>
                         <li>e-mail: {{store.OrderCustomer.mail}}</li>
                         <li v-if="store.OrderCustomer.phone !=''">telefono: {{store.OrderCustomer.phone}}</li>
+
                     </ul>
                         <h5>Ordine</h5>
                         <ul>

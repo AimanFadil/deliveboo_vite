@@ -4,44 +4,84 @@ export default {
 }
 </script>
 <template>
-    <div class="loader">
-        <h1 class="text-white text-center">Caricamento in corso...</h1>
-        <div class="spinner"></div>
+    <div class="sizing">
+        <div class="d-flex">
+            <p class="loader col-1"></p>
+            <h1 class="col-12 text-white ps-5">Loading...</h1>
+        </div>
     </div>
 </template>
 
-
 <style>
-.loader {
+.sizing {
+    background-color: rgb(0, 0, 0);
+    width: 100vw;
+    height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: green;
     z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 10px solid #fff;
+.loader {
+    position: relative;
+    border: 24px solid #FFF;
     border-radius: 50%;
-    border-top-color: #000;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
+    box-sizing: border-box;
+    animation: eat 1s linear infinite;
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
+.loader::after,
+.loader::before {
+    content: '';
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    opacity: 0;
+    animation: move 2s linear infinite;
+}
+
+.loader::before {
+    animation-delay: 1s;
+}
+
+@keyframes eat {
+
+    0%,
+    49% {
+        border-right-color: #FFF
     }
 
+    50%,
     100% {
-        transform: rotate(360deg);
+        border-right-color: #0000
+    }
+}
+
+@keyframes move {
+    0% {
+        left: 75px;
+        opacity: 1
+    }
+
+    50% {
+        left: 0px;
+        opacity: 1
+    }
+
+    52%,
+    100% {
+        left: -5px;
+        opacity: 0;
     }
 }
 </style>

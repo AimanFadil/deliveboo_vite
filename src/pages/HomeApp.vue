@@ -16,9 +16,15 @@ export default {
             typologies: [],
             SelectedTypologies: [],
             randomRestaurant: [],
+
             isLoading: true
 
+
         }
+    },
+    components: {
+        Loader
+
     },
     created() {
         this.getRestaurant();
@@ -80,6 +86,7 @@ export default {
 }
 </script>
 <template lang="">
+
     <Loader v-if="isLoading"/>
     <div v-else>
         <div class="pt-5 jumbotron_ p-0 ">
@@ -93,6 +100,7 @@ export default {
                                 Deliveboo porta il tuo cibo preferito direttamente a casa tua.
                             </div>
                         </div>    
+
                     </div>
                     <div class="col-12 text-center my-3 ">
                         <h3 class="fw-semibold mt-2 fs-5"> Seleziona la tipologia in base a cosa vuoi mangiare e scegli il locale dal quale vuoi ordinare</h3>
@@ -109,6 +117,7 @@ export default {
                         </div>
                     </ul>
                 </div>
+
             </div>
 
             <div class="container text-black">
@@ -167,6 +176,7 @@ export default {
             </div>
         </main>
     </div>
+
 </template>
 
 <style lang="scss" scoped>

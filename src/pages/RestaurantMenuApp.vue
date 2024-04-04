@@ -11,6 +11,7 @@ export default {
     components: {
         Chart,
         Loader
+
     },
     data() {
         return {
@@ -20,7 +21,9 @@ export default {
             carrello: useLocalStorage(store.Chart, 'Chart'),
             ChosenDish: [],
             restaurant: [],
+
             isLoading: true
+
 
         }
 
@@ -56,7 +59,9 @@ export default {
         GetMenuData() {
             axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
                 this.store.Menu = response.data.results;
+
                 this.isLoading = false
+
             })
         },
         GetResData() {
@@ -116,12 +121,14 @@ export default {
 </script>
 <template lang="">
 
-    <div>
-        <Loader v-if="isLoading"/>
-        <div v-else>
-            <main>
-                <div class="container ">
-                    <div class="row ">
+
+
+    <Loader v-if="isLoading"></Loader>
+    <div v-else>
+         <main>
+            <div class="container ">
+                <div class="row ">
+
 
                     <!-- visulizzazione ristorante scelto -->
                         <div class="col-12 margin_top d-flex justify-content-center ">
@@ -194,7 +201,6 @@ export default {
                 </div>
             </main>   
         </div> 
-    </div>
     <!-- modale -->
     <div class="modal" tabindex="-1" id="modal-pieces">
 
