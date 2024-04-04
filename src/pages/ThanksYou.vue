@@ -23,28 +23,27 @@ export default {
 <template lang="">
     <Loader v-if="loader" />
     <div v-else>
-        <div class="container">
+        <div class="container padding-top-75">
             <div class="row">
                 <div class="col-12">
-                    <div class="text-center">
-                        <h1>Grazie per aver scelto noi</h1>
+                    <div class="text-center fw-bold border-none">
+                        <h1>Grazie per averci scelto!</h1>
                         <h3>Il tuo ordine sarà pronto a breve.</h3>
                     </div>
                     <div>
-                    <ul>
-                            <li>nome e cognome: {{store.OrderCustomer.name}}</li>
-                            <li>indirizzo: {{store.OrderCustomer.address}}</li>
-                            <li>e-mail: {{store.OrderCustomer.mail}}</li>
-                            <li v-if="store.OrderCustomer.phone !=''">telefono: {{store.OrderCustomer.phone}}</li>
+                    <ul class="list-unstyled border-start  border-danger p-3 mt-3">
+                            <li>Nome e Cognome: {{store.OrderCustomer.name}}</li>
+                            <li>Indirizzo: {{store.OrderCustomer.address}}</li>
+                            <li>E-mail: {{store.OrderCustomer.mail}}</li>
+                            <li v-if="store.OrderCustomer.phone !=''">Telefono: {{store.OrderCustomer.phone}}</li>
                     </ul>
                         <h5>Ordine</h5>
-                        <ul>
+                        <ul class="list-unstyled border-start  border-danger p-3 mt-3">
                             <li v-for="product, index in store.OrderProducts" :key="index">
                                 {{product.name}}
                                 {{product.quantity}}
                                 {{product.price}}
                             </li>
-                            
                         </ul>
                     </div>
                 </div>
@@ -52,6 +51,8 @@ export default {
         </div>
     </div>
 </template>
-<style lang="">
-
+<style lang="scss" scoped>
+.padding-top-75 {
+    padding-top: 75px;
+}
 </style>
