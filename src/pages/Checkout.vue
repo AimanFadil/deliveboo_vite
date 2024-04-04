@@ -178,11 +178,11 @@ export default {
                               <td>{{ product.quantity }}pz</td>
                               <td>{{ (product.price *product.quantity).toFixed(2)  }}€</td>
                             </tr>
+                          </tbody>
                             <tr>
                               <td colspan="2"><strong>Totale</strong></td>
                               <td>{{TotalPrice()}}€</td>
                             </tr>
-                          </tbody>
                         </table>
                       </div>
                     </div>
