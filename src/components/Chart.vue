@@ -13,8 +13,7 @@ export default {
     },
     methods: {
         delete_local() {
-            this.carrello = []
-            localStorage.clear()
+            this.carrello.length = 0
         },
         remove_article(item, index) {
             if (item.quantity == 1) {
@@ -42,11 +41,11 @@ export default {
             this.carrello.forEach((item) => {
                 totalPrice += item.price * item.quantity
             })
-            return totalPrice.toFixed()
+            return totalPrice.toFixed(2)
         },
         calc_price(item) {
             let price = item.price * item.quantity
-            return price.toFixed()
+            return price.toFixed(2)
         }
 
 

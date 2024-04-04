@@ -87,6 +87,14 @@ export default {
         return false
       }
       // axios.post(`${this.store.Url}/orders/customer`, { ...this.formOrder })
+    },
+    TotalPrice() {
+      let price = 0;
+      this.checkoutProducts.forEach(element => {
+        price += element.price * element.quantity
+
+      });
+      return price.toFixed(2)
     }
 
   },
@@ -168,9 +176,13 @@ export default {
                             <tr v-for="(product, index) in checkoutProducts" :key="index">
                               <td>{{ product.name }}</td>
                               <td>{{ product.quantity }}pz</td>
-                              <td>{{ product.price }}€</td>
+                              <td>{{ (product.price *product.quantity).toFixed(2)  }}€</td>
                             </tr>
                           </tbody>
+                            <tr>
+                              <td colspan="2"><strong>Totale</strong></td>
+                              <td>{{TotalPrice()}}€</td>
+                            </tr>
                         </table>
                       </div>
                     </div>
