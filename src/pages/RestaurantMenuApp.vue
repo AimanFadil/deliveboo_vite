@@ -4,11 +4,14 @@ import { router } from '../router.js';
 import Chart from "../components/Chart.vue";
 import axios from 'axios';
 import useLocalStorage from '../js/useLocalStorage';
+import Loader from '../components/Loader.vue';
 
 export default {
     name: 'RestaurantMenuApp',
     components: {
-        Chart
+        Chart,
+        Loader
+
     },
     data() {
         return {
@@ -17,7 +20,8 @@ export default {
             showModal: false,
             carrello: useLocalStorage(store.Chart, 'Chart'),
             ChosenDish: [],
-            restaurant: []
+            restaurant: [],
+            isLoading: true,
 
         }
 
@@ -51,6 +55,7 @@ export default {
         GetMenuData() {
             axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
                 this.store.Menu = response.data.results;
+                this.isLoading = false;
             })
         },
         GetResData() {
@@ -110,7 +115,8 @@ export default {
 }
 </script>
 <template lang="">
-    <div>
+    <Loader v-if="isLoading"></Loader>
+    <div v-else>
          <main>
             <div class="container ">
                 <div class="row ">
