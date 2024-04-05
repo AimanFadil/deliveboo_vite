@@ -34,7 +34,7 @@ export default {
   },
   mounted() {
     this.TakeToken()
-    
+
   },
   methods: {
     validateCampi() {
@@ -163,12 +163,10 @@ export default {
 
                       <button  class="button button--small button--green" @click="validateCampi()" >Mannala</button>
                   </div>
-                        
 
-                        <div v-show="isPaymentVisible" >
-
+                        <div v-show="isPaymentVisible">
                           <h5 class="fw-bold" >Prosegui con il pagamento:</h5>
-                          <div id="dropin-container " ></div>
+                          <div id="dropin-container"></div>
                           <button id="submit-button" class="button button--small button--green" @click="buy()" >Purchase</button>
                         </div>     
                 </div>  
