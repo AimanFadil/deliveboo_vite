@@ -126,9 +126,18 @@ export default {
     <Loader v-if="isLoading"></Loader>
     <div v-else>
          <main>
+            <div class="container d-block d-lg-none">
+                <div class="row d-flex justify-content-end">
+                    <div class="col-2 col-md-1 margin_top  text-center d-flex justify-content-end ">
+                        <div class="chart-button p-3 mt-5" type="button"  data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                            <i class="fa-regular fa-cart-shopping fw-bold fa-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="container ">
                 <div class="row ">
-
 
                     <!-- visulizzazione ristorante scelto -->
                         <div class="col-12 margin_top d-flex justify-content-center ">
@@ -146,18 +155,18 @@ export default {
                         <div class="col-12  d-flex " >
 
                             <!-- visulizzazione del menu -->
-                            <div class="col-7 mt-5">
+                            <div class="col-12 col-lg-7 mt-5">
                                 <div  v-for="dish, index in store.Menu" :key="index" >
                                
                                     <!-- controllo che il piatto sia visibile -->
                                     <div class="bg-dish my-4 p-3 " v-if="(dish.visible==true)" >
                                         <!-- controllo che il piatto non sia eliminato -->
-                                        <div v-if="(dish.is_delete==false)" class="col-12 d-flex align-items-center mb-3 ">
+                                        <div v-if="(dish.is_delete==false)" class="col-12 d-flex align-items-center flex-wrap mb-3 justify-content-between">
                     
-                                            <div class="col-4">
+                                            <div class="col-12 col-lg-4 m-2">
                                                 <img :src="dish.image == null ? 'https://www.leggimenu.it/wp-content/uploads/2023/02/menu-digitale-online-delivery.jpg':`${store.photoUrl}/storage/${dish.image}`" class="size_dishimage box_shadow rounded">
                                             </div>
-                                            <div class="col-6 d-flex flex-column ms-2">
+                                            <div class="col-12  col-lg-5 d-flex flex-column ">
                                                 <div>
                                                     <div class="fw-semibold text-capitalize fs-3">{{dish.name}}</div>
                                                     <div class="fs-6">{{dish.ingredients}}</div>
@@ -168,14 +177,10 @@ export default {
                                                 </div>
                                                 
                                             </div>
-                                            <div class="col-2 ">
-                                                <button type="button" class="btn btn-sm btn_add_   me-1" data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
+                                            <div class="col-12 col-lg-2 d-flex justify-content-end d-lg-block ">
+                                                <button type="button" class="btn btn-sm btn_add_  " data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
                                                     <div class="fw-semibold">Aggiungi all ordine</div>
                                                 </button>
-                                                
-                                            </div>
-                                            <div class="col-12">
-                                                
                                             </div>
                                         
                                         </div>
@@ -185,7 +190,7 @@ export default {
                                 
                             </div>
                         <!-- visualizzazzione del carrello -->
-                            <div class="col-5 ">
+                            <div class="d-none d-lg-block col-5 ">
                                 <div class="d-flex justify-content-end ">
                                     
                                     <div class="card p-3 border_carrello" style="width:80%;">
@@ -260,6 +265,20 @@ export default {
         </div>
     </div>
 
+    <!-- offcanvas -->
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title fs-4 text-center green_color fw-semibold my-2" id="offcanvasExampleLabel">Carrello</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body ">
+            <div class="card p-3 border_carrello" style="width:100%;">
+            <Chart :carrello='this.carrello'/> 
+            </div>
+        </div>
+    </div>
+
     
 
 </template>
@@ -307,4 +326,19 @@ export default {
 .box_shadow {
     box-shadow: 10px 10px 5px rgb(45, 74, 66);
 }
+
+.chart-button{
+    position: fixed;
+    z-index: 1;
+    color:rgb(255, 255, 255);
+    background-color:  rgb(249, 119, 119);
+    border-radius: 50%;
+
+    &:hover{
+        background-color:  rgb(254, 76, 76);
+        border: 1px solid red;
+    }
+}
+
+
 </style>
