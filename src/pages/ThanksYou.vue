@@ -1,6 +1,6 @@
 <script>
-import { store } from '../store.js';
 import Loader from '../components/Loader.vue';
+import { store } from '../store.js';
 
 export default {
     data() {
@@ -32,19 +32,43 @@ export default {
                     </div>
                     <div>
                     <ul class="list-unstyled border-start  border-danger p-3 mt-3">
-                            <li>Nome e Cognome: {{store.OrderCustomer.name}}</li>
-                            <li>Indirizzo: {{store.OrderCustomer.address}}</li>
-                            <li>E-mail: {{store.OrderCustomer.mail}}</li>
-                            <li v-if="store.OrderCustomer.phone !=''">Telefono: {{store.OrderCustomer.phone}}</li>
+                            <li><strong>Cliente:</strong> {{store.OrderCustomer.name}}</li>
+                            <li><strong>Indirizzo:</strong> {{store.OrderCustomer.address}}</li>
+                            <li><strong>Email:</strong> {{store.OrderCustomer.mail}}</li>
+                            <li v-if="store.OrderCustomer.phone !=''"><strong>Telefono:</strong> {{store.OrderCustomer.phone}}</li>
                     </ul>
-                        <h5>Ordine</h5>
-                        <ul class="list-unstyled border-start  border-danger p-3 mt-3">
+                        <h5 class="margin-top-75">Ordine</h5>
+                        <!-- <ul class="list-unstyled border-start  border-danger p-3 mt-3">
                             <li v-for="product, index in store.OrderProducts" :key="index">
                                 {{product.name}}
                                 {{product.quantity}}
                                 {{product.price}}
                             </li>
-                        </ul>
+                        </ul> -->
+                        <div class="col-4">
+                            <div class="bg-white p-4 border-start border-danger">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Prodotto</th>
+                                                    <th scope="col">Quantità</th>
+                                                    <th scope="col">Totale</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="product, index in store.OrderProducts" :key="index">
+                                                    <td>{{product.name}}</td>
+                                                    <td>{{product.quantity}} pz</td>
+                                                    <td>{{product.price * product.quantity}}€</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,5 +78,17 @@ export default {
 <style lang="scss" scoped>
 .padding-top-75 {
     padding-top: 75px;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.margin-top {
+    margin-top: 90px;
+}
+
+.margin-top-75 {
+    margin-top: 75px;
 }
 </style>

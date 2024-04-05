@@ -41,6 +41,12 @@ export default {
 
                         <div class="w-auto d-flex align-items-center">
 
+                            <div class="hover-navitem">
+                                <a  v-if="$route.path === '/'" class="color_text_header fw-bold pe-3" href="http://127.0.0.1:8000/login/" >
+                                    Accedi al Ristorante</a>
+                            </div>
+
+
                             <div class="fw-bold ">
                                 <router-link :to="{ name: 'home' }" class="hover-navitem">
                                     <i class="fa-solid fa-house"></i> Home</router-link>
@@ -48,7 +54,7 @@ export default {
 
                             <!-- <button class="btn ps-3 fw-bold d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
                                 <div class="hover-navitem">
-                                    <span class="me-1" ><i class="fa-regular fa-cart-shopping fw-bold"></i></span>Carrello 
+                                    <span class="me-1" ><i class="fa-regular fa-cart-shopping fw-bold"></i></span>Carrello
                                 </div>
                             </button> -->
                         </div>
@@ -78,6 +84,13 @@ export default {
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
 @use '../styles/partials/variables.scss' as*;
+
+a{
+    text-decoration: none;
+    color: inherit;
+    color : $red-light
+
+}
 
 nav {
     position: fixed;
