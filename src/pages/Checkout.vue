@@ -199,15 +199,16 @@ export default {
                   store.OrderCustomer = store.formOrder
                   store.OrderProducts = formChart.products
                   axios.post(`${store.Url}/orders/customer`, { ... store.formOrder })
+                  store.formOrder =[]
                   localStorage.clear()
                   router.push({ path: '/ThanksYou' })
-              }
-              catch(err){
+                }
+                catch(err){
                   console.log(err)
-              }
-
+                }
+                
+              })
             })
-          })
         })
       })
     }
