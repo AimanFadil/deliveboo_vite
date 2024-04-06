@@ -238,7 +238,7 @@ ul.ks-cboxtags li label {
     display: inline-block;
     background-color: rgba(255, 255, 255, .9);
     border: 2px solid rgba(139, 139, 139, .3);
-    color: #adadad;
+    color: #535353;
     border-radius: 25px;
     white-space: nowrap;
     margin: 3px 0px;

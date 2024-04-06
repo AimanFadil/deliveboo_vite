@@ -191,12 +191,12 @@ export default {
                             <tr v-for="(product, index) in checkoutProducts" :key="index">
                               <td>{{ product.name }}</td>
                               <td>{{ product.quantity }}pz</td>
-                              <td>{{ (product.price *product.quantity).toFixed(2)  }}€</td>
+                              <td>{{ (product.price *product.quantity).toFixed(2).replace(".",",")  }}€</td>
                             </tr>
                           </tbody>
                             <tr>
                               <td colspan="2"><strong>Totale</strong></td>
-                              <td>{{TotalPrice()}}€</td>
+                              <td>{{TotalPrice().replace(".",",")}}€</td>
                             </tr>
                         </table>
                       </div>
