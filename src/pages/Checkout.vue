@@ -263,7 +263,7 @@ export default {
                     </div>
                     
                     <div class="col-12 d-flex justify-content-between align-items-center">
-                      <button  class="button button--small button--green" @click="validateCampi()" >Procedi al Pagamento</button>
+                      <button  class="button button--small button--green p-1" @click="validateCampi()" >Procedi al Pagamento</button>
                       <div>
                         i campi contrassegnati con " <strong class="text-danger">*</strong> " sono obbligatori
                       </div>
@@ -273,38 +273,45 @@ export default {
 
                     <div v-show="isPaymentVisible">
                       <div class="bootstrap-basic">
-                        <form class="needs-validation m-5 p-5" novalidate="">     
-                          <div class="row">
+                        <form class="needs-validation" novalidate="">     
+                          <div class="row flex-column">
                             <div class="col-sm-6 mb-3">
-                              <label for="cc-number">Credit card number</label>
-                              <div class="form-control" id="cc-number"></div>
+                              <label for="cc-number">Numero Carta di Credito</label>
+                              <div class="d-flex justify-content-between">
+                                <div class="form-control mt-2 height-35" id="cc-number"></div>
+                                <span class="d-flex justify-content-around align-items-center ms-4">
+                                  <i class="fa-brands fa-cc-visa font-30"></i>
+                                  <i class="fa-brands fa-cc-mastercard font-30 p-2"></i>
+                                  <i class="fa-brands fa-cc-jcb font-30"></i>
+                                </span>
+                              </div>
                               <div class="invalid-feedback">
-                                  Credit card number is required
+                                  Numero carta di credito richiesto
                               </div>
                             </div>
                             <div class="col-sm-3 mb-3">
-                                <label for="cc-expiration">Expiration</label>
-                                <div class="form-control" id="cc-expiration"></div>
+                                <label for="cc-expiration">Scadenza</label>
+                                <div class="form-control mt-2 height-35" id="cc-expiration"></div>
                                 <div class="invalid-feedback">
-                                    Expiration date required
+                                    Data di scadenza richiesta
                                 </div>
                             </div>
                             <div class="col-sm-3 mb-3">
                                 <label for="cc-expiration">CVV</label>
-                                <div class="form-control" id="cc-cvv"></div>
+                                <div class="form-control mt-2 height-35" id="cc-cvv"></div>
                                 <div class="invalid-feedback">
-                                    Security code required
+                                    Codice di sicurezza richiesto
                                 </div>
                             </div>
                           </div>
 
                           <hr class="mb-4">
-                          <div class="text-center">
-                              <button class="btn btn-primary btn-lg" type="submit">Pay with <span id="card-brand">Card</span></button>
+                          <div class="text-start">
+                              <button class="button button--small button--green p-1" type="submit">Paga con <span id="card-brand"></span></button>
                           </div>
                         </form>
                       </div>
-                      <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+                      <!-- <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
                           <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
                               <div class="toast-header">
                                   <strong class="mr-auto">Success!</strong>
@@ -317,7 +324,7 @@ export default {
                               Next, submit the payment method nonce to your server.
                           </div>
                         </div>
-                      </div>
+                      </div> -->
                     </div>     
                   </div>  
                 </div>
@@ -400,5 +407,13 @@ export default {
 
 .margin-top {
   margin-top: 90px;
+}
+
+.height-35{
+  height: 35px;
+}
+
+.font-30{
+  font-size: 30px
 }
 </style>
