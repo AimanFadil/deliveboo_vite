@@ -34,22 +34,26 @@ export default {
         <div id="navbar">
             <nav :class="{ 'onScroll': !this.view.topOfPage}">
                 <div class="container p-2 ">
-                    <div class="row d-flex justify-content-between flex-wrap">
-                        <div class='w-auto'>
+                    <div class="row d-flex justify-content-between ">
+                        <div class='col-6 col-md-7'>
                             <img src="../assets/logo-deliveboo-removedbg.png" alt="" class="size_">
                         </div>
 
-                        <div class="w-auto d-flex align-items-center">
+                        <div class=" d-flex justify-content-end align-items-center col-6 col-md-4">
 
-                            <div class="fw-bold ">
-                                <a  v-if="$route.path === '/'" class="hover-navitem pe-3" href="http://127.0.0.1:8000" >
-                                    <i class="fa-solid fa-user mx-1"></i> Accedi al Ristorante</a>
+                            <div class="fw-bold me-3">
+                                <a  v-if="$route.path === '/'" class="hover-navitem " href="http://127.0.0.1:8000" >                
+                                    <i class="fa-solid fa-user mx-1"></i>Accedi
+                                </a>
                             </div>
 
 
                             <div class="fw-bold ">
-                                <router-link :to="{ name: 'home' }" class="hover-navitem">
-                                    <i class="fa-solid fa-house"></i> Home</router-link>
+                                <router-link :to="{ name: 'home' }" >
+                                    <div class="hover-navitem">
+                                        <i class="fa-solid fa-house"></i> Home
+                                    </div>
+                                </router-link>
                             </div>
 
                             <!-- <button class="btn ps-3 fw-bold d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
