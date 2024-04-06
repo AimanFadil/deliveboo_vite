@@ -62,10 +62,10 @@ export default {
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <div class="fw-semibold text-capitalize">
-                                x{{item.quantity}} {{item.name}}
+                                {{item.name}} x{{item.quantity}} 
                             </div>
                             <div>
-                                prezzo: €{{calc_price(item)}}
+                                prezzo: {{calc_price(item)}} €
                             </div>   
                         </div>
                         <div class="d-flex">

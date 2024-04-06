@@ -131,17 +131,23 @@ export default {
                     <h5 class="fw-bold my-4">Dati di spedizione:</h5>
                   
                     <div class="my-4">
-                      <label for="nome">Nome e Cognome</label>
+                      <label for="nome">Nome e Cognome
+                        <span class="text-danger fw-bold">*</span>
+                      </label>
                       <input type="text" class="form-control" name="nome" id="nome" required v-model='formOrder.name'>
                     </div>
                   
                     <div class="my-4">
-                      <label for="mail">Mail</label>
+                      <label for="mail">Mail
+                        <span class="text-danger fw-bold">*</span>
+                      </label>
                       <input type="mail" class="form-control" name="mail" id="mail" required v-model='formOrder.mail'>
                     </div>
                   
                     <div class="my-4">
-                      <label for="address">Indirizzo</label>
+                      <label for="address">Indirizzo
+                        <span class="text-danger fw-bold">*</span>
+                      </label>
                       <input type="text" class="form-control" name="address" id="address" required v-model='formOrder.address'>
                     </div>
                   
@@ -160,8 +166,13 @@ export default {
                       <input type="text" class="form-control" name="phone" id="phone" v-model='formOrder.phone'>
                     </div>
                     
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                      <button  class="button button--small button--green" @click="validateCampi()" >Procedi al Pagamento</button>
+                      <div>
+                        i campi contrassegnati con " <strong class="text-danger">*</strong> " sono obbligatori
+                      </div>
+                  </div>
 
-                      <button  class="button button--small button--green" @click="validateCampi()" >Mannala</button>
                   </div>
 
                         <div v-show="isPaymentVisible">
