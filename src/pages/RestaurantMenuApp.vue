@@ -227,7 +227,7 @@ export default {
                     </div>  
                 </div>
                 <div class="d-flex justify-content-end px-2">
-                    <div class="fs-5 fw-bold">€{{ChosenDish.price.replace(".",",")}}</div>
+                    <!-- <div class="fs-5 fw-bold">€{{ChosenDish.price.replace(".",",")}}</div> -->
                 </div>
                 <div class="modal-footer">
                     <span>

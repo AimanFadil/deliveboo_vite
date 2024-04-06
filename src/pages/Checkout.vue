@@ -36,6 +36,20 @@ export default {
 
   },
   methods: {
+    remove_article(item, index) {
+            if (item.quantity == 1) {
+
+                this.carrello.splice(index, 1)
+
+            }
+            else {
+                item.quantity -= 1
+            }
+
+        },
+        add_article(item) {
+            item.quantity += 1
+        },
     validateCampi() {
       if (store.formOrder.name && store.formOrder.mail && store.formOrder.address != '') {
 
@@ -199,8 +213,8 @@ export default {
                 store.OrderCustomer = store.formOrder
                 store.OrderProducts = formChart.products
                 axios.post(`${store.Url}/orders/customer`, { ...store.formOrder })
-                store.formOrder = []
                 localStorage.clear()
+                store.formOrder = []
                 router.push({ path: '/ThanksYou' })
               }
               catch (err) {
@@ -340,7 +354,14 @@ export default {
                           <tbody>
                             <tr v-for="(product, index) in checkoutProducts" :key="index">
                               <td>{{ product.name }}</td>
-                              <td>{{ product.quantity }}pz</td>
+                              
+                            
+                              
+                              <td class="mx-2 align-self-center">
+                                <span> <button class=" btn btn-sm btn me-2" @click="remove_article(product, index)"><i class="fa-solid fa-minus fa-xs"></i></button></span>
+                                <strong>{{product.quantity}}pz</strong>
+                                <span><button class="btn btn-sm btn ms-2" @click="add_article(product)"><i class="fa-solid fa-plus fa-xs"></i></button></span>  
+                              </td>
                               <td>{{ (product.price *product.quantity).toFixed(2).replace(".",",")  }}€</td>
                             </tr>
                           </tbody>
