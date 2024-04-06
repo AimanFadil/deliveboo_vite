@@ -61,6 +61,7 @@ export default {
                 this.store.Menu = response.data.results;
                 this.isLoading = false
 
+
             })
         },
         GetResData() {
@@ -110,7 +111,7 @@ export default {
             };
 
             this.NumberofPieces = 1;
-
+            console.log(this.dish)
 
         },
     },
@@ -322,18 +323,16 @@ export default {
     box-shadow: 10px 10px 5px rgb(45, 74, 66);
 }
 
-.chart-button{
+.chart-button {
     position: fixed;
     z-index: 1;
-    color:rgb(255, 255, 255);
-    background-color:  rgb(249, 119, 119);
+    color: rgb(255, 255, 255);
+    background-color: rgb(249, 119, 119);
     border-radius: 50%;
 
-    &:hover{
-        background-color:  rgb(254, 76, 76);
+    &:hover {
+        background-color: rgb(254, 76, 76);
         border: 1px solid red;
     }
 }
-
-
 </style>
