@@ -2,7 +2,6 @@
 import { store } from '../store.js';
 import Chart from '../components/Chart.vue';
 import { router } from '../router.js'
-import dropin from 'braintree-web-drop-in';
 import useLocalStorage from '../js/useLocalStorage';
 // import checkout from '../checkout';
 import axios from 'axios';
@@ -38,7 +37,7 @@ export default {
   },
   methods: {
     validateCampi() {
-      if (this.formOrder.name && this.formOrder.mail && this.formOrder.address != '') {
+      if (store.formOrder.name && store.formOrder.mail && store.formOrder.address != '') {
 
         this.isPaymentVisible = true;
 
@@ -48,55 +47,10 @@ export default {
       axios.get(`${this.store.Url}/orders/generate`).then((response) => {
         let token = response.data.token;
         this.TokenApi = token
-        this.makeDropin(token)
+        this.makeDropin(token, store)
       })
     },
-    makeDropin(token) {
-      let button = document.querySelector('#submit-button');
-      braintree.dropin.create({
-        authorization: token,
-        selector: '#dropin-container'
-      }, function (err, instance) {
-        button.addEventListener('click', function () {
-          instance.requestPaymentMethod(function (err, payload) {
-
-
-            if (err) {
-              console.error(err);
-              return;
-            }
-
-
-
-
-          });
-
-        })
-      });
-    },
-    buy() {
-      /* if (this.validateCampi()) {
-        this.isPaymentVisible = true;
-
-        this.formChart.token = "fake-valid-nonce"
-        console.log(this.formChart)
-        axios.post(`${this.store.Url}/orders/makePayment`, { ...this.formChart })
-        store.OrderCustomer = this.formOrder
-        store.OrderProducts = this.formChart.products
-        axios.post(`${this.store.Url}/orders/customer`, { ... this.formOrder })
-        localStorage.clear()
-        router.push({ path: '/ThanksYou' })
-      } */
-      this.formChart.token = "fake-valid-nonce"
-      console.log(this.formChart)
-      axios.post(`${this.store.Url}/orders/makePayment`, { ...this.formChart })
-      store.OrderCustomer = this.formOrder
-      store.OrderProducts = this.formChart.products
-      axios.post(`${this.store.Url}/orders/customer`, { ... this.formOrder })
-      localStorage.clear()
-      router.push({ path: '/ThanksYou' })
-    },
-
+    
     TotalPrice() {
       let price = 0;
       this.checkoutProducts.forEach(element => {
@@ -104,12 +58,162 @@ export default {
 
       });
       return price.toFixed(2)
+    },
+    makeDropin(token, store) {
+      // let form = document.getElementById('cardForm');
+      var form = $('form');
+
+      braintree.client.create({
+        authorization: token
+      }, function(err, clientInstance) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+
+        braintree.hostedFields.create({
+          preventAutofill: false,
+          client: clientInstance,
+          styles: {
+            input: {
+              'font-size': '1rem',
+              color: '#495057'
+            }
+          },
+          fields: {
+            number: {
+              selector: '#cc-number',
+              placeholder: '4111 1111 1111 1111'
+            },
+            cvv: {
+              selector: '#cc-cvv',
+              placeholder: '123'
+            },
+            expirationDate: {
+              selector: '#cc-expiration',
+              placeholder: 'MM / YY'
+            }
+          }
+          }, function(err, hostedFieldsInstance) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          function createInputChangeEventListener(element) {
+            return function () {
+              validateInput(element);
+            }
+          }
+
+          function setValidityClasses(element, validity) {
+            if (validity) {
+              element.removeClass('is-invalid');
+              element.addClass('is-valid');  
+            } else {
+              element.addClass('is-invalid');
+              element.removeClass('is-valid');  
+            }    
+          }
+          
+          function validateInput(element) {
+
+            if (!element.val().trim()) {
+              setValidityClasses(element, false);
+
+              return false;
+            }
+
+            setValidityClasses(element, true);
+
+            return true;
+          }
+          hostedFieldsInstance.on('validityChange', function(event) {
+            var field = event.fields[event.emittedBy];
+
+            // Remove any previously applied error or warning classes
+            $(field.container).removeClass('is-valid');
+            $(field.container).removeClass('is-invalid');
+
+            if (field.isValid) {
+              $(field.container).addClass('is-valid');
+            } else if (field.isPotentiallyValid) {
+              // skip adding classes if the field is
+              // not valid, but is potentially valid
+            } else {
+              $(field.container).addClass('is-invalid');
+            }
+          });
+
+          hostedFieldsInstance.on('cardTypeChange', function(event) {
+            var cardBrand = $('#card-brand');
+            var cvvLabel = $('[for="cc-cvv"]');
+
+            if (event.cards.length === 1) {
+              var card = event.cards[0];
+
+              // change pay button to specify the type of card
+              // being used
+              cardBrand.text(card.niceType);
+              // update the security code label
+              cvvLabel.text(card.code.name);
+            } else {
+              // reset to defaults
+              cardBrand.text('Card');
+              cvvLabel.text('CVV');
+            }
+          });
+
+          form.submit(function(event) {
+            event.preventDefault();
+
+            var formIsInvalid = false;
+            var state = hostedFieldsInstance.getState();
+
+            Object.keys(state.fields).forEach(function(field) {
+              if (!state.fields[field].isValid) {
+                $(state.fields[field].container).addClass('is-invalid');
+                formIsInvalid = true;
+              }
+            });
+
+            if (formIsInvalid) {
+              return;
+            }
+
+            hostedFieldsInstance.tokenize(function(err, payload) {
+              if (err) {
+                console.error(err);
+                return;
+              }
+
+              // This is where you would submit payload.nonce to your server
+              try{
+                  let formChart = {
+                  token: '',
+                  products: useLocalStorage(store.Chart, 'Chart').value
+                  }
+                  formChart.token = payload.nonce
+                  console.log(formChart)
+                  axios.post(`${store.Url}/orders/makePayment`, { ...formChart })
+                  store.formOrder.products = useLocalStorage(store.Chart, 'Chart').value
+                  store.OrderCustomer = store.formOrder
+                  store.OrderProducts = formChart.products
+                  axios.post(`${store.Url}/orders/customer`, { ... store.formOrder })
+                  store.formOrder =[]
+                  localStorage.clear()
+                  router.push({ path: '/ThanksYou' })
+                }
+                catch(err){
+                  console.log(err)
+                }
+                
+              })
+            })
+        })
+      })
     }
-
-
-
-
   },
+
   computed: {
     checkoutProducts() {
       return useLocalStorage(store.Chart, 'Chart').value;
@@ -132,45 +236,79 @@ export default {
                   
                     <div class="my-4">
                       <label for="nome">Nome e Cognome</label>
-                      <input type="text" class="form-control" name="nome" id="nome" required v-model='formOrder.name'>
+                      <input type="text" class="form-control" name="nome" id="nome" required v-model='store.formOrder.name'>
                     </div>
                   
                     <div class="my-4">
                       <label for="mail">Mail</label>
-                      <input type="mail" class="form-control" name="mail" id="mail" required v-model='formOrder.mail'>
+                      <input type="mail" class="form-control" name="mail" id="mail" required v-model='store.formOrder.mail'>
                     </div>
                   
                     <div class="my-4">
                       <label for="address">Indirizzo</label>
-                      <input type="text" class="form-control" name="address" id="address" required v-model='formOrder.address'>
+                      <input type="text" class="form-control" name="address" id="address" required v-model='store.formOrder.address'>
                     </div>
                   
-                    <!-- <div class="my-4">
-                      <label for="cap">CAP</label>
-                      <input type="text" class="form-control" name="cap" id="cap" required>
-                    </div>
-                  
-                    <div class="my-4">
-                      <label for="citta">Città</label>
-                      <input type="text" class="form-control" name="citta" id="citta" required>
-                    </div> -->
 
                     <div class="my-4">
                       <label for="phone">Telefono</label>
-                      <input type="text" class="form-control" name="phone" id="phone" v-model='formOrder.phone'>
+                      <input type="text" class="form-control" name="phone" id="phone" v-model='store.formOrder.phone'>
                     </div>
                     
 
                       <button  class="button button--small button--green" @click="validateCampi()" >Mannala</button>
                   </div>
 
-                        <div v-show="isPaymentVisible">
-                          <h5 class="fw-bold" >Prosegui con il pagamento:</h5>
-                          <div id="dropin-container"></div>
-                          <button id="submit-button" class="button button--small button--green" @click="buy()" >Purchase</button>
-                        </div>     
-                </div>  
-            </div>
+                    <div v-show="isPaymentVisible">
+                      <div class="bootstrap-basic">
+                        <form class="needs-validation m-5 p-5" novalidate="">     
+                          <div class="row">
+                            <div class="col-sm-6 mb-3">
+                              <label for="cc-number">Credit card number</label>
+                              <div class="form-control" id="cc-number"></div>
+                              <div class="invalid-feedback">
+                                  Credit card number is required
+                              </div>
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <label for="cc-expiration">Expiration</label>
+                                <div class="form-control" id="cc-expiration"></div>
+                                <div class="invalid-feedback">
+                                    Expiration date required
+                                </div>
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <label for="cc-expiration">CVV</label>
+                                <div class="form-control" id="cc-cvv"></div>
+                                <div class="invalid-feedback">
+                                    Security code required
+                                </div>
+                            </div>
+                          </div>
+
+                          <hr class="mb-4">
+                          <div class="text-center">
+                              <button class="btn btn-primary btn-lg" type="submit">Pay with <span id="card-brand">Card</span></button>
+                          </div>
+                        </form>
+                      </div>
+                      <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+                          <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                              <div class="toast-header">
+                                  <strong class="mr-auto">Success!</strong>
+                                  <small>Just now</small>
+                                  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                          <div class="toast-body">
+                              Next, submit the payment method nonce to your server.
+                          </div>
+                        </div>
+                      </div>
+                    </div>     
+                  </div>  
+                </div>
 
             <!-- carrello -->
             <div class="col-12 col-lg-4 margin-top ">
@@ -210,29 +348,29 @@ export default {
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
 
-.bg-white {
-  background-color: white;
+.toast {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 9999;
 }
 
-.button {
-  cursor: pointer;
-  font-weight: 500;
-  left: 3px;
-  line-height: inherit;
-  position: relative;
-  text-decoration: none;
-  text-align: center;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 3px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  display: inline-block;
+.bootstrap-basic {
+  background: white;
 }
 
-.button--small {
-  padding: 10px 20px;
-  font-size: 0.875rem;
+/* Braintree Hosted Fields styling classes*/
+.braintree-hosted-fields-focused {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.braintree-hosted-fields-focused.is-invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 }
 
 .button--green {

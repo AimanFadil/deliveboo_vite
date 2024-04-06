@@ -12,7 +12,14 @@ export const store = reactive({
     OrderProducts: [],
     OrderCustomer: [],
 
-
+    formOrder: {
+        name: '',
+        mail: '',
+        address: '',
+        phone: '',
+        products: [],
+        price: 5
+    },
     loading: true,
 
 });
