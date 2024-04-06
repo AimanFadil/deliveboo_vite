@@ -50,7 +50,7 @@ export default {
         this.makeDropin(token, store)
       })
     },
-    
+
     TotalPrice() {
       let price = 0;
       this.checkoutProducts.forEach(element => {
@@ -65,10 +65,10 @@ export default {
 
       braintree.client.create({
         authorization: token
-      }, function(err, clientInstance) {
+      }, function (err, clientInstance) {
         if (err) {
-            console.error(err);
-            return;
+          console.error(err);
+          return;
         }
 
         braintree.hostedFields.create({
@@ -94,7 +94,7 @@ export default {
               placeholder: 'MM / YY'
             }
           }
-          }, function(err, hostedFieldsInstance) {
+        }, function (err, hostedFieldsInstance) {
           if (err) {
             console.error(err);
             return;
@@ -108,13 +108,13 @@ export default {
           function setValidityClasses(element, validity) {
             if (validity) {
               element.removeClass('is-invalid');
-              element.addClass('is-valid');  
+              element.addClass('is-valid');
             } else {
               element.addClass('is-invalid');
-              element.removeClass('is-valid');  
-            }    
+              element.removeClass('is-valid');
+            }
           }
-          
+
           function validateInput(element) {
 
             if (!element.val().trim()) {
@@ -127,7 +127,7 @@ export default {
 
             return true;
           }
-          hostedFieldsInstance.on('validityChange', function(event) {
+          hostedFieldsInstance.on('validityChange', function (event) {
             var field = event.fields[event.emittedBy];
 
             // Remove any previously applied error or warning classes
@@ -144,7 +144,7 @@ export default {
             }
           });
 
-          hostedFieldsInstance.on('cardTypeChange', function(event) {
+          hostedFieldsInstance.on('cardTypeChange', function (event) {
             var cardBrand = $('#card-brand');
             var cvvLabel = $('[for="cc-cvv"]');
 
@@ -163,13 +163,13 @@ export default {
             }
           });
 
-          form.submit(function(event) {
+          form.submit(function (event) {
             event.preventDefault();
 
             var formIsInvalid = false;
             var state = hostedFieldsInstance.getState();
 
-            Object.keys(state.fields).forEach(function(field) {
+            Object.keys(state.fields).forEach(function (field) {
               if (!state.fields[field].isValid) {
                 $(state.fields[field].container).addClass('is-invalid');
                 formIsInvalid = true;
@@ -180,35 +180,35 @@ export default {
               return;
             }
 
-            hostedFieldsInstance.tokenize(function(err, payload) {
+            hostedFieldsInstance.tokenize(function (err, payload) {
               if (err) {
                 console.error(err);
                 return;
               }
 
               // This is where you would submit payload.nonce to your server
-              try{
-                  let formChart = {
+              try {
+                let formChart = {
                   token: '',
                   products: useLocalStorage(store.Chart, 'Chart').value
-                  }
-                  formChart.token = payload.nonce
-                  console.log(formChart)
-                  axios.post(`${store.Url}/orders/makePayment`, { ...formChart })
-                  store.formOrder.products = useLocalStorage(store.Chart, 'Chart').value
-                  store.OrderCustomer = store.formOrder
-                  store.OrderProducts = formChart.products
-                  axios.post(`${store.Url}/orders/customer`, { ... store.formOrder })
-                  store.formOrder =[]
-                  localStorage.clear()
-                  router.push({ path: '/ThanksYou' })
                 }
-                catch(err){
-                  console.log(err)
-                }
-                
-              })
+                formChart.token = payload.nonce
+                console.log(formChart)
+                axios.post(`${store.Url}/orders/makePayment`, { ...formChart })
+                store.formOrder.products = useLocalStorage(store.Chart, 'Chart').value
+                store.OrderCustomer = store.formOrder
+                store.OrderProducts = formChart.products
+                axios.post(`${store.Url}/orders/customer`, { ...store.formOrder })
+                store.formOrder = []
+                localStorage.clear()
+                router.push({ path: '/ThanksYou' })
+              }
+              catch (err) {
+                console.log(err)
+              }
+
             })
+          })
         })
       })
     }
@@ -235,28 +235,40 @@ export default {
                     <h5 class="fw-bold my-4">Dati di spedizione:</h5>
                   
                     <div class="my-4">
-                      <label for="nome">Nome e Cognome</label>
+
+                      <label for="nome">Nome e Cognome
+                        <span class="text-danger fw-bold">*</span>
+                      </label>
                       <input type="text" class="form-control" name="nome" id="nome" required v-model='store.formOrder.name'>
                     </div>
                   
                     <div class="my-4">
-                      <label for="mail">Mail</label>
+                      <label for="mail">Mail
+                        <span class="text-danger fw-bold">*</span>
+                      </label>
                       <input type="mail" class="form-control" name="mail" id="mail" required v-model='store.formOrder.mail'>
                     </div>
                   
                     <div class="my-4">
-                      <label for="address">Indirizzo</label>
+                      <label for="address">Indirizzo
+                        <span class="text-danger fw-bold">*</span>
+                      </label>
                       <input type="text" class="form-control" name="address" id="address" required v-model='store.formOrder.address'>
+
                     </div>
-                  
 
                     <div class="my-4">
                       <label for="phone">Telefono</label>
                       <input type="text" class="form-control" name="phone" id="phone" v-model='store.formOrder.phone'>
                     </div>
                     
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                      <button  class="button button--small button--green" @click="validateCampi()" >Procedi al Pagamento</button>
+                      <div>
+                        i campi contrassegnati con " <strong class="text-danger">*</strong> " sono obbligatori
+                      </div>
+                  </div>
 
-                      <button  class="button button--small button--green" @click="validateCampi()" >Mannala</button>
                   </div>
 
                     <div v-show="isPaymentVisible">

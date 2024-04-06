@@ -34,7 +34,7 @@ export default {
 
                         <div class="my-4 red-hover">
                             <i class="fa-solid fa-envelope  "> <span
-                                    class="text-decoration-none">Deliveboo@delivery.com</span></i>
+                                    class="text-decoration-none"> Deliveboo@delivery.com</span></i>
                         </div>
 
                         <div class="my-4">

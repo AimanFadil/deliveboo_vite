@@ -61,6 +61,7 @@ export default {
                 <div>
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
+
                             <div class="fw-semibold text-capitalize ">
                                  {{item.name}}  x{{item.quantity}}
                             </div>
@@ -69,6 +70,7 @@ export default {
                             </div>
                             <div class="chart_price fw-semibold">
                                 Prezzo: €{{calc_price(item).replace(".",",")}}
+
                             </div>   
                         </div>
                         <div class="d-flex">
@@ -112,7 +114,7 @@ export default {
 @use '../styles/generals.scss' as*;
 @use '../styles/partials/variables.scss' as*;
 
-.chart_price{
+.chart_price {
     font-size: 14px;
 }
 </style>
