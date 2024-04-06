@@ -41,9 +41,9 @@ export default {
 
                         <div class="w-auto d-flex align-items-center">
 
-                            <div class="hover-navitem">
-                                <a  v-if="$route.path === '/'" class="color_text_header fw-bold pe-3" href="http://127.0.0.1:8000/login/" >
-                                    Accedi al Ristorante</a>
+                            <div class="fw-bold ">
+                                <a  v-if="$route.path === '/'" class="hover-navitem pe-3" href="http://127.0.0.1:8000" >
+                                    <i class="fa-solid fa-user mx-1"></i> Accedi al Ristorante</a>
                             </div>
 
 

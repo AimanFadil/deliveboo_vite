@@ -59,7 +59,6 @@ export default {
         GetMenuData() {
             axios.get(`${this.store.Url}/restaurant/menu/${this.$route.params.id}`).then((response) => {
                 this.store.Menu = response.data.results;
-
                 this.isLoading = false
 
             })
@@ -173,13 +172,13 @@ export default {
                                                     <div class="my-2">{{dish.description}}</div>
                                                 </div>
                                                 <div class="align-self-end my-1">
-                                                    <div class="fw-bold me-5">€{{dish.price}}</div> 
+                                                    <div class="fw-bold me-5">€{{dish.price.replace(".",",")}}</div> 
                                                 </div>
                                                 
                                             </div>
                                             <div class="col-12 col-lg-2 d-flex justify-content-end d-lg-block ">
                                                 <button type="button" class="btn btn-sm btn_add_  " data-bs-toggle="modal" data-bs-target="#modal-pieces" @click="addDish(dish)">
-                                                    <div class="fw-semibold">Aggiungi all ordine</div>
+                                                    <div class="fw-semibold">Aggiungi all'ordine</div>
                                                 </button>
                                             </div>
                                         
@@ -227,7 +226,7 @@ export default {
                     </div>  
                 </div>
                 <div class="d-flex justify-content-end px-2">
-                    <div class="fs-5 fw-bold">€{{ChosenDish.price}}</div>
+                    <div class="fs-5 fw-bold">€{{ChosenDish.price.replace(".",",")}}</div>
                 </div>
                 <div class="modal-footer">
                     <span>
@@ -267,7 +266,7 @@ export default {
 
     <!-- offcanvas -->
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"  data-bs-scroll="true"  data-bs-backdrop="false" aria-labelledby="offcanvasExampleLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title fs-4 text-center green_color fw-semibold my-2" id="offcanvasExampleLabel">Carrello</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -316,10 +315,6 @@ export default {
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(194, 193, 193);
     border-radius: 10px;
-
-    &:hover {
-        transform: scale(1.1);
-    }
 
 }
 
