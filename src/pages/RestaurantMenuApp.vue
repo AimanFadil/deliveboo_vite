@@ -21,7 +21,7 @@ export default {
             carrello: useLocalStorage(store.Chart, 'Chart'),
             ChosenDish: [],
             restaurant: [],
-
+            modalPrice:null,
             isLoading: true
 
 
@@ -80,6 +80,7 @@ export default {
         addDish(dish) {
             // this.ChosenDish = [];
             this.ChosenDish = dish;
+            this.modalPrice=this.ChosenDish.price.replace('.',',')
         },
         set_carrello() {
             this.carrello = JSON.parse(localStorage.getItem('Chart'))
@@ -227,7 +228,7 @@ export default {
                     </div>  
                 </div>
                 <div class="d-flex justify-content-end px-2">
-                    <div class="fs-5 fw-bold">€{{ChosenDish.price.replace(".",",")}}</div>
+                    <div class="fs-5 fw-bold">€{{modalPrice}}</div>
                 </div>
                 <div class="modal-footer">
                     <span>
