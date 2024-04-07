@@ -37,11 +37,10 @@ export default {
   },
   methods: {
     validateCampi() {
-      if (store.formOrder.name && store.formOrder.mail && store.formOrder.address != '') {
-
+      if (store.formOrder.name && store.formOrder.mail.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/) && store.formOrder.address != '') {
         this.isPaymentVisible = true;
-
       }
+      return;
     },
     TakeToken() {
       axios.get(`${this.store.Url}/orders/generate`).then((response) => {
@@ -247,7 +246,9 @@ export default {
                         <span class="text-danger fw-bold">*</span>
                       </label>
                       <input type="mail" class="form-control" name="mail" id="mail" required v-model='store.formOrder.mail'>
-                    </div>
+              
+                      </div>
+                    
                   
                     <div class="my-4">
                       <label for="address">Indirizzo
@@ -374,6 +375,11 @@ export default {
   z-index: 9999;
 }
 
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
 .bootstrap-basic {
   background: white;
 }
@@ -409,11 +415,11 @@ export default {
   margin-top: 90px;
 }
 
-.height-35{
+.height-35 {
   height: 35px;
 }
 
-.font-30{
+.font-30 {
   font-size: 30px
 }
 </style>
