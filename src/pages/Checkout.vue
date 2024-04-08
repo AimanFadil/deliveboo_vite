@@ -28,7 +28,8 @@ export default {
         phone: '',
         products: useLocalStorage(store.Chart, 'Chart').value,
         price: 5
-      }
+      },
+      mailError: true
     }
   },
   mounted() {
@@ -39,6 +40,9 @@ export default {
     validateCampi() {
       if (store.formOrder.name && store.formOrder.mail.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/) && store.formOrder.address != '') {
         this.isPaymentVisible = true;
+      } else {
+        this.mailError = false;
+
       }
       return;
     },
@@ -246,8 +250,11 @@ export default {
                         <span class="text-danger fw-bold">*</span>
                       </label>
                       <input type="mail" class="form-control" name="mail" id="mail" required v-model='store.formOrder.mail'>
-              
+
+                      <div class="error-message" v-show=" !mailError ">
+                        Inserisci la mail valida
                       </div>
+                    </div>
                     
                   
                     <div class="my-4">
@@ -376,7 +383,7 @@ export default {
 }
 
 .error-message {
-  color: red;
+  color: #dc3545;
   font-size: 12px;
 }
 
