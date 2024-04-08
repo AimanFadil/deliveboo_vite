@@ -44,7 +44,23 @@ export default {
     remove_article(item, index) {
       if (item.quantity == 1) {
 
-        this.carrello.splice(index, 1)
+
+        this.checkoutProducts.splice(index, 1)
+
+      }
+      else {
+        item.quantity -= 1
+      }
+
+    },
+    add_article(item) {
+      item.quantity += 1
+    },
+    validateCampi() {
+      if (store.formOrder.name && store.formOrder.mail && store.formOrder.address != '') {
+
+        this.isPaymentVisible = true;
+
 
       }
       else {
@@ -257,7 +273,7 @@ export default {
     <div class="container-fluid bg-white z_index">
         <div class="row">
             <!-- lista metodi di pagamento -->
-            <div class="col-12 col-lg-8 margin-top">
+            <div class="col-12 col-lg-7 margin-top">
                 <div class="bg-white p-4 rounded border border-dark">
                   <div v-show="!isPaymentVisible">
 
@@ -366,7 +382,7 @@ export default {
                 </div>
 
             <!-- carrello -->
-            <div class="col-12 col-lg-4 margin-top ">
+            <div class="col-12 col-lg-5 margin-top ">
                 <div class="bg-white p-4 rounded border border-dark">
                     <!-- <Chart/> -->
                     <div class="row">
@@ -386,17 +402,17 @@ export default {
                               
                             
                               
-                              <td class="mx-2 align-self-center">
-                                <span> <button class=" btn btn-sm btn me-2" @click="remove_article(product, index)"><i class="fa-solid fa-minus fa-xs"></i></button></span>
+                              <td class="align-self-center p-0">
+                                <span> <button class="remove_button" @click="remove_article(product, index)"><i class="fa-solid fa-minus fa-xs shanks"></i></button></span>
                                 <strong>{{product.quantity}}pz</strong>
-                                <span><button class="btn btn-sm btn ms-2" @click="add_article(product)"><i class="fa-solid fa-plus fa-xs"></i></button></span>  
+                                <span><button @click="add_article(product)"><i class="fa-solid fa-plus fa-xs"></i></button></span>  
                               </td>
                               <td>{{ (product.price *product.quantity).toFixed(2).replace(".",",")  }}€</td>
                             </tr>
                           </tbody>
                             <tr>
-                              <td colspan="2"><strong>Totale</strong></td>
-                              <td>{{TotalPrice().replace(".",",")}}€</td>
+                              <td colspan="2" class="p-0"><strong>Totale</strong></td>
+                              <td class="p-2">{{TotalPrice().replace(".",",")}}€</td>
                             </tr>
                         </table>
                       </div>
@@ -420,6 +436,29 @@ export default {
 </template>
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
+
+.shanks {
+  background-color: #dc3545;
+}
+
+td {
+  .remove_button {
+    padding-left: 5px;
+    padding-top: 8px;
+  }
+
+  button {
+    padding: 5px 3px;
+    border: 0;
+
+    i {
+      color: #fff;
+      padding: 10px 5px;
+      border-radius: 50%;
+      background-color: rgb(69, 169, 140);
+    }
+  }
+}
 
 .toast {
   position: fixed;
