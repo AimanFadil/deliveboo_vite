@@ -1,28 +1,32 @@
 <script>
-import Loader from '../components/Loader.vue';
 import { store } from '../store.js';
-
+import useLocalStorage from '../js/useLocalStorage';
 export default {
     data() {
         return {
             store,
-            loader: true,
+            OrderCustomer:[],
+            OrderProducts:[]
 
         }
     },
-    components: {
-        Loader,
-    },
     mounted() {
-        setTimeout(() => {
-            this.loader = false;
-        }, 2000);
-    },
+        this.OrderCustomer=useLocalStorage(store.OrderCustomer, 'OrderCustomer'),
+        this.OrderProducts=useLocalStorage(store.OrderProducts, 'OrderProducts').value
+    if (localStorage.getItem('reloaded')) {
+        // The page was just reloaded. Clear the value from local storage
+        // so that it will reload the next time this page is visited.
+        localStorage.removeItem('reloaded');
+    } else {
+        // Set a flag so that we know not to reload the page twice.
+        localStorage.setItem('reloaded', '1');
+        location.reload();
+    }
+}
 }
 </script>
 <template lang="">
-    <Loader v-if="loader" />
-    <div v-else>
+    
         <div class="container padding-top-75">
             <div class="row">
                 <div class="col-12">
@@ -32,10 +36,10 @@ export default {
                     </div>
                     <div>
                     <ul class="list-unstyled border-start  border-danger p-3 mt-3">
-                            <li><strong>Cliente:</strong> {{store.OrderCustomer.name}}</li>
-                            <li><strong>Indirizzo:</strong> {{store.OrderCustomer.address}}</li>
-                            <li><strong>Email:</strong> {{store.OrderCustomer.mail}}</li>
-                            <li v-if="store.OrderCustomer.phone !=''"><strong>Telefono:</strong> {{store.OrderCustomer.phone}}</li>
+                            <li><strong>Cliente:</strong> {{OrderCustomer.name}}</li>
+                            <li><strong>Indirizzo:</strong> {{OrderCustomer.address}}</li>
+                            <li><strong>Email:</strong> {{OrderCustomer.mail}}</li>
+                            <li v-if="store.OrderCustomer.phone !=''"><strong>Telefono:</strong> {{OrderCustomer.phone}}</li>
                     </ul>
                         <h5 class="margin-top-75">Ordine</h5>
                         <!-- <ul class="list-unstyled border-start  border-danger p-3 mt-3">
@@ -58,7 +62,7 @@ export default {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr v-for="product, index in store.OrderProducts" :key="index">
+                                                <tr v-for="product, index in OrderProducts" :key="index">
                                                     <td>{{product.name}}</td>
                                                     <td>{{product.quantity}} pz</td>
                                                     <td>{{product.price * product.quantity}}€</td>
@@ -73,7 +77,7 @@ export default {
                 </div>
             </div>
         </div>
-    </div>
+    
 </template>
 <style lang="scss" scoped>
 .padding-top-75 {

@@ -27,7 +27,6 @@ export default {
         address: '',
         phone: '',
         products: useLocalStorage(store.Chart, 'Chart').value,
-        price: 5
       }
     }
   },
@@ -36,6 +35,20 @@ export default {
 
   },
   methods: {
+    remove_article(item, index) {
+            if (item.quantity == 1) {
+
+                this.carrello.splice(index, 1)
+
+            }
+            else {
+                item.quantity -= 1
+            }
+
+        },
+        add_article(item) {
+            item.quantity += 1
+        },
     validateCampi() {
       if (store.formOrder.name && store.formOrder.mail && store.formOrder.address != '') {
 
@@ -196,17 +209,21 @@ export default {
                 console.log(formChart)
                 axios.post(`${store.Url}/orders/makePayment`, { ...formChart })
                 store.formOrder.products = useLocalStorage(store.Chart, 'Chart').value
+                localStorage.clear()
+                store.OrderCustomer =useLocalStorage(store.OrderCustomer, 'OrderCustomer'),
+                store.OrderProducts =useLocalStorage(store.OrderProducts, 'OrderProducts')
                 store.OrderCustomer = store.formOrder
                 store.OrderProducts = formChart.products
+                // console.log(useLocalStorage(store.formOrder, 'OrderCustomer').value)
                 axios.post(`${store.Url}/orders/customer`, { ...store.formOrder })
                 store.formOrder = []
-                localStorage.clear()
-                router.push({ path: '/ThanksYou' })
+                router.replace({ path: '/ThanksYou' })
+                
               }
               catch (err) {
                 console.log(err)
               }
-
+              
             })
           })
         })
@@ -223,6 +240,7 @@ export default {
 }
 </script>
 <template lang="">
+<div v-if="checkoutProducts.length > 0">
 
   <main>
     <div class="container-fluid bg-white z_index">
@@ -300,7 +318,7 @@ export default {
 
                           <hr class="mb-4">
                           <div class="text-center">
-                              <button class="btn btn-primary btn-lg" type="submit">Pay with <span id="card-brand">Card</span></button>
+                              <button class="btn btn-primary btn-lg" type="submit">Paga con <span id="card-brand">Card</span></button>
                           </div>
                         </form>
                       </div>
@@ -340,7 +358,14 @@ export default {
                           <tbody>
                             <tr v-for="(product, index) in checkoutProducts" :key="index">
                               <td>{{ product.name }}</td>
-                              <td>{{ product.quantity }}pz</td>
+                              
+                            
+                              
+                              <td class="mx-2 align-self-center">
+                                <span> <button class=" btn btn-sm btn me-2" @click="remove_article(product, index)"><i class="fa-solid fa-minus fa-xs"></i></button></span>
+                                <strong>{{product.quantity}}pz</strong>
+                                <span><button class="btn btn-sm btn ms-2" @click="add_article(product)"><i class="fa-solid fa-plus fa-xs"></i></button></span>  
+                              </td>
                               <td>{{ (product.price *product.quantity).toFixed(2).replace(".",",")  }}€</td>
                             </tr>
                           </tbody>
@@ -356,6 +381,17 @@ export default {
         </div>
     </div>
   </main>
+</div>
+<div v-else>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="text-center pt-5 margin_top">Il carrello risulta vuoto</h1>
+        <h5 class="text-center py-5">Aggiungere almeno un prodotto prima di procedere all'acquisto</h5>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 <style lang="scss" scoped>
 @use '../styles/generals.scss' as*;
