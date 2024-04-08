@@ -112,7 +112,7 @@ export default {
             };
 
             this.NumberofPieces = 1;
-            console.log(this.dish)
+
 
         },
     },
