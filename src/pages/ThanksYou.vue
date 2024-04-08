@@ -23,7 +23,7 @@ export default {
             location.reload();
         }
     },
-    computed: {
+    methods: {
         totalPrice() {
             return this.OrderProducts.reduce((total, product) => total + product.price * product.quantity, 0);
         },
@@ -70,14 +70,14 @@ export default {
                                                 <tr v-for="product, index in OrderProducts" :key="index">
                                                     <td>{{product.name}}</td>
                                                     <td>{{product.quantity}} pz</td>
-                                                    <td>{{product.price}}€</td>
+                                                    <td>{{product.price.replace(".", ",")}}€</td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
                                                     <th scope="row">Totale</th>
                                                     <td></td>
-                                                    <th>{{totalPrice}}€</th>
+                                                    <th>{{ totalPrice().toFixed(2).replace(".", ",")}}€</th>
                                                 </tr>
                                             </tfoot>
                                         </table>
