@@ -27,7 +27,13 @@ export default {
         address: '',
         phone: '',
         products: useLocalStorage(store.Chart, 'Chart').value,
-      }
+
+
+
+
+      },
+      mailError: true
+
     }
   },
   mounted() {
@@ -36,25 +42,27 @@ export default {
   },
   methods: {
     remove_article(item, index) {
-            if (item.quantity == 1) {
+      if (item.quantity == 1) {
 
-                this.carrello.splice(index, 1)
-
-            }
-            else {
-                item.quantity -= 1
-            }
-
-        },
-        add_article(item) {
-            item.quantity += 1
-        },
-    validateCampi() {
-      if (store.formOrder.name && store.formOrder.mail && store.formOrder.address != '') {
-
-        this.isPaymentVisible = true;
+        this.carrello.splice(index, 1)
 
       }
+      else {
+        item.quantity -= 1
+      }
+
+    },
+    add_article(item) {
+      item.quantity += 1
+    },
+    validateCampi() {
+      if (store.formOrder.name && store.formOrder.mail.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/) && store.formOrder.address != '') {
+        this.isPaymentVisible = true;
+      } else {
+        this.mailError = false;
+
+      }
+      return;
     },
     TakeToken() {
       axios.get(`${this.store.Url}/orders/generate`).then((response) => {
@@ -210,20 +218,20 @@ export default {
                 axios.post(`${store.Url}/orders/makePayment`, { ...formChart })
                 store.formOrder.products = useLocalStorage(store.Chart, 'Chart').value
                 localStorage.clear()
-                store.OrderCustomer =useLocalStorage(store.OrderCustomer, 'OrderCustomer'),
-                store.OrderProducts =useLocalStorage(store.OrderProducts, 'OrderProducts')
+                store.OrderCustomer = useLocalStorage(store.OrderCustomer, 'OrderCustomer'),
+                  store.OrderProducts = useLocalStorage(store.OrderProducts, 'OrderProducts')
                 store.OrderCustomer = store.formOrder
                 store.OrderProducts = formChart.products
                 // console.log(useLocalStorage(store.formOrder, 'OrderCustomer').value)
                 axios.post(`${store.Url}/orders/customer`, { ...store.formOrder })
                 store.formOrder = []
                 router.replace({ path: '/ThanksYou' })
-                
+
               }
               catch (err) {
                 console.log(err)
               }
-              
+
             })
           })
         })
@@ -265,7 +273,12 @@ export default {
                         <span class="text-danger fw-bold">*</span>
                       </label>
                       <input type="mail" class="form-control" name="mail" id="mail" required v-model='store.formOrder.mail'>
+
+                      <div class="error-message" v-show=" !mailError ">
+                        Inserisci la mail valida
+                      </div>
                     </div>
+                    
                   
                     <div class="my-4">
                       <label for="address">Indirizzo
@@ -281,7 +294,7 @@ export default {
                     </div>
                     
                     <div class="col-12 d-flex justify-content-between align-items-center">
-                      <button  class="button button--small button--green" @click="validateCampi()" >Procedi al Pagamento</button>
+                      <button  class="button button--small button--green p-1" @click="validateCampi()" >Procedi al Pagamento</button>
                       <div>
                         i campi contrassegnati con " <strong class="text-danger">*</strong> " sono obbligatori
                       </div>
@@ -291,38 +304,47 @@ export default {
 
                     <div v-show="isPaymentVisible">
                       <div class="bootstrap-basic">
-                        <form class="needs-validation m-5 p-5" novalidate="">     
-                          <div class="row">
+                        <form class="needs-validation" novalidate="">     
+                          <div class="row flex-column">
                             <div class="col-sm-6 mb-3">
-                              <label for="cc-number">Credit card number</label>
-                              <div class="form-control" id="cc-number"></div>
+                              <label for="cc-number">Numero Carta di Credito</label>
+                              <div class="d-flex justify-content-between">
+                                <div class="form-control mt-2 height-35" id="cc-number"></div>
+                                <span class="d-flex justify-content-around align-items-center ms-4">
+                                  <i class="fa-brands fa-cc-visa font-30"></i>
+                                  <i class="fa-brands fa-cc-mastercard font-30 p-2"></i>
+                                  <i class="fa-brands fa-cc-jcb font-30"></i>
+                                </span>
+                              </div>
                               <div class="invalid-feedback">
-                                  Credit card number is required
+                                  Numero carta di credito richiesto
                               </div>
                             </div>
                             <div class="col-sm-3 mb-3">
-                                <label for="cc-expiration">Expiration</label>
-                                <div class="form-control" id="cc-expiration"></div>
+                                <label for="cc-expiration">Scadenza</label>
+                                <div class="form-control mt-2 height-35" id="cc-expiration"></div>
                                 <div class="invalid-feedback">
-                                    Expiration date required
+                                    Data di scadenza richiesta
                                 </div>
                             </div>
                             <div class="col-sm-3 mb-3">
                                 <label for="cc-expiration">CVV</label>
-                                <div class="form-control" id="cc-cvv"></div>
+                                <div class="form-control mt-2 height-35" id="cc-cvv"></div>
                                 <div class="invalid-feedback">
-                                    Security code required
+                                    Codice di sicurezza richiesto
                                 </div>
                             </div>
                           </div>
 
                           <hr class="mb-4">
-                          <div class="text-center">
-                              <button class="btn btn-primary btn-lg" type="submit">Paga con <span id="card-brand">Card</span></button>
+
+                          <div class="text-start">
+                              <button class="button button--small button--green p-1" type="submit">Paga con <span id="card-brand"></span></button>
+
                           </div>
                         </form>
                       </div>
-                      <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+                      <!-- <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
                           <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
                               <div class="toast-header">
                                   <strong class="mr-auto">Success!</strong>
@@ -335,7 +357,7 @@ export default {
                               Next, submit the payment method nonce to your server.
                           </div>
                         </div>
-                      </div>
+                      </div> -->
                     </div>     
                   </div>  
                 </div>
@@ -403,6 +425,11 @@ export default {
   z-index: 9999;
 }
 
+.error-message {
+  color: #dc3545;
+  font-size: 12px;
+}
+
 .bootstrap-basic {
   background: white;
 }
@@ -436,5 +463,13 @@ export default {
 
 .margin-top {
   margin-top: 90px;
+}
+
+.height-35 {
+  height: 35px;
+}
+
+.font-30 {
+  font-size: 30px
 }
 </style>
