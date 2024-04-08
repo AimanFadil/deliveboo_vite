@@ -5,28 +5,33 @@ export default {
     data() {
         return {
             store,
-            OrderCustomer:[],
-            OrderProducts:[]
+            OrderCustomer: [],
+            OrderProducts: []
 
         }
     },
     mounted() {
-        this.OrderCustomer=useLocalStorage(store.OrderCustomer, 'OrderCustomer'),
-        this.OrderProducts=useLocalStorage(store.OrderProducts, 'OrderProducts').value
-    if (localStorage.getItem('reloaded')) {
-        // The page was just reloaded. Clear the value from local storage
-        // so that it will reload the next time this page is visited.
-        localStorage.removeItem('reloaded');
-    } else {
-        // Set a flag so that we know not to reload the page twice.
-        localStorage.setItem('reloaded', '1');
-        location.reload();
-    }
-}
+        this.OrderCustomer = useLocalStorage(store.OrderCustomer, 'OrderCustomer'),
+            this.OrderProducts = useLocalStorage(store.OrderProducts, 'OrderProducts').value
+        if (localStorage.getItem('reloaded')) {
+            // The page was just reloaded. Clear the value from local storage
+            // so that it will reload the next time this page is visited.
+            localStorage.removeItem('reloaded');
+        } else {
+            // Set a flag so that we know not to reload the page twice.
+            localStorage.setItem('reloaded', '1');
+            location.reload();
+        }
+    },
+    computed: {
+        totalPrice() {
+            return this.OrderProducts.reduce((total, product) => total + product.price * product.quantity, 0);
+        },
+    },
 }
 </script>
 <template lang="">
-    
+
         <div class="container padding-top-75">
             <div class="row">
                 <div class="col-12">
@@ -58,16 +63,23 @@ export default {
                                                 <tr>
                                                     <th scope="col">Prodotto</th>
                                                     <th scope="col">Quantità</th>
-                                                    <th scope="col">Totale</th>
+                                                    <th scope="col">Prezzo</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="product, index in OrderProducts" :key="index">
                                                     <td>{{product.name}}</td>
                                                     <td>{{product.quantity}} pz</td>
-                                                    <td>{{product.price * product.quantity}}€</td>
+                                                    <td>{{product.price}}€</td>
                                                 </tr>
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th scope="row">Totale</th>
+                                                    <td></td>
+                                                    <th>{{totalPrice}}€</th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
