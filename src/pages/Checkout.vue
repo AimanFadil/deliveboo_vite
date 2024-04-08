@@ -238,6 +238,8 @@ export default {
                   store.OrderProducts = useLocalStorage(store.OrderProducts, 'OrderProducts')
                 store.OrderCustomer = store.formOrder
                 store.OrderProducts = formChart.products
+                let mails = { id: store.OrderProducts[0].restaurant_id, mail: store.OrderCustomer.mail }
+                axios.post(`${store.Url}/restaurant/mail`, { ...mails })
                 // console.log(useLocalStorage(store.formOrder, 'OrderCustomer').value)
                 axios.post(`${store.Url}/orders/customer`, { ...store.formOrder }).then(function () {
                   store.formOrder = []
