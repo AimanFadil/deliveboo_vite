@@ -14,7 +14,7 @@ export default {
 
 <style>
 .sizing {
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(13, 56, 63);
     width: 100vw;
     height: 100vh;
     position: fixed;
