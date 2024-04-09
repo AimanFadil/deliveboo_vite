@@ -447,17 +447,22 @@ td {
   .remove_button {
     padding-left: 5px;
     padding-top: 8px;
+    background-color: transparent;
   }
 
   button {
     padding: 5px 3px;
     border: 0;
+    background-color: transparent;
+
+
 
     i {
       color: #fff;
       padding: 10px 5px;
       border-radius: 50%;
       background-color: rgb(69, 169, 140);
+      
     }
   }
 }
